@@ -4,8 +4,8 @@ Production-ready portfolio built with React + TypeScript + Vite, with live GitHu
 
 ## Live Website
 
-- Short URL: `https://tinyurl.com/225b8mbo`
-- Direct URL: `https://preethamofficial.github.io/`
+- Short URL: `https://tinyurl.com/2xmp2kvf`
+- Direct URL: `https://preethamofficial.github.io/my_profile/`
 
 ## Stack
 
