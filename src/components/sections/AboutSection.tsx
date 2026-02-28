@@ -3,6 +3,7 @@ import { BrainCircuit } from 'lucide-react'
 import { useInView } from 'framer-motion'
 
 import { SectionHeading } from '@/components/common/SectionHeading'
+import { TechLogo } from '@/components/common/TechLogo'
 import { Reveal } from '@/components/common/Reveal'
 import { aboutParagraphs, aboutStats, techBadges } from '@/data/portfolio'
 
@@ -97,15 +98,7 @@ export function AboutSection() {
               key={badge.name}
               className="glass-card inline-flex items-center gap-2 rounded-full px-3 py-2 text-sm text-[var(--text-primary)]"
             >
-              <img
-                src={`https://cdn.simpleicons.org/${badge.icon}/${badge.color}`}
-                alt={`${badge.name} logo`}
-                loading="lazy"
-                className="h-4 w-4"
-                onError={(event) => {
-                  event.currentTarget.style.display = 'none'
-                }}
-              />
+              <TechLogo name={badge.name} icon={badge.icon} color={badge.color} className="h-4 w-4" />
               {badge.name}
             </span>
           ))}

@@ -5,6 +5,7 @@ import { ChevronDown, Cloud, Code2, Database, Download, Sparkles, Wrench } from 
 import { Reveal } from '@/components/common/Reveal'
 import { RippleButton } from '@/components/common/RippleButton'
 import { SectionHeading } from '@/components/common/SectionHeading'
+import { TechLogo } from '@/components/common/TechLogo'
 import { skillCategories, techBadges } from '@/data/portfolio'
 import { downloadResumePdf } from '@/utils/resume'
 
@@ -39,17 +40,13 @@ function HexSignalCell({ badge, index }: HexSignalCellProps) {
     >
       <span className="hex-node-ring" aria-hidden />
       <span className="hex-node-scan" aria-hidden />
-      <motion.img
-        src={`https://cdn.simpleicons.org/${badge.icon}/${badge.color}`}
-        alt={`${badge.name} logo`}
-        loading="lazy"
-        className="relative z-10 h-8 w-8"
+      <motion.div
+        className="relative z-10"
         animate={{ rotate: [0, index % 2 === 0 ? 4 : -4, 0] }}
         transition={{ duration: 4 + index * 0.1, repeat: Infinity, ease: 'easeInOut' }}
-        onError={(event) => {
-          event.currentTarget.style.display = 'none'
-        }}
-      />
+      >
+        <TechLogo name={badge.name} icon={badge.icon} color={badge.color} className="h-8 w-8" />
+      </motion.div>
       <span className="hex-node-name">{badge.name}</span>
     </motion.div>
   )
