@@ -81,3 +81,4 @@ Use Cloudflare Workers (free tier) for backend token verification:
 - Resume file path used by buttons: `public/resume.pdf`
 - Latest resume is uploaded and live from `public/resume.pdf`.
 - GitHub data is fetched from `preethamofficial`.
+- GitHub repository snapshot is auto-generated hourly for reliable project feed updates.
