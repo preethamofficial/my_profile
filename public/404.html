@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      ;(function redirectToIndex(location) {
+        const segmentCount = 1
+        const pathSegments = location.pathname
+          .split('/')
+          .slice(1)
+        const encodedPath = pathSegments
+          .slice(segmentCount)
+          .join('/')
+          .replace(/&/g, '~and~')
+
+        location.replace(
+          location.protocol +
+            '//' +
+            location.hostname +
+            (location.port ? ':' + location.port : '') +
+            '/' +
+            pathSegments.slice(0, segmentCount).join('/') +
+            '/?/' +
+            encodedPath +
+            (location.search ? '&' + location.search.slice(1).replace(/&/g, '~and~') : '') +
+            location.hash,
+        )
+      })(window.location)
+    </script>
+  </head>
+  <body></body>
+</html>
