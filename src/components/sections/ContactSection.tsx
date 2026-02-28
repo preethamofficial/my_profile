@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
-import { Github, Linkedin, Mail, MapPin } from 'lucide-react'
+import { CheckCircle2, Github, Linkedin, Mail, MapPin } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa6'
 import ReCAPTCHA from 'react-google-recaptcha'
 
@@ -20,6 +20,10 @@ interface ContactFormState {
   email: string
   subject: string
   message: string
+}
+
+interface ContactSubmission extends ContactFormState {
+  submittedAt: string
 }
 
 const RECAPTCHA_TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
@@ -49,10 +53,47 @@ function buildWhatsappMessage(form: ContactFormState): string {
   ].join('\n')
 }
 
+function buildSubmission(form: ContactFormState): ContactSubmission {
+  return {
+    name: form.name.trim(),
+    email: form.email.trim(),
+    subject: (form.subject || contactSubjects[0]).trim(),
+    message: form.message.trim(),
+    submittedAt: new Date().toISOString(),
+  }
+}
+
+async function sendViaFormSubmit(submission: ContactSubmission): Promise<boolean> {
+  const response = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    },
+    body: JSON.stringify({
+      name: submission.name,
+      email: submission.email,
+      subject: submission.subject,
+      message: submission.message,
+      submitted_at: submission.submittedAt,
+      _subject: `[Portfolio Contact] ${submission.subject}`,
+      _template: 'table',
+      _captcha: 'false',
+    }),
+  })
+
+  if (!response.ok) {
+    return false
+  }
+
+  return true
+}
+
 export function ContactSection({ onToast }: ContactSectionProps) {
   const [form, setForm] = useState<ContactFormState>(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
+  const [lastSubmission, setLastSubmission] = useState<ContactSubmission | null>(null)
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const recaptchaEnvSiteKey = useMemo(
@@ -88,12 +129,14 @@ export function ContactSection({ onToast }: ContactSectionProps) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+    const submission = buildSubmission(form)
+
+    if (!submission.name || !submission.email || !submission.message) {
       onToast('Please fill all required fields.', 'error')
       return
     }
 
-    if (!isValidEmail(form.email)) {
+    if (!isValidEmail(submission.email)) {
       onToast('Please enter a valid email address.', 'error')
       return
     }
@@ -108,7 +151,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
 
     const whatsappNumber = normalizePhone(profile.whatsapp)
-    const whatsappText = encodeURIComponent(buildWhatsappMessage(form))
+    const whatsappText = encodeURIComponent(buildWhatsappMessage(submission))
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`
 
     const whatsappWindow = window.open('', '_blank', 'noopener,noreferrer')
@@ -135,19 +178,33 @@ export function ContactSection({ onToast }: ContactSectionProps) {
       }
 
       if (!serviceId || !templateId || !publicKey) {
-        const mailtoUrl = `mailto:${profile.email}?subject=${encodeURIComponent(`[${form.subject}] New Portfolio Inquiry`)}&body=${encodeURIComponent(buildWhatsappMessage(form))}`
-        window.location.href = mailtoUrl
-        onToast('WhatsApp opened. Please send the email from your mail app (EmailJS not configured).', 'info')
+        let formSubmitSent = false
+        try {
+          formSubmitSent = await sendViaFormSubmit(submission)
+        } catch {
+          formSubmitSent = false
+        }
+
+        if (formSubmitSent) {
+          onToast('Details submitted and sent to your email + WhatsApp.', 'success')
+        } else {
+          const mailtoUrl = `mailto:${profile.email}?subject=${encodeURIComponent(`[${submission.subject}] New Portfolio Inquiry`)}&body=${encodeURIComponent(buildWhatsappMessage(submission))}`
+          window.location.href = mailtoUrl
+          onToast('Details submitted. WhatsApp opened and email draft created.', 'info')
+        }
       } else {
         await emailjs.send(
           serviceId,
           templateId,
           {
-            from_name: form.name,
-            from_email: form.email,
-            reply_to: form.email,
-            subject: form.subject,
-            message: form.message,
+            name: submission.name,
+            email: submission.email,
+            subject: submission.subject,
+            message: submission.message,
+            submitted_at: submission.submittedAt,
+            from_name: submission.name,
+            from_email: submission.email,
+            reply_to: submission.email,
             to_name: profile.name,
             to_email: profile.email,
             whatsapp: profile.whatsapp,
@@ -156,14 +213,15 @@ export function ContactSection({ onToast }: ContactSectionProps) {
           { publicKey },
         )
 
-        onToast('Details sent to WhatsApp and email successfully. Thank you!', 'success')
+        onToast('Details submitted and sent to your email + WhatsApp.', 'success')
       }
 
+      setLastSubmission(submission)
       setForm(initialFormState)
       recaptchaRef.current?.reset()
       setRecaptchaToken(null)
     } catch {
-      onToast('WhatsApp opened, but email sending failed. Please try again later.', 'error')
+      onToast('Submission failed. Please try again.', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -297,6 +355,33 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               )}
             </RippleButton>
           </form>
+
+          {lastSubmission ? (
+            <div className="mt-5 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4">
+              <p className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-200">
+                <CheckCircle2 className="h-4 w-4" />
+                Details submitted successfully
+              </p>
+              <div className="mt-3 grid gap-2 text-xs text-emerald-100 sm:grid-cols-2">
+                <p>
+                  <span className="font-semibold">Name:</span> {lastSubmission.name}
+                </p>
+                <p>
+                  <span className="font-semibold">Email:</span> {lastSubmission.email}
+                </p>
+                <p>
+                  <span className="font-semibold">Subject:</span> {lastSubmission.subject}
+                </p>
+                <p>
+                  <span className="font-semibold">Submitted:</span>{' '}
+                  {new Date(lastSubmission.submittedAt).toLocaleString()}
+                </p>
+              </div>
+              <p className="mt-2 text-xs text-emerald-100">
+                <span className="font-semibold">Message:</span> {lastSubmission.message}
+              </p>
+            </div>
+          ) : null}
         </Reveal>
 
         <Reveal className="space-y-4" delay={0.1}>
