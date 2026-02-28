@@ -4,6 +4,7 @@ import { Download } from 'lucide-react'
 import { Reveal } from '@/components/common/Reveal'
 import { SectionHeading } from '@/components/common/SectionHeading'
 import { skillCategories, techBadges } from '@/data/portfolio'
+import { downloadResumePdf } from '@/utils/resume'
 
 const levelClassName: Record<string, string> = {
   Expert: 'text-emerald-300 bg-emerald-500/15 border-emerald-400/40',
@@ -12,8 +13,6 @@ const levelClassName: Record<string, string> = {
 }
 
 export function SkillsSection() {
-  const resumeUrl = `${import.meta.env.BASE_URL}resume.pdf`
-
   return (
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
@@ -56,14 +55,16 @@ export function SkillsSection() {
       <Reveal className="mt-12">
         <div className="mb-5 flex items-center justify-between gap-3">
           <h3 className="text-lg font-semibold text-[var(--text-primary)]">Technology Hex Grid</h3>
-          <a
-            href={resumeUrl}
-            download="A-Preetham-Reddy-Resume.pdf"
+          <button
+            type="button"
+            onClick={() => {
+              void downloadResumePdf()
+            }}
             className="focusable inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-[var(--text-primary)] transition hover:border-brand-cyan hover:text-brand-cyan"
           >
             <Download className="h-4 w-4" />
             View Resume
-          </a>
+          </button>
         </div>
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-7">
           {techBadges.map((badge) => (

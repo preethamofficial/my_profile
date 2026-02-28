@@ -10,6 +10,7 @@ import { scroller } from 'react-scroll'
 
 import { profile, typingRoles } from '@/data/portfolio'
 import { RippleButton } from '@/components/common/RippleButton'
+import { downloadResumePdf } from '@/utils/resume'
 
 interface HeroSectionProps {
   avatarUrl?: string
@@ -20,7 +21,6 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
   const [particlesReady, setParticlesReady] = useState(false)
   const { scrollY } = useScroll()
   const parallaxY = useTransform(scrollY, [0, 800], [0, 140])
-  const resumeUrl = `${import.meta.env.BASE_URL}resume.pdf`
 
   useEffect(() => {
     void initParticlesEngine(async (engine) => {
@@ -144,14 +144,16 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
           <RippleButton type="button" variant="primary" onClick={scrollToProjects}>
             View Projects
           </RippleButton>
-          <a
-            href={resumeUrl}
-            download="A-Preetham-Reddy-Resume.pdf"
+          <button
+            type="button"
+            onClick={() => {
+              void downloadResumePdf()
+            }}
             className="focusable inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-2.5 text-sm font-semibold text-[var(--text-primary)] transition hover:border-brand-purple hover:bg-white/15"
           >
             <Download className="h-4 w-4" />
             Download Resume
-          </a>
+          </button>
         </motion.div>
 
         <motion.div
