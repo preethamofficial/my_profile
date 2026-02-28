@@ -18,9 +18,14 @@ interface ContactFormState {
   email: string
   subject: string
   message: string
+  antiSpam: string
 }
 
-interface ContactSubmission extends ContactFormState {
+interface ContactSubmission {
+  name: string
+  email: string
+  subject: string
+  message: string
   submittedAt: string
 }
 
@@ -35,6 +40,7 @@ const initialFormState: ContactFormState = {
   email: '',
   subject: contactSubjects[0],
   message: '',
+  antiSpam: '',
 }
 
 function isValidEmail(email: string): boolean {
@@ -150,6 +156,13 @@ export function ContactSection({ onToast }: ContactSectionProps) {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    // Honeypot field: bots often fill hidden inputs; real users should leave it empty.
+    if (form.antiSpam.trim()) {
+      setForm(initialFormState)
+      onToast('Details submitted successfully.', 'success')
+      return
+    }
 
     const submission = buildSubmission(form)
 
@@ -301,6 +314,19 @@ export function ContactSection({ onToast }: ContactSectionProps) {
                 className="focusable w-full rounded-xl border border-white/20 bg-white/5 px-4 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-slate-400"
                 placeholder="Tell me what you are building..."
                 aria-required="true"
+              />
+            </div>
+
+            <div className="absolute -left-[9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
+              <label htmlFor="company-website">Company website</label>
+              <input
+                id="company-website"
+                name="company-website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={form.antiSpam}
+                onChange={(event) => updateField('antiSpam', event.target.value)}
               />
             </div>
 
