@@ -59,7 +59,23 @@ function buildSubmission(form: ContactFormState): ContactSubmission {
   }
 }
 
+function buildEmailDetails(submission: ContactSubmission): string {
+  return [
+    'New Portfolio Contact Submission',
+    '',
+    `Name: ${submission.name}`,
+    `Email: ${submission.email}`,
+    `Subject: ${submission.subject}`,
+    `Submitted At: ${new Date(submission.submittedAt).toLocaleString()}`,
+    '',
+    'Message:',
+    submission.message,
+  ].join('\n')
+}
+
 async function sendViaFormSubmit(submission: ContactSubmission): Promise<DeliveryState> {
+  const fullDetails = buildEmailDetails(submission)
+
   try {
     const response = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
       method: 'POST',
@@ -71,8 +87,11 @@ async function sendViaFormSubmit(submission: ContactSubmission): Promise<Deliver
         name: submission.name,
         email: submission.email,
         subject: submission.subject,
-        message: submission.message,
+        message: fullDetails,
+        original_message: submission.message,
         submitted_at: submission.submittedAt,
+        sender_email: submission.email,
+        sender_name: submission.name,
         _subject: `[Portfolio Contact] ${submission.subject}`,
         _template: 'table',
         _captcha: 'false',
@@ -180,6 +199,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
         delivery = await sendViaFormSubmit(submission)
       } else {
         try {
+          const fullDetails = buildEmailDetails(submission)
           await emailjs.send(
             serviceId,
             templateId,
@@ -187,8 +207,11 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               name: submission.name,
               email: submission.email,
               subject: submission.subject,
-              message: submission.message,
+              message: fullDetails,
+              full_details: fullDetails,
+              original_message: submission.message,
               submitted_at: submission.submittedAt,
+              submitted_at_formatted: new Date(submission.submittedAt).toLocaleString(),
               from_name: submission.name,
               from_email: submission.email,
               reply_to: submission.email,
