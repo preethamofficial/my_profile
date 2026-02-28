@@ -8,7 +8,6 @@ import { Navbar } from '@/components/layout/Navbar'
 import { AboutSection } from '@/components/sections/AboutSection'
 import { ContactSection } from '@/components/sections/ContactSection'
 import { ExperienceSection } from '@/components/sections/ExperienceSection'
-import { GithubStatsSection } from '@/components/sections/GithubStatsSection'
 import { HeroSection } from '@/components/sections/HeroSection'
 import { ProjectsSection } from '@/components/sections/ProjectsSection'
 import { RoadmapSection } from '@/components/sections/RoadmapSection'
@@ -61,14 +60,6 @@ export default function PortfolioPage() {
         </Element>
         <Element name="roadmap">
           <RoadmapSection />
-        </Element>
-        <Element name="github">
-          <GithubStatsSection
-            overview={overview}
-            isLoading={isLoading}
-            error={error}
-            username={profile.githubUsername}
-          />
         </Element>
         <Element name="contact">
           <ContactSection onToast={pushToast} />

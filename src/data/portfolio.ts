@@ -23,7 +23,6 @@ export const navItems: NavItem[] = [
   { label: 'Projects', target: 'projects' },
   { label: 'Experience', target: 'experience' },
   { label: 'Roadmap', target: 'roadmap' },
-  { label: 'GitHub', target: 'github' },
   { label: 'Contact', target: 'contact' },
 ]
 
