@@ -2,6 +2,11 @@
 
 Production-ready portfolio built with React + TypeScript + Vite, with live GitHub API data, EmailJS contact integration, rich animations, and GitHub Pages deployment automation.
 
+## Live Website
+
+- Short URL: `https://tinyurl.com/225b8mbo`
+- Direct URL: `https://preethamofficial.github.io/`
+
 ## Stack
 
 - React 19 + TypeScript

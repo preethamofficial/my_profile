@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
-import { CheckCircle2, Github, Linkedin, Mail, MapPin } from 'lucide-react'
+import { CheckCircle2, Github, Globe, Linkedin, Mail, MapPin } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa6'
 import ReCAPTCHA from 'react-google-recaptcha'
 
@@ -476,6 +476,21 @@ export function ContactSection({ onToast }: ContactSectionProps) {
             <span>
               <span className="block text-xs uppercase tracking-[0.12em] text-[var(--text-secondary)]">GitHub</span>
               <span className="text-sm font-medium text-[var(--text-primary)]">View source projects</span>
+            </span>
+          </a>
+
+          <a
+            href={profile.website}
+            target="_blank"
+            rel="noreferrer"
+            className="focusable glass-card hover-lift flex items-center gap-3 rounded-2xl p-4"
+          >
+            <span className="rounded-full border border-white/15 bg-white/10 p-2 text-emerald-300">
+              <Globe className="h-4 w-4" />
+            </span>
+            <span>
+              <span className="block text-xs uppercase tracking-[0.12em] text-[var(--text-secondary)]">Website</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">tinyurl.com/225b8mbo</span>
             </span>
           </a>
         </Reveal>
