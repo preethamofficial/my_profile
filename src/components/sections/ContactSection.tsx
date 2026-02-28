@@ -26,6 +26,12 @@ interface ContactSubmission extends ContactFormState {
   submittedAt: string
 }
 
+interface DeliveryState {
+  delivered: boolean
+  channel: 'EmailJS' | 'FormSubmit' | 'None'
+  note: string
+}
+
 const RECAPTCHA_TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
 const initialFormState: ContactFormState = {
@@ -43,16 +49,6 @@ function normalizePhone(phone: string): string {
   return phone.replace(/[^\d]/g, '')
 }
 
-function buildWhatsappMessage(form: ContactFormState): string {
-  return [
-    'New Portfolio Inquiry',
-    `Name: ${form.name}`,
-    `Email: ${form.email}`,
-    `Subject: ${form.subject}`,
-    `Message: ${form.message}`,
-  ].join('\n')
-}
-
 function buildSubmission(form: ContactFormState): ContactSubmission {
   return {
     name: form.name.trim(),
@@ -63,30 +59,49 @@ function buildSubmission(form: ContactFormState): ContactSubmission {
   }
 }
 
-async function sendViaFormSubmit(submission: ContactSubmission): Promise<boolean> {
-  const response = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify({
-      name: submission.name,
-      email: submission.email,
-      subject: submission.subject,
-      message: submission.message,
-      submitted_at: submission.submittedAt,
-      _subject: `[Portfolio Contact] ${submission.subject}`,
-      _template: 'table',
-      _captcha: 'false',
-    }),
-  })
+async function sendViaFormSubmit(submission: ContactSubmission): Promise<DeliveryState> {
+  try {
+    const response = await fetch(`https://formsubmit.co/ajax/${profile.email}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        name: submission.name,
+        email: submission.email,
+        subject: submission.subject,
+        message: submission.message,
+        submitted_at: submission.submittedAt,
+        _subject: `[Portfolio Contact] ${submission.subject}`,
+        _template: 'table',
+        _captcha: 'false',
+      }),
+    })
 
-  if (!response.ok) {
-    return false
+    const payload = (await response.json().catch(() => ({}))) as { success?: boolean | string; message?: string }
+    const success = payload.success === true || payload.success === 'true'
+
+    if (!response.ok || !success) {
+      return {
+        delivered: false,
+        channel: 'None',
+        note: payload.message ?? 'FormSubmit delivery failed.',
+      }
+    }
+
+    return {
+      delivered: true,
+      channel: 'FormSubmit',
+      note: payload.message ?? 'Notification sent via FormSubmit.',
+    }
+  } catch {
+    return {
+      delivered: false,
+      channel: 'None',
+      note: 'FormSubmit request failed.',
+    }
   }
-
-  return true
 }
 
 export function ContactSection({ onToast }: ContactSectionProps) {
@@ -94,6 +109,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
   const [lastSubmission, setLastSubmission] = useState<ContactSubmission | null>(null)
+  const [lastDelivery, setLastDelivery] = useState<DeliveryState | null>(null)
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
   const recaptchaEnvSiteKey = useMemo(
@@ -150,20 +166,11 @@ export function ContactSection({ onToast }: ContactSectionProps) {
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
 
-    const whatsappNumber = normalizePhone(profile.whatsapp)
-    const whatsappText = encodeURIComponent(buildWhatsappMessage(submission))
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`
-
-    const whatsappWindow = window.open('', '_blank', 'noopener,noreferrer')
-
     setIsSubmitting(true)
     try {
       if (recaptchaEnabled && recaptchaVerifyEndpoint && recaptchaToken) {
         const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaVerifyEndpoint)
         if (!verification.success) {
-          if (whatsappWindow && !whatsappWindow.closed) {
-            whatsappWindow.close()
-          }
           recaptchaRef.current?.reset()
           setRecaptchaToken(null)
           onToast('reCAPTCHA verification failed. Please try again.', 'error')
@@ -171,52 +178,49 @@ export function ContactSection({ onToast }: ContactSectionProps) {
         }
       }
 
-      if (whatsappWindow) {
-        whatsappWindow.location.href = whatsappUrl
-      } else {
-        window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
-      }
-
+      let delivery: DeliveryState = { delivered: false, channel: 'None', note: 'No delivery channel succeeded.' }
       if (!serviceId || !templateId || !publicKey) {
-        let formSubmitSent = false
-        try {
-          formSubmitSent = await sendViaFormSubmit(submission)
-        } catch {
-          formSubmitSent = false
-        }
-
-        if (formSubmitSent) {
-          onToast('Details submitted and sent to your email + WhatsApp.', 'success')
-        } else {
-          const mailtoUrl = `mailto:${profile.email}?subject=${encodeURIComponent(`[${submission.subject}] New Portfolio Inquiry`)}&body=${encodeURIComponent(buildWhatsappMessage(submission))}`
-          window.location.href = mailtoUrl
-          onToast('Details submitted. WhatsApp opened and email draft created.', 'info')
-        }
+        delivery = await sendViaFormSubmit(submission)
       } else {
-        await emailjs.send(
-          serviceId,
-          templateId,
-          {
-            name: submission.name,
-            email: submission.email,
-            subject: submission.subject,
-            message: submission.message,
-            submitted_at: submission.submittedAt,
-            from_name: submission.name,
-            from_email: submission.email,
-            reply_to: submission.email,
-            to_name: profile.name,
-            to_email: profile.email,
-            whatsapp: profile.whatsapp,
-            recaptcha_token: recaptchaToken ?? '',
-          },
-          { publicKey },
-        )
-
-        onToast('Details submitted and sent to your email + WhatsApp.', 'success')
+        try {
+          await emailjs.send(
+            serviceId,
+            templateId,
+            {
+              name: submission.name,
+              email: submission.email,
+              subject: submission.subject,
+              message: submission.message,
+              submitted_at: submission.submittedAt,
+              from_name: submission.name,
+              from_email: submission.email,
+              reply_to: submission.email,
+              to_name: profile.name,
+              to_email: profile.email,
+              whatsapp: profile.whatsapp,
+              recaptcha_token: recaptchaToken ?? '',
+            },
+            { publicKey },
+          )
+          delivery = {
+            delivered: true,
+            channel: 'EmailJS',
+            note: 'Notification sent to your email using EmailJS.',
+          }
+        } catch {
+          delivery = await sendViaFormSubmit(submission)
+        }
       }
 
       setLastSubmission(submission)
+      setLastDelivery(delivery)
+
+      if (delivery.delivered) {
+        onToast(`Details submitted and sent to you via ${delivery.channel}.`, 'success')
+      } else {
+        onToast('Details submitted, but notification delivery failed. Check setup/activation.', 'error')
+      }
+
       setForm(initialFormState)
       recaptchaRef.current?.reset()
       setRecaptchaToken(null)
@@ -380,6 +384,14 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               <p className="mt-2 text-xs text-emerald-100">
                 <span className="font-semibold">Message:</span> {lastSubmission.message}
               </p>
+              {lastDelivery ? (
+                <p className="mt-2 text-xs text-emerald-100">
+                  <span className="font-semibold">Delivery:</span>{' '}
+                  {lastDelivery.delivered
+                    ? `${lastDelivery.channel} - ${lastDelivery.note}`
+                    : `Failed - ${lastDelivery.note}`}
+                </p>
+              ) : null}
             </div>
           ) : null}
         </Reveal>
