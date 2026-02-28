@@ -2,7 +2,6 @@ import { Activity, GitBranchPlus, GitCommitVertical, Star, Users } from 'lucide-
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 
 import { Reveal } from '@/components/common/Reveal'
-import { SectionHeading } from '@/components/common/SectionHeading'
 import type { GithubOverview } from '@/types/github'
 
 interface GithubStatsSectionProps {
@@ -28,17 +27,11 @@ export function GithubStatsSection({ overview, isLoading, error, username }: Git
 
   return (
     <section id="github" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-      <SectionHeading
-        eyebrow="GitHub Stats"
-        title="Live Developer Metrics"
-        description="Repository data, language usage, and recent coding activity are pulled directly from GitHub."
-      />
-
       {error ? (
-        <p className="mt-6 glass-card rounded-xl px-4 py-3 text-sm text-rose-300">GitHub data load issue: {error}</p>
+        <p className="glass-card rounded-xl px-4 py-3 text-sm text-rose-300">GitHub data load issue: {error}</p>
       ) : null}
 
-      <Reveal className="mt-8 glass-card overflow-hidden rounded-2xl p-4 sm:p-6">
+      <Reveal className="glass-card overflow-hidden rounded-2xl p-4 sm:p-6">
         <h3 className="mb-4 text-lg font-semibold text-[var(--text-primary)]">Contribution Graph</h3>
         <img
           src={`https://ghchart.rshah.org/06b6d4/${username}`}
