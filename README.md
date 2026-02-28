@@ -38,8 +38,22 @@ Create `.env.local`:
 VITE_EMAILJS_SERVICE_ID=your_service_id
 VITE_EMAILJS_TEMPLATE_ID=your_template_id
 VITE_EMAILJS_PUBLIC_KEY=your_public_key
-VITE_RECAPTCHA_SITE_KEY=optional_site_key
+VITE_RECAPTCHA_SITE_KEY=your_google_recaptcha_site_key
+VITE_RECAPTCHA_VERIFY_ENDPOINT=https://your-worker-domain/verify
 ```
+
+`VITE_RECAPTCHA_VERIFY_ENDPOINT` enables strict server-side token verification.
+
+## reCAPTCHA Verification Endpoint (Free)
+
+Use Cloudflare Workers (free tier) for backend token verification:
+
+1. Deploy [workers/recaptcha-verify-worker.js](./workers/recaptcha-verify-worker.js).
+2. Set worker secrets/vars:
+   - `RECAPTCHA_SECRET_KEY` = your Google reCAPTCHA secret key
+   - `ALLOWED_ORIGIN` = `https://preethamofficial.github.io`
+3. Set frontend `.env.local`:
+   - `VITE_RECAPTCHA_VERIFY_ENDPOINT=https://<your-worker-url>`
 
 ## Deployment (Free) - GitHub Pages
 

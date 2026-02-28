@@ -1,13 +1,15 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa6'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 import { RippleButton } from '@/components/common/RippleButton'
 import { Reveal } from '@/components/common/Reveal'
 import { SectionHeading } from '@/components/common/SectionHeading'
 import { contactSubjects, profile } from '@/data/portfolio'
+import { verifyRecaptchaToken } from '@/services/recaptcha'
 
 interface ContactSectionProps {
   onToast: (message: string, type: 'success' | 'error' | 'info') => void
@@ -48,8 +50,16 @@ function buildWhatsappMessage(form: ContactFormState): string {
 export function ContactSection({ onToast }: ContactSectionProps) {
   const [form, setForm] = useState<ContactFormState>(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
 
-  const recaptchaEnabled = useMemo(() => Boolean(import.meta.env.VITE_RECAPTCHA_SITE_KEY), [])
+  const recaptchaRef = useRef<ReCAPTCHA>(null)
+  const recaptchaSiteKey = useMemo(() => (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)?.trim(), [])
+  const recaptchaVerifyEndpoint = useMemo(
+    () => (import.meta.env.VITE_RECAPTCHA_VERIFY_ENDPOINT as string | undefined)?.trim(),
+    [],
+  )
+  const recaptchaEnabled = Boolean(recaptchaSiteKey)
+  const hasServerSideVerification = Boolean(recaptchaEnabled && recaptchaVerifyEndpoint)
   const recaptchaBadgeSrc = useMemo(() => `${import.meta.env.BASE_URL}recaptcha-badge.svg`, [])
 
   const updateField = (field: keyof ContactFormState, value: string) => {
@@ -78,6 +88,11 @@ export function ContactSection({ onToast }: ContactSectionProps) {
       return
     }
 
+    if (recaptchaEnabled && !recaptchaToken) {
+      onToast('Please complete reCAPTCHA verification.', 'error')
+      return
+    }
+
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
@@ -87,14 +102,28 @@ export function ContactSection({ onToast }: ContactSectionProps) {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`
 
     const whatsappWindow = window.open('', '_blank', 'noopener,noreferrer')
-    if (whatsappWindow) {
-      whatsappWindow.location.href = whatsappUrl
-    } else {
-      window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
-    }
 
     setIsSubmitting(true)
     try {
+      if (recaptchaEnabled && recaptchaVerifyEndpoint && recaptchaToken) {
+        const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaVerifyEndpoint)
+        if (!verification.success) {
+          if (whatsappWindow && !whatsappWindow.closed) {
+            whatsappWindow.close()
+          }
+          recaptchaRef.current?.reset()
+          setRecaptchaToken(null)
+          onToast('reCAPTCHA verification failed. Please try again.', 'error')
+          return
+        }
+      }
+
+      if (whatsappWindow) {
+        whatsappWindow.location.href = whatsappUrl
+      } else {
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+      }
+
       if (!serviceId || !templateId || !publicKey) {
         const mailtoUrl = `mailto:${profile.email}?subject=${encodeURIComponent(`[${form.subject}] New Portfolio Inquiry`)}&body=${encodeURIComponent(buildWhatsappMessage(form))}`
         window.location.href = mailtoUrl
@@ -112,6 +141,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
             to_name: profile.name,
             to_email: profile.email,
             whatsapp: profile.whatsapp,
+            recaptcha_token: recaptchaToken ?? '',
           },
           { publicKey },
         )
@@ -120,6 +150,8 @@ export function ContactSection({ onToast }: ContactSectionProps) {
       }
 
       setForm(initialFormState)
+      recaptchaRef.current?.reset()
+      setRecaptchaToken(null)
     } catch {
       onToast('WhatsApp opened, but email sending failed. Please try again later.', 'error')
     } finally {
@@ -208,10 +240,30 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               />
             </div>
 
-            {recaptchaEnabled ? (
-              <p className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 px-3 py-2 text-xs text-emerald-200">
-                reCAPTCHA key detected. Integrate your widget in this form to enable spam protection.
-              </p>
+            {recaptchaEnabled && recaptchaSiteKey ? (
+              <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-3">
+                <p className="mb-2 text-xs text-emerald-100">
+                  Complete verification before sending your details.
+                </p>
+                <div className="overflow-x-auto">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={recaptchaSiteKey}
+                    onChange={(token) => setRecaptchaToken(token)}
+                    onExpired={() => setRecaptchaToken(null)}
+                    onErrored={() => {
+                      setRecaptchaToken(null)
+                      onToast('reCAPTCHA error occurred. Please retry.', 'error')
+                    }}
+                    theme="dark"
+                  />
+                </div>
+                <p className="mt-2 text-[11px] text-emerald-100/90">
+                  {hasServerSideVerification
+                    ? 'Server-side token check is active.'
+                    : 'Add VITE_RECAPTCHA_VERIFY_ENDPOINT to enable server-side token verification.'}
+                </p>
+              </div>
             ) : (
               <p className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs text-[var(--text-secondary)]">
                 Optional: configure reCAPTCHA by setting <code>VITE_RECAPTCHA_SITE_KEY</code>.
@@ -250,7 +302,9 @@ export function ContactSection({ onToast }: ContactSectionProps) {
             />
             <p className="mt-2 text-xs text-[var(--text-secondary)]">
               {recaptchaEnabled
-                ? 'Configured: your form is ready for bot protection.'
+                ? hasServerSideVerification
+                  ? 'Configured with server-side verification.'
+                  : 'Configured on client side only. Add verify endpoint for strict token checking.'
                 : 'Add VITE_RECAPTCHA_SITE_KEY to activate verification.'}
             </p>
           </div>
