@@ -196,9 +196,6 @@ export function SkillsSection() {
             ))}
           </div>
 
-          <p className="mt-4 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-            Stable hex node deck with dynamic signal scan
-          </p>
         </div>
       </Reveal>
     </section>
