@@ -3,6 +3,8 @@ name: Deploy Portfolio
 on:
   push:
     branches: ['main']
+  schedule:
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -30,6 +32,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Generate GitHub overview snapshot
+        run: npm run generate:github-snapshot
+        env:
+          GITHUB_USERNAME: preethamofficial
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         run: npm run build

@@ -1,0 +1,126 @@
+{
+  "user": {
+    "login": "preethamofficial",
+    "avatar_url": "https://avatars.githubusercontent.com/preethamofficial",
+    "public_repos": 5,
+    "followers": 0,
+    "following": 0
+  },
+  "repos": [
+    {
+      "id": 900000,
+      "name": "skin-disease-detection-build-by-using-ml",
+      "full_name": "preethamofficial/skin-disease-detection-build-by-using-ml",
+      "description": "Machine learning project for skin disease detection using Python-based classification workflows.",
+      "html_url": "https://github.com/preethamofficial/skin-disease-detection-build-by-using-ml",
+      "homepage": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "topics": [
+        "ai",
+        "ml",
+        "healthcare",
+        "classification"
+      ],
+      "updated_at": "2026-02-28T11:11:22.695Z",
+      "pushed_at": "2026-02-28T11:11:22.695Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "id": 900001,
+      "name": "inventory-managment",
+      "full_name": "preethamofficial/inventory-managment",
+      "description": "Inventory management application developed during internship with practical Python automation.",
+      "html_url": "https://github.com/preethamofficial/inventory-managment",
+      "homepage": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "topics": [
+        "python",
+        "inventory",
+        "automation"
+      ],
+      "updated_at": "2026-02-27T11:11:22.695Z",
+      "pushed_at": "2026-02-27T11:11:22.695Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "id": 900002,
+      "name": "python-game",
+      "full_name": "preethamofficial/python-game",
+      "description": "Game development mini-project built with Python fundamentals and interactive logic.",
+      "html_url": "https://github.com/preethamofficial/python-game",
+      "homepage": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "topics": [
+        "python",
+        "game",
+        "project"
+      ],
+      "updated_at": "2026-02-26T11:11:22.695Z",
+      "pushed_at": "2026-02-26T11:11:22.695Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "id": 900003,
+      "name": "vaultofcode-python-internship-",
+      "full_name": "preethamofficial/vaultofcode-python-internship-",
+      "description": "Internship repository containing Python scripts, mini-projects, and learning outcomes.",
+      "html_url": "https://github.com/preethamofficial/vaultofcode-python-internship-",
+      "homepage": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Python",
+      "topics": [
+        "python",
+        "internship",
+        "projects"
+      ],
+      "updated_at": "2026-02-25T11:11:22.695Z",
+      "pushed_at": "2026-02-25T11:11:22.695Z",
+      "fork": false,
+      "archived": false
+    },
+    {
+      "id": 900004,
+      "name": "preethamofficial",
+      "full_name": "preethamofficial/preethamofficial",
+      "description": "Profile repository and developer overview with portfolio and activity context.",
+      "html_url": "https://github.com/preethamofficial/preethamofficial",
+      "homepage": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "language": "Markdown",
+      "topics": [
+        "profile",
+        "readme"
+      ],
+      "updated_at": "2026-02-24T11:11:22.695Z",
+      "pushed_at": "2026-02-24T11:11:22.695Z",
+      "fork": false,
+      "archived": false
+    }
+  ],
+  "totalStars": 0,
+  "totalForks": 0,
+  "totalCommitsThisYear": 0,
+  "languageBreakdown": [
+    {
+      "name": "Python",
+      "value": 4
+    },
+    {
+      "name": "Markdown",
+      "value": 1
+    }
+  ],
+  "recentCommits": [],
+  "lastUpdated": "2026-02-28T11:11:22.695Z"
+}

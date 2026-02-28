@@ -1,6 +1,7 @@
 import type { GitHubEvent, GitHubRepo, GitHubUser, GithubOverview, RecentCommit } from '@/types/github'
 
 const GITHUB_API = 'https://api.github.com'
+const SNAPSHOT_PATH = `${import.meta.env.BASE_URL}github-overview.json`
 
 const fallbackRepoSeed = [
   {
@@ -54,7 +55,7 @@ const projectKeywords = {
 }
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url)
+  const response = await fetch(url, { cache: 'no-store' })
   if (!response.ok) {
     throw new Error(`GitHub API request failed: ${response.status} ${response.statusText}`)
   }
@@ -169,6 +170,36 @@ function buildFallbackOverview(username: string): GithubOverview {
   }
 }
 
+function isValidOverview(data: unknown): data is GithubOverview {
+  if (typeof data !== 'object' || data === null) return false
+  const candidate = data as Partial<GithubOverview>
+  return Array.isArray(candidate.repos) && Array.isArray(candidate.languageBreakdown) && typeof candidate.lastUpdated === 'string'
+}
+
+async function fetchSnapshotOverview(username: string): Promise<GithubOverview | null> {
+  try {
+    const snapshotUrl = `${SNAPSHOT_PATH}?v=${Date.now()}`
+    const snapshot = await fetchJson<GithubOverview>(snapshotUrl)
+    if (!isValidOverview(snapshot)) {
+      return null
+    }
+
+    if (!snapshot.user) {
+      snapshot.user = {
+        login: username,
+        avatar_url: `https://avatars.githubusercontent.com/${username}`,
+        public_repos: snapshot.repos.length,
+        followers: 0,
+        following: 0,
+      }
+    }
+
+    return snapshot
+  } catch {
+    return null
+  }
+}
+
 export async function getGithubOverview(username: string): Promise<GithubOverview> {
   try {
     const [user, repos, events] = await Promise.all([
@@ -196,6 +227,11 @@ export async function getGithubOverview(username: string): Promise<GithubOvervie
     }
   } catch (error) {
     console.warn('GitHub API unavailable, using fallback project data.', error)
+    const snapshotOverview = await fetchSnapshotOverview(username)
+    if (snapshotOverview) {
+      return snapshotOverview
+    }
+
     return buildFallbackOverview(username)
   }
 }
