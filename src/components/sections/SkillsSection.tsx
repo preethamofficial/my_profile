@@ -12,6 +12,8 @@ const levelClassName: Record<string, string> = {
 }
 
 export function SkillsSection() {
+  const resumeUrl = `${import.meta.env.BASE_URL}resume.pdf`
+
   return (
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
@@ -55,7 +57,7 @@ export function SkillsSection() {
         <div className="mb-5 flex items-center justify-between gap-3">
           <h3 className="text-lg font-semibold text-[var(--text-primary)]">Technology Hex Grid</h3>
           <a
-            href="/resume.pdf"
+            href={resumeUrl}
             download="A-Preetham-Reddy-Resume.pdf"
             className="focusable inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-[var(--text-primary)] transition hover:border-brand-cyan hover:text-brand-cyan"
           >
