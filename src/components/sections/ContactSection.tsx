@@ -1,15 +1,13 @@
-import { useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
 import { CheckCircle2, Github, Globe, Linkedin, Mail, MapPin } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa6'
-import ReCAPTCHA from 'react-google-recaptcha'
 
 import { RippleButton } from '@/components/common/RippleButton'
 import { Reveal } from '@/components/common/Reveal'
 import { SectionHeading } from '@/components/common/SectionHeading'
 import { contactSubjects, profile } from '@/data/portfolio'
-import { verifyRecaptchaToken } from '@/services/recaptcha'
 
 interface ContactSectionProps {
   onToast: (message: string, type: 'success' | 'error' | 'info') => void
@@ -31,8 +29,6 @@ interface DeliveryState {
   channel: 'EmailJS' | 'FormSubmit' | 'None'
   note: string
 }
-
-const RECAPTCHA_TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
 const initialFormState: ContactFormState = {
   name: '',
@@ -136,24 +132,8 @@ async function sendViaFormSubmit(submission: ContactSubmission): Promise<Deliver
 export function ContactSection({ onToast }: ContactSectionProps) {
   const [form, setForm] = useState<ContactFormState>(initialFormState)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
   const [lastSubmission, setLastSubmission] = useState<ContactSubmission | null>(null)
   const [lastDelivery, setLastDelivery] = useState<DeliveryState | null>(null)
-
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
-  const recaptchaEnvSiteKey = useMemo(
-    () => (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)?.trim() ?? '',
-    [],
-  )
-  const recaptchaSiteKey = useMemo(
-    () => (recaptchaEnvSiteKey ? recaptchaEnvSiteKey : RECAPTCHA_TEST_SITE_KEY),
-    [recaptchaEnvSiteKey],
-  )
-  const recaptchaVerifyEndpoint = useMemo(
-    () => (import.meta.env.VITE_RECAPTCHA_VERIFY_ENDPOINT as string | undefined)?.trim(),
-    [],
-  )
-  const recaptchaEnabled = Boolean(recaptchaSiteKey)
 
   const updateField = (field: keyof ContactFormState, value: string) => {
     setForm((currentForm) => ({ ...currentForm, [field]: value }))
@@ -183,27 +163,12 @@ export function ContactSection({ onToast }: ContactSectionProps) {
       return
     }
 
-    if (recaptchaEnabled && !recaptchaToken) {
-      onToast('Please complete reCAPTCHA verification.', 'error')
-      return
-    }
-
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
 
     setIsSubmitting(true)
     try {
-      if (recaptchaEnabled && recaptchaVerifyEndpoint && recaptchaToken) {
-        const verification = await verifyRecaptchaToken(recaptchaToken, recaptchaVerifyEndpoint)
-        if (!verification.success) {
-          recaptchaRef.current?.reset()
-          setRecaptchaToken(null)
-          onToast('reCAPTCHA verification failed. Please try again.', 'error')
-          return
-        }
-      }
-
       let delivery: DeliveryState = { delivered: false, channel: 'None', note: 'No delivery channel succeeded.' }
       if (!serviceId || !templateId || !publicKey) {
         delivery = await sendViaFormSubmit(submission)
@@ -228,7 +193,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               to_name: profile.name,
               to_email: profile.email,
               whatsapp: profile.whatsapp,
-              recaptcha_token: recaptchaToken ?? '',
             },
             { publicKey },
           )
@@ -252,8 +216,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
       }
 
       setForm(initialFormState)
-      recaptchaRef.current?.reset()
-      setRecaptchaToken(null)
     } catch {
       onToast('Submission failed. Please try again.', 'error')
     } finally {
@@ -341,29 +303,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
                 aria-required="true"
               />
             </div>
-
-            {recaptchaEnabled && recaptchaSiteKey ? (
-              <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-3">
-                <p className="mb-2 text-xs text-emerald-100">Complete verification before submitting.</p>
-                <div className="overflow-x-auto">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey={recaptchaSiteKey}
-                    onChange={(token) => setRecaptchaToken(token)}
-                    onExpired={() => setRecaptchaToken(null)}
-                    onErrored={() => {
-                      setRecaptchaToken(null)
-                      onToast('reCAPTCHA error occurred. Please retry.', 'error')
-                    }}
-                    theme="dark"
-                  />
-                </div>
-              </div>
-            ) : (
-              <p className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs text-[var(--text-secondary)]">
-                Optional: configure reCAPTCHA by setting <code>VITE_RECAPTCHA_SITE_KEY</code>.
-              </p>
-            )}
 
             <RippleButton
               type="submit"
