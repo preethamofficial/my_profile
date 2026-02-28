@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import emailjs from '@emailjs/browser'
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react'
+import { FaWhatsapp } from 'react-icons/fa6'
 
 import { RippleButton } from '@/components/common/RippleButton'
 import { Reveal } from '@/components/common/Reveal'
@@ -28,6 +29,20 @@ const initialFormState: ContactFormState = {
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+function normalizePhone(phone: string): string {
+  return phone.replace(/[^\d]/g, '')
+}
+
+function buildWhatsappMessage(form: ContactFormState): string {
+  return [
+    'New Portfolio Inquiry',
+    `Name: ${form.name}`,
+    `Email: ${form.email}`,
+    `Subject: ${form.subject}`,
+    `Message: ${form.message}`,
+  ].join('\n')
 }
 
 export function ContactSection({ onToast }: ContactSectionProps) {
@@ -66,30 +81,46 @@ export function ContactSection({ onToast }: ContactSectionProps) {
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined
 
-    if (!serviceId || !templateId || !publicKey) {
-      onToast('EmailJS is not configured yet. Add .env values to enable sending.', 'info')
-      return
+    const whatsappNumber = normalizePhone(profile.whatsapp)
+    const whatsappText = encodeURIComponent(buildWhatsappMessage(form))
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappText}`
+
+    const whatsappWindow = window.open('', '_blank', 'noopener,noreferrer')
+    if (whatsappWindow) {
+      whatsappWindow.location.href = whatsappUrl
+    } else {
+      window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
     }
 
     setIsSubmitting(true)
     try {
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          from_name: form.name,
-          reply_to: form.email,
-          subject: form.subject,
-          message: form.message,
-          to_name: profile.name,
-        },
-        { publicKey },
-      )
+      if (!serviceId || !templateId || !publicKey) {
+        const mailtoUrl = `mailto:${profile.email}?subject=${encodeURIComponent(`[${form.subject}] New Portfolio Inquiry`)}&body=${encodeURIComponent(buildWhatsappMessage(form))}`
+        window.location.href = mailtoUrl
+        onToast('WhatsApp opened. Please send the email from your mail app (EmailJS not configured).', 'info')
+      } else {
+        await emailjs.send(
+          serviceId,
+          templateId,
+          {
+            from_name: form.name,
+            from_email: form.email,
+            reply_to: form.email,
+            subject: form.subject,
+            message: form.message,
+            to_name: profile.name,
+            to_email: profile.email,
+            whatsapp: profile.whatsapp,
+          },
+          { publicKey },
+        )
 
-      onToast('Message sent successfully. Thank you!', 'success')
+        onToast('Details sent to WhatsApp and email successfully. Thank you!', 'success')
+      }
+
       setForm(initialFormState)
     } catch {
-      onToast('Failed to send message. Please try again later.', 'error')
+      onToast('WhatsApp opened, but email sending failed. Please try again later.', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -206,6 +237,21 @@ export function ContactSection({ onToast }: ContactSectionProps) {
         </Reveal>
 
         <Reveal className="space-y-4" delay={0.1}>
+          <a
+            href={`https://wa.me/${normalizePhone(profile.whatsapp)}`}
+            target="_blank"
+            rel="noreferrer"
+            className="focusable glass-card hover-lift flex w-full items-center gap-3 rounded-2xl p-4 text-left"
+          >
+            <span className="rounded-full border border-white/15 bg-white/10 p-2 text-emerald-400">
+              <FaWhatsapp className="h-4 w-4" />
+            </span>
+            <span>
+              <span className="block text-xs uppercase tracking-[0.12em] text-[var(--text-secondary)]">WhatsApp</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">{profile.whatsapp}</span>
+            </span>
+          </a>
+
           <button
             type="button"
             onClick={handleCopyEmail}

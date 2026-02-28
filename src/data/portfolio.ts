@@ -6,6 +6,7 @@ export const profile = {
   role: 'Generative AI Engineer at BEPEC Solutions',
   location: 'Bengaluru, Karnataka, India',
   email: 'preethamofficial336@gmail.com',
+  whatsapp: '+916361484070',
   linkedin: 'https://www.linkedin.com/in/a-preetham-reddy-739b28317/',
   github: 'https://github.com/preethamofficial',
   githubUsername: 'preethamofficial',
