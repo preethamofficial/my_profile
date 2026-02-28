@@ -125,9 +125,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
     [],
   )
   const recaptchaEnabled = Boolean(recaptchaSiteKey)
-  const isUsingFallbackTestKey = !recaptchaEnvSiteKey
-  const hasServerSideVerification = Boolean(recaptchaEnabled && recaptchaVerifyEndpoint)
-  const recaptchaBadgeSrc = useMemo(() => `${import.meta.env.BASE_URL}recaptcha-badge.svg`, [])
 
   const updateField = (field: keyof ContactFormState, value: string) => {
     setForm((currentForm) => ({ ...currentForm, [field]: value }))
@@ -314,9 +311,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
 
             {recaptchaEnabled && recaptchaSiteKey ? (
               <div className="rounded-lg border border-emerald-400/30 bg-emerald-500/10 p-3">
-                <p className="mb-2 text-xs text-emerald-100">
-                  Complete verification before sending your details.
-                </p>
+                <p className="mb-2 text-xs text-emerald-100">Complete verification before submitting.</p>
                 <div className="overflow-x-auto">
                   <ReCAPTCHA
                     ref={recaptchaRef}
@@ -330,11 +325,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
                     theme="dark"
                   />
                 </div>
-                <p className="mt-2 text-[11px] text-emerald-100/90">
-                  {hasServerSideVerification
-                    ? 'Server-side token check is active.'
-                    : 'Add VITE_RECAPTCHA_VERIFY_ENDPOINT to enable server-side token verification.'}
-                </p>
               </div>
             ) : (
               <p className="rounded-lg border border-white/15 bg-white/5 px-3 py-2 text-xs text-[var(--text-secondary)]">
@@ -397,27 +387,6 @@ export function ContactSection({ onToast }: ContactSectionProps) {
         </Reveal>
 
         <Reveal className="space-y-4" delay={0.1}>
-          <div className="glass-card rounded-2xl p-4">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)]">
-              reCAPTCHA
-            </p>
-            <img
-              src={recaptchaBadgeSrc}
-              alt="reCAPTCHA protection badge"
-              className="w-full rounded-xl border border-white/15"
-              loading="lazy"
-            />
-            <p className="mt-2 text-xs text-[var(--text-secondary)]">
-              {recaptchaEnabled
-                ? hasServerSideVerification
-                  ? 'Configured with server-side verification.'
-                  : isUsingFallbackTestKey
-                    ? 'Using Google test key. Add VITE_RECAPTCHA_SITE_KEY for production protection.'
-                    : 'Configured on client side only. Add verify endpoint for strict token checking.'
-                : 'reCAPTCHA is disabled.'}
-            </p>
-          </div>
-
           <a
             href={`https://wa.me/${normalizePhone(profile.whatsapp)}`}
             target="_blank"
