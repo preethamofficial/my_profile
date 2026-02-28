@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 :root {
-  --bg-primary: #060a11;
-  --bg-secondary: #0e141f;
+  --bg-primary: #050914;
+  --bg-secondary: #0b1524;
   --surface-elevated: rgba(15, 23, 37, 0.64);
   --surface-strong: rgba(14, 23, 37, 0.82);
   --text-primary: #ebf2ff;
@@ -14,28 +14,30 @@
   --border-color: rgba(129, 158, 204, 0.24);
   --shadow-color: rgba(6, 182, 212, 0.3);
   --focus-ring: #22d3ee;
-  --grid-color: rgba(88, 122, 175, 0.14);
+  --grid-color: rgba(99, 132, 186, 0.16);
   --card-shadow: 0 18px 54px -36px rgba(8, 127, 153, 0.55);
-  --hero-overlay: radial-gradient(circle at 20% 10%, rgba(6, 182, 212, 0.22), transparent 38%),
-    radial-gradient(circle at 82% 5%, rgba(168, 85, 247, 0.2), transparent 34%),
-    radial-gradient(circle at 78% 74%, rgba(59, 130, 246, 0.16), transparent 42%);
+  --hero-overlay: radial-gradient(circle at 15% 8%, rgba(6, 182, 212, 0.24), transparent 38%),
+    radial-gradient(circle at 88% 12%, rgba(59, 130, 246, 0.2), transparent 36%),
+    radial-gradient(circle at 72% 78%, rgba(16, 185, 129, 0.16), transparent 42%),
+    radial-gradient(circle at 35% 82%, rgba(14, 165, 233, 0.12), transparent 44%);
 }
 
 html.theme-light {
-  --bg-primary: #f8fbff;
-  --bg-secondary: #eef5ff;
+  --bg-primary: #f3f9ff;
+  --bg-secondary: #e8f2ff;
   --surface-elevated: rgba(255, 255, 255, 0.8);
   --surface-strong: rgba(255, 255, 255, 0.94);
-  --text-primary: #101f35;
-  --text-secondary: #516888;
-  --border-color: rgba(92, 120, 166, 0.24);
+  --text-primary: #11233d;
+  --text-secondary: #4f6889;
+  --border-color: rgba(88, 122, 176, 0.24);
   --shadow-color: rgba(59, 130, 246, 0.24);
   --focus-ring: #3b82f6;
-  --grid-color: rgba(130, 159, 209, 0.25);
+  --grid-color: rgba(126, 155, 202, 0.24);
   --card-shadow: 0 14px 36px -28px rgba(37, 99, 235, 0.33);
-  --hero-overlay: radial-gradient(circle at 22% 4%, rgba(14, 165, 233, 0.24), transparent 36%),
-    radial-gradient(circle at 84% 0%, rgba(59, 130, 246, 0.2), transparent 30%),
-    radial-gradient(circle at 74% 76%, rgba(6, 182, 212, 0.16), transparent 42%);
+  --hero-overlay: radial-gradient(circle at 20% 6%, rgba(14, 165, 233, 0.22), transparent 36%),
+    radial-gradient(circle at 82% 2%, rgba(59, 130, 246, 0.18), transparent 32%),
+    radial-gradient(circle at 75% 80%, rgba(20, 184, 166, 0.14), transparent 42%),
+    radial-gradient(circle at 34% 82%, rgba(56, 189, 248, 0.12), transparent 44%);
 }
 
 *,
@@ -53,7 +55,8 @@ body {
   isolation: isolate;
   margin: 0;
   min-width: 320px;
-  background: var(--hero-overlay), linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 58%, var(--bg-primary) 100%);
+  background: var(--hero-overlay), radial-gradient(circle at 50% 120%, rgba(14, 165, 233, 0.16), transparent 48%),
+    linear-gradient(164deg, var(--bg-primary) 0%, var(--bg-secondary) 52%, #061023 100%);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
@@ -82,9 +85,30 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  background: radial-gradient(circle at 50% -12%, rgba(6, 182, 212, 0.2), transparent 48%);
-  opacity: 0.8;
-  animation: auraPulse 10s ease-in-out infinite;
+  background: conic-gradient(
+    from 120deg at 50% 42%,
+    rgba(6, 182, 212, 0.14),
+    rgba(59, 130, 246, 0.14),
+    rgba(16, 185, 129, 0.12),
+    rgba(14, 165, 233, 0.14),
+    rgba(6, 182, 212, 0.14)
+  );
+  filter: blur(60px);
+  opacity: 0.74;
+  animation: auraPulse 12s ease-in-out infinite;
+}
+
+html.theme-light body::after {
+  background: conic-gradient(
+    from 120deg at 50% 40%,
+    rgba(14, 165, 233, 0.14),
+    rgba(59, 130, 246, 0.12),
+    rgba(20, 184, 166, 0.1),
+    rgba(56, 189, 248, 0.12),
+    rgba(14, 165, 233, 0.14)
+  );
+  opacity: 0.6;
+  filter: blur(68px);
 }
 
 h1,
@@ -171,8 +195,8 @@ section {
 
 .hero-gradient {
   background: radial-gradient(circle at 14% 18%, rgba(6, 182, 212, 0.34), transparent 36%),
-    radial-gradient(circle at 82% 6%, rgba(168, 85, 247, 0.28), transparent 34%),
-    radial-gradient(circle at 74% 76%, rgba(59, 130, 246, 0.22), transparent 44%);
+    radial-gradient(circle at 82% 6%, rgba(59, 130, 246, 0.28), transparent 34%),
+    radial-gradient(circle at 74% 76%, rgba(16, 185, 129, 0.2), transparent 44%);
 }
 
 .hover-lift {
@@ -382,10 +406,10 @@ html.theme-light .command-pill {
 @keyframes auraPulse {
   0%,
   100% {
-    opacity: 0.55;
+    opacity: 0.52;
   }
   50% {
-    opacity: 0.9;
+    opacity: 0.86;
   }
 }
 
