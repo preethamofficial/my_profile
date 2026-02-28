@@ -2,6 +2,39 @@ import type { GitHubEvent, GitHubRepo, GitHubUser, GithubOverview, RecentCommit 
 
 const GITHUB_API = 'https://api.github.com'
 
+const fallbackRepoSeed = [
+  {
+    name: 'skin-disease-detection-build-by-using-ml',
+    description: 'Machine learning project for skin disease detection using Python-based classification workflows.',
+    language: 'Python',
+    topics: ['ai', 'ml', 'healthcare', 'classification'],
+  },
+  {
+    name: 'inventory-managment',
+    description: 'Inventory management application developed during internship with practical Python automation.',
+    language: 'Python',
+    topics: ['python', 'inventory', 'automation'],
+  },
+  {
+    name: 'python-game',
+    description: 'Game development mini-project built with Python fundamentals and interactive logic.',
+    language: 'Python',
+    topics: ['python', 'game', 'project'],
+  },
+  {
+    name: 'vaultofcode-python-internship-',
+    description: 'Internship repository containing Python scripts, mini-projects, and learning outcomes.',
+    language: 'Python',
+    topics: ['python', 'internship', 'projects'],
+  },
+  {
+    name: 'preethamofficial',
+    description: 'Profile repository and developer overview with portfolio and activity context.',
+    language: 'Markdown',
+    topics: ['profile', 'readme'],
+  },
+] as const
+
 const languageColors: Record<string, string> = {
   Python: '#3776AB',
   TypeScript: '#3178C6',
@@ -89,29 +122,81 @@ function getLatestRepoUpdate(repos: GitHubRepo[]): string {
   return repos.reduce((latest, repo) => (repo.updated_at > latest ? repo.updated_at : latest), repos[0].updated_at)
 }
 
-export async function getGithubOverview(username: string): Promise<GithubOverview> {
-  const [user, repos, events] = await Promise.all([
-    fetchJson<GitHubUser>(`${GITHUB_API}/users/${username}`),
-    fetchJson<GitHubRepo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated&type=owner`),
-    fetchJson<GitHubEvent[]>(`${GITHUB_API}/users/${username}/events/public?per_page=100`),
-  ])
+function buildFallbackRepos(username: string): GitHubRepo[] {
+  const now = Date.now()
 
-  const publicRepos = repos.filter((repo) => !repo.archived)
-  const totalStars = publicRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
-  const totalForks = publicRepos.reduce((sum, repo) => sum + repo.forks_count, 0)
-  const languageBreakdown = buildLanguageBreakdown(publicRepos)
-  const { totalCommitsThisYear, recentCommits } = extractCommitStats(events)
-  const lastUpdated = getLatestRepoUpdate(publicRepos)
+  return fallbackRepoSeed.map((repo, index) => {
+    const timestamp = new Date(now - index * 1000 * 60 * 60 * 24).toISOString()
+    return {
+      id: 900000 + index,
+      name: repo.name,
+      full_name: `${username}/${repo.name}`,
+      description: repo.description,
+      html_url: `https://github.com/${username}/${repo.name}`,
+      homepage: null,
+      stargazers_count: 0,
+      forks_count: 0,
+      language: repo.language,
+      topics: [...repo.topics],
+      updated_at: timestamp,
+      pushed_at: timestamp,
+      fork: false,
+      archived: false,
+    }
+  })
+}
+
+function buildFallbackOverview(username: string): GithubOverview {
+  const fallbackRepos = buildFallbackRepos(username)
+  const totalStars = fallbackRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
+  const totalForks = fallbackRepos.reduce((sum, repo) => sum + repo.forks_count, 0)
 
   return {
-    user,
-    repos: publicRepos,
+    user: {
+      login: username,
+      avatar_url: `https://avatars.githubusercontent.com/${username}`,
+      public_repos: fallbackRepos.length,
+      followers: 0,
+      following: 0,
+    },
+    repos: fallbackRepos,
     totalStars,
     totalForks,
-    totalCommitsThisYear,
-    languageBreakdown,
-    recentCommits,
-    lastUpdated,
+    totalCommitsThisYear: 0,
+    languageBreakdown: buildLanguageBreakdown(fallbackRepos),
+    recentCommits: [],
+    lastUpdated: getLatestRepoUpdate(fallbackRepos),
+  }
+}
+
+export async function getGithubOverview(username: string): Promise<GithubOverview> {
+  try {
+    const [user, repos, events] = await Promise.all([
+      fetchJson<GitHubUser>(`${GITHUB_API}/users/${username}`),
+      fetchJson<GitHubRepo[]>(`${GITHUB_API}/users/${username}/repos?per_page=100&sort=updated&type=owner`),
+      fetchJson<GitHubEvent[]>(`${GITHUB_API}/users/${username}/events/public?per_page=100`),
+    ])
+
+    const publicRepos = repos.filter((repo) => !repo.archived)
+    const totalStars = publicRepos.reduce((sum, repo) => sum + repo.stargazers_count, 0)
+    const totalForks = publicRepos.reduce((sum, repo) => sum + repo.forks_count, 0)
+    const languageBreakdown = buildLanguageBreakdown(publicRepos)
+    const { totalCommitsThisYear, recentCommits } = extractCommitStats(events)
+    const lastUpdated = getLatestRepoUpdate(publicRepos)
+
+    return {
+      user,
+      repos: publicRepos,
+      totalStars,
+      totalForks,
+      totalCommitsThisYear,
+      languageBreakdown,
+      recentCommits,
+      lastUpdated,
+    }
+  } catch (error) {
+    console.warn('GitHub API unavailable, using fallback project data.', error)
+    return buildFallbackOverview(username)
   }
 }
 

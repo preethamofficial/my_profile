@@ -7,7 +7,7 @@ export const profile = {
   location: 'Bengaluru, Karnataka, India',
   email: 'preethamofficial336@gmail.com',
   whatsapp: '+916361484070',
-  website: 'https://tinyurl.com/225b8mbo',
+  website: 'https://preethamofficial.github.io/',
   linkedin: 'https://www.linkedin.com/in/a-preetham-reddy-739b28317/',
   github: 'https://github.com/preethamofficial',
   githubUsername: 'preethamofficial',

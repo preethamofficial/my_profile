@@ -49,6 +49,16 @@ function normalizePhone(phone: string): string {
   return phone.replace(/[^\d]/g, '')
 }
 
+function formatWebsiteLabel(url: string): string {
+  try {
+    const parsedUrl = new URL(url)
+    const cleanPath = parsedUrl.pathname === '/' ? '' : parsedUrl.pathname.replace(/\/$/, '')
+    return `${parsedUrl.hostname}${cleanPath}`
+  } catch {
+    return url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+  }
+}
+
 function buildSubmission(form: ContactFormState): ContactSubmission {
   return {
     name: form.name.trim(),
@@ -490,7 +500,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
             </span>
             <span>
               <span className="block text-xs uppercase tracking-[0.12em] text-[var(--text-secondary)]">Website</span>
-              <span className="text-sm font-medium text-[var(--text-primary)]">tinyurl.com/225b8mbo</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">{formatWebsiteLabel(profile.website)}</span>
             </span>
           </a>
         </Reveal>
