@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowDown, CheckCircle2, Download, TerminalSquare } from 'lucide-react'
+import { ArrowDown, Download, TerminalSquare } from 'lucide-react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import Typed from 'typed.js'
@@ -78,6 +78,11 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
         animate={{ x: [0, -30, 0], y: [0, 20, 0] }}
         transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
       />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-24 h-[560px] w-[560px] -translate-x-1/2 rounded-full border border-white/10 bg-white/5 blur-[0.5px]"
+        style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.04), 0 0 80px rgba(6,182,212,0.18), 0 0 120px rgba(168,85,247,0.14)' }}
+      />
 
       <motion.div style={{ y: parallaxY }} className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 lg:px-8">
         <div className="grid items-center gap-10 lg:grid-cols-[1.3fr_1fr]">
@@ -95,18 +100,18 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.12 }}
-              className="mt-5 text-4xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-5xl lg:text-6xl"
+              className="mt-5 text-5xl font-extrabold leading-[0.95] text-[var(--text-primary)] sm:text-6xl lg:text-7xl"
             >
-              <span className="glitch-text gradient-text inline-block" data-text={profile.name}>
-                {profile.name}
+              <span className="glitch-text gradient-text inline-block" data-text="A Preetham Reddy">
+                A Preetham Reddy
               </span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.52, delay: 0.2 }}
-              className="mt-4 text-base text-[var(--text-secondary)] sm:text-lg"
+              transition={{ duration: 0.52, delay: 0.18 }}
+              className="mt-3 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)]"
             >
               {profile.title}
             </motion.p>
@@ -114,7 +119,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.52, delay: 0.28 }}
+              transition={{ duration: 0.52, delay: 0.26 }}
               className="mt-4 min-h-[2rem] text-lg font-semibold text-brand-cyan sm:text-2xl"
               aria-label="Current role animation"
             >
@@ -124,7 +129,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             <motion.p
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.52, delay: 0.36 }}
+              transition={{ duration: 0.52, delay: 0.34 }}
               className="mt-5 max-w-2xl text-sm text-[var(--text-secondary)] sm:text-base"
             >
               {profile.summary}
@@ -133,7 +138,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, delay: 0.47 }}
+              transition={{ duration: 0.55, delay: 0.45 }}
               className="mt-8 flex flex-wrap items-center gap-3"
             >
               <RippleButton type="button" variant="primary" onClick={scrollToProjects}>
@@ -154,7 +159,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.58 }}
               className="mt-7 flex items-center gap-3"
             >
               <a
@@ -191,11 +196,26 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             transition={{ duration: 0.55, delay: 0.28 }}
             className="ai-border-card rounded-3xl"
           >
-            <div className="glass-card-strong rounded-3xl p-5 sm:p-6">
+            <motion.div
+              className="glass-card-strong group relative overflow-hidden rounded-3xl p-5 sm:p-6"
+              style={{ transformPerspective: 900, transformStyle: 'preserve-3d' }}
+              initial={{ rotateX: 6, rotateY: -10 }}
+              whileHover={{ y: -6, rotateX: 4, rotateY: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{
+                  background:
+                    'radial-gradient(circle at 30% 10%, rgba(6,182,212,0.20), transparent 55%), radial-gradient(circle at 70% 90%, rgba(168,85,247,0.18), transparent 58%)',
+                }}
+              />
+
               <div className="mb-4 flex items-center justify-between">
                 <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
                   <TerminalSquare className="h-3.5 w-3.5" />
-                  Boot Sequence
+                  Python Window
                 </span>
                 <span
                   className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${
@@ -204,30 +224,43 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
                       : 'border-brand-cyan/40 bg-brand-cyan/10 text-brand-cyan'
                   }`}
                 >
-                  {isBootComplete ? 'System Ready' : 'Initializing'}
+                  {isBootComplete ? 'Online' : 'Booting'}
                 </span>
               </div>
 
-              <div className="neural-shell rounded-2xl p-4">
-                <ul className="space-y-2 font-mono text-[11px] text-[var(--text-secondary)]">
-                  {bootSequenceSteps.map((step, index) => {
-                    const isVisible = index < bootStep
-                    return (
-                      <motion.li
-                        key={step}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={isVisible ? { opacity: 1, x: 0 } : { opacity: 0.16, x: -8 }}
-                        transition={{ duration: 0.25 }}
-                        className="flex items-center gap-2"
-                      >
-                        <CheckCircle2
-                          className={`h-3.5 w-3.5 ${isVisible ? 'text-emerald-300' : 'text-[var(--text-secondary)]/50'}`}
-                        />
-                        {step}
-                      </motion.li>
-                    )
-                  })}
-                </ul>
+              <div className="neural-shell rounded-2xl border border-white/10 bg-black/20 p-4 shadow-[0_28px_90px_-70px_rgba(6,182,212,0.9)]">
+                <div className="mb-3 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-rose-400/80" aria-hidden />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-300/80" aria-hidden />
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/80" aria-hidden />
+                  </div>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--text-secondary)]">agent.py</span>
+                </div>
+
+                <pre className="overflow-hidden rounded-xl bg-white/5 p-3 text-[11px] leading-relaxed text-slate-200">
+                  <code>
+                    <span className="text-brand-purple">from</span> <span className="text-slate-100">dataclasses</span>{' '}
+                    <span className="text-brand-purple">import</span> <span className="text-slate-100">dataclass</span>
+                    {'\n'}
+                    {'\n'}
+                    <span className="text-brand-purple">@dataclass</span>
+                    {'\n'}
+                    <span className="text-brand-purple">class</span> <span className="text-brand-cyan">Agent</span>:
+                    {'\n'}
+                    {'  '}<span className="text-slate-100">name</span>: <span className="text-slate-300">str</span>
+                    {'\n'}
+                    {'  '}<span className="text-slate-100">focus</span>: <span className="text-slate-300">list</span>[<span className="text-slate-300">str</span>]
+                    {'\n'}
+                    {'\n'}
+                    <span className="text-brand-purple">def</span> <span className="text-brand-cyan">boot</span>() -&gt; <span className="text-slate-300">None</span>:
+                    {'\n'}
+                    {'  '}<span className="text-brand-purple">print</span>(<span className="text-emerald-200">"READY: runtime online"</span>)
+                    {'\n'}
+                    {'\n'}
+                    <span className="text-slate-400"># {bootSequenceSteps[Math.min(bootStep, bootSequenceSteps.length - 1)]}</span>
+                  </code>
+                </pre>
               </div>
 
               <div className="mt-5 flex items-center gap-4">
@@ -236,7 +269,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
                     src={avatarUrl ?? `https://avatars.githubusercontent.com/${profile.githubUsername}`}
                     alt={`${profile.name} profile`}
                     loading="lazy"
-                    className="h-16 w-16 rounded-full border border-white/20 object-cover"
+                    className="h-14 w-14 rounded-full border border-white/20 object-cover"
                   />
                 </div>
                 <div>
@@ -244,7 +277,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
                   <p className="text-xs text-[var(--text-secondary)]">{profile.location}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.aside>
         </div>
 

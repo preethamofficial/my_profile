@@ -68,10 +68,43 @@ function ProjectCard({ repo, index }: ProjectCardProps) {
       >
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-cyan/0 via-brand-purple/0 to-brand-blue/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-cyan/20 via-brand-purple/12 to-brand-blue/18 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-16 -top-20 h-48 w-48 rounded-full bg-brand-cyan/20 blur-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-24 -right-20 h-56 w-56 rounded-full bg-brand-purple/18 blur-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         />
 
         <div className="relative z-10">
+          <div className="relative mb-4 overflow-hidden rounded-xl border border-white/10 bg-white/5">
+            <div
+              aria-hidden
+              className="absolute inset-0 opacity-90"
+              style={{
+                background:
+                  'radial-gradient(circle at 25% 25%, rgba(6,182,212,0.30), transparent 55%), radial-gradient(circle at 75% 75%, rgba(168,85,247,0.26), transparent 58%), linear-gradient(135deg, rgba(255,255,255,0.06), transparent 55%)',
+              }}
+            />
+            <div aria-hidden className="absolute inset-0 opacity-40" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)', backgroundSize: '22px 22px' }} />
+            <div className="relative flex items-end justify-between gap-3 p-4">
+              <div className="min-w-0">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--text-secondary)]">Tech Mockup</p>
+                <p className="mt-1 line-clamp-1 text-xs font-semibold text-[var(--text-primary)]">{repo.name}</p>
+              </div>
+              <div className="flex shrink-0 items-center gap-1.5">
+                {techTags.slice(0, 2).map((tag) => (
+                  <span key={`${repo.id}-mock-${tag}`} className="rounded-full border border-white/15 bg-black/20 px-2 py-1 text-[10px] font-semibold text-slate-100">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="mb-4 flex flex-wrap items-center gap-2">
             {isFeatured ? (
               <span className="rounded-full border border-brand-cyan/40 bg-brand-cyan/15 px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-brand-cyan">

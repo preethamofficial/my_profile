@@ -140,9 +140,9 @@ export function SkillsSection() {
                                 {skill.level}
                               </span>
                             </div>
-                            <div className="h-2.5 overflow-hidden rounded-full bg-white/10">
+                            <div className="h-3.5 overflow-hidden rounded-full border border-white/10 bg-white/10">
                               <motion.div
-                                className="h-full rounded-full bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-blue"
+                                className="h-full rounded-full bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-blue shadow-[0_0_22px_rgba(6,182,212,0.22)]"
                                 initial={{ width: 0 }}
                                 whileInView={{ width: `${skill.percentage}%` }}
                                 viewport={{ once: true, amount: 0.7 }}

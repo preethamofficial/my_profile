@@ -52,7 +52,7 @@ export default function PortfolioPage() {
       <motion.div style={{ scaleX: smoothProgress }} className="fixed inset-x-0 top-0 z-[60] h-1 origin-left bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-blue" />
       <Navbar theme={theme} onToggleTheme={toggleTheme} />
 
-      <main className="relative z-10">
+      <main className="relative z-10 lg:pl-[19rem] lg:pr-6">
         <Element name="hero">
           <HeroSection avatarUrl={overview?.user?.avatar_url} />
         </Element>

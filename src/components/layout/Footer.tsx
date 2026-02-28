@@ -122,7 +122,7 @@ export function Footer({ lastUpdated }: FooterProps) {
       {showTopButton ? (
         <button
           type="button"
-          className="focusable fixed bottom-6 left-6 z-40 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-brand-cyan/50 bg-black/50 p-3 text-brand-cyan transition hover:scale-105 hover:bg-brand-cyan/10"
+          className="focusable fixed bottom-6 left-6 z-40 inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-brand-cyan/50 bg-black/50 p-3 text-brand-cyan transition hover:scale-105 hover:bg-brand-cyan/10 lg:left-auto lg:right-6"
           aria-label="Back to top"
           onClick={() => animateScroll.scrollToTop({ duration: 600 })}
         >
