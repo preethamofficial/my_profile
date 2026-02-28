@@ -22,7 +22,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a href="#top" className="focusable rounded-md">
           <span className="block text-lg font-bold tracking-tight gradient-text">{profile.name}</span>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)]">AI Command Portfolio</span>
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)]">Gen AI | AI Engineer</span>
         </a>
 
         <nav className="hidden items-center gap-4 lg:flex" aria-label="Primary navigation">
