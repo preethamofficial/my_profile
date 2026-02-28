@@ -22,49 +22,35 @@ const moduleIconMap: Record<string, typeof Code2> = {
   'Databases & Tools': Database,
 }
 
-function buildSignalRows<T>(items: T[]): T[][] {
-  const rows: T[][] = []
-  const rowPattern = [4, 5, 5]
-  let itemIndex = 0
-  let patternIndex = 0
-
-  while (itemIndex < items.length) {
-    const rowSize = rowPattern[patternIndex % rowPattern.length]
-    rows.push(items.slice(itemIndex, itemIndex + rowSize))
-    itemIndex += rowSize
-    patternIndex += 1
-  }
-
-  return rows
-}
-
 interface HexSignalCellProps {
   badge: (typeof techBadges)[number]
   index: number
 }
 
 function HexSignalCell({ badge, index }: HexSignalCellProps) {
+  const isCoreNode = index < 3
+
   return (
     <motion.div
-      whileHover={{ scale: 1.09, y: -5, rotateZ: index % 2 === 0 ? 2.5 : -2.5 }}
-      transition={{ duration: 0.24 }}
-      className="group hex-tech-cell relative"
+      whileHover={{ scale: 1.08, y: -6, rotateZ: index % 2 === 0 ? 2 : -2 }}
+      transition={{ duration: 0.22 }}
+      className={`group hex-node ${isCoreNode ? 'hex-node-core' : ''}`}
       aria-label={`${badge.name} technology badge`}
     >
+      <span className="hex-node-ring" aria-hidden />
+      <span className="hex-node-scan" aria-hidden />
       <motion.img
         src={`https://cdn.simpleicons.org/${badge.icon}/${badge.color}`}
         alt={`${badge.name} logo`}
         loading="lazy"
-        className="h-8 w-8"
+        className="relative z-10 h-8 w-8"
         animate={{ rotate: [0, index % 2 === 0 ? 4 : -4, 0] }}
         transition={{ duration: 4 + index * 0.1, repeat: Infinity, ease: 'easeInOut' }}
         onError={(event) => {
           event.currentTarget.style.display = 'none'
         }}
       />
-      <span className="hex-tech-label">
-        {badge.name}
-      </span>
+      <span className="hex-node-name">{badge.name}</span>
     </motion.div>
   )
 }
@@ -80,7 +66,6 @@ export function SkillsSection() {
         .slice(0, 4),
     [],
   )
-  const signalRows = useMemo(() => buildSignalRows(techBadges), [])
 
   return (
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -196,31 +181,23 @@ export function SkillsSection() {
         <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-4 sm:p-6">
           <div className="pointer-events-none absolute -left-10 top-2 h-28 w-28 rounded-full bg-brand-cyan/20 blur-3xl" aria-hidden />
           <div className="pointer-events-none absolute -right-8 bottom-2 h-24 w-24 rounded-full bg-brand-purple/20 blur-3xl" aria-hidden />
-          <div className="sm:hidden grid grid-cols-3 gap-3">
-            {techBadges.map((badge, index) => (
-              <HexSignalCell key={`mobile-hex-${badge.name}`} badge={badge} index={index} />
-            ))}
+
+          <div className="signal-rail relative mb-6 overflow-hidden rounded-full bg-white/10">
+            <motion.span
+              className="signal-pulse"
+              animate={{ x: ['-10%', '110%'] }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: 'linear' }}
+            />
           </div>
 
-          <div className="hex-signal-grid relative z-10 hidden sm:flex">
-            {signalRows.map((row, rowIndex) => (
-              <div
-                key={`row-${rowIndex}`}
-                className={`hex-signal-row ${rowIndex % 2 === 1 ? 'hex-signal-row-offset' : ''}`}
-              >
-                {row.map((badge, badgeIndex) => (
-                  <HexSignalCell
-                    key={`hex-${badge.name}`}
-                    badge={badge}
-                    index={rowIndex * 10 + badgeIndex}
-                  />
-                ))}
-              </div>
+          <div className="hex-deck-grid relative z-10">
+            {techBadges.map((badge, index) => (
+              <HexSignalCell key={`hex-${badge.name}`} badge={badge} index={index} />
             ))}
           </div>
 
           <p className="mt-4 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-            Neural capability mesh with clustered technology nodes
+            Stable hex node deck with dynamic signal scan
           </p>
         </div>
       </Reveal>
