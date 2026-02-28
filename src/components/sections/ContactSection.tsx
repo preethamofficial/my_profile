@@ -50,6 +50,7 @@ export function ContactSection({ onToast }: ContactSectionProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const recaptchaEnabled = useMemo(() => Boolean(import.meta.env.VITE_RECAPTCHA_SITE_KEY), [])
+  const recaptchaBadgeSrc = useMemo(() => `${import.meta.env.BASE_URL}recaptcha-badge.svg`, [])
 
   const updateField = (field: keyof ContactFormState, value: string) => {
     setForm((currentForm) => ({ ...currentForm, [field]: value }))
@@ -237,6 +238,23 @@ export function ContactSection({ onToast }: ContactSectionProps) {
         </Reveal>
 
         <Reveal className="space-y-4" delay={0.1}>
+          <div className="glass-card rounded-2xl p-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)]">
+              reCAPTCHA
+            </p>
+            <img
+              src={recaptchaBadgeSrc}
+              alt="reCAPTCHA protection badge"
+              className="w-full rounded-xl border border-white/15"
+              loading="lazy"
+            />
+            <p className="mt-2 text-xs text-[var(--text-secondary)]">
+              {recaptchaEnabled
+                ? 'Configured: your form is ready for bot protection.'
+                : 'Add VITE_RECAPTCHA_SITE_KEY to activate verification.'}
+            </p>
+          </div>
+
           <a
             href={`https://wa.me/${normalizePhone(profile.whatsapp)}`}
             target="_blank"
