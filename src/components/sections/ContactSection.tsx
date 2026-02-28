@@ -22,6 +22,8 @@ interface ContactFormState {
   message: string
 }
 
+const RECAPTCHA_TEST_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+
 const initialFormState: ContactFormState = {
   name: '',
   email: '',
@@ -53,12 +55,20 @@ export function ContactSection({ onToast }: ContactSectionProps) {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
 
   const recaptchaRef = useRef<ReCAPTCHA>(null)
-  const recaptchaSiteKey = useMemo(() => (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)?.trim(), [])
+  const recaptchaEnvSiteKey = useMemo(
+    () => (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)?.trim() ?? '',
+    [],
+  )
+  const recaptchaSiteKey = useMemo(
+    () => (recaptchaEnvSiteKey ? recaptchaEnvSiteKey : RECAPTCHA_TEST_SITE_KEY),
+    [recaptchaEnvSiteKey],
+  )
   const recaptchaVerifyEndpoint = useMemo(
     () => (import.meta.env.VITE_RECAPTCHA_VERIFY_ENDPOINT as string | undefined)?.trim(),
     [],
   )
   const recaptchaEnabled = Boolean(recaptchaSiteKey)
+  const isUsingFallbackTestKey = !recaptchaEnvSiteKey
   const hasServerSideVerification = Boolean(recaptchaEnabled && recaptchaVerifyEndpoint)
   const recaptchaBadgeSrc = useMemo(() => `${import.meta.env.BASE_URL}recaptcha-badge.svg`, [])
 
@@ -304,8 +314,10 @@ export function ContactSection({ onToast }: ContactSectionProps) {
               {recaptchaEnabled
                 ? hasServerSideVerification
                   ? 'Configured with server-side verification.'
-                  : 'Configured on client side only. Add verify endpoint for strict token checking.'
-                : 'Add VITE_RECAPTCHA_SITE_KEY to activate verification.'}
+                  : isUsingFallbackTestKey
+                    ? 'Using Google test key. Add VITE_RECAPTCHA_SITE_KEY for production protection.'
+                    : 'Configured on client side only. Add verify endpoint for strict token checking.'
+                : 'reCAPTCHA is disabled.'}
             </p>
           </div>
 
