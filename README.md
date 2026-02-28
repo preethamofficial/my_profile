@@ -74,5 +74,5 @@ Use Cloudflare Workers (free tier) for backend token verification:
 ## Notes
 
 - Resume file path used by buttons: `public/resume.pdf`
-- Replace `public/resume.pdf` with your latest real resume PDF.
+- Latest resume is uploaded and live from `public/resume.pdf`.
 - GitHub data is fetched from `preethamofficial`.
