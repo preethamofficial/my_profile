@@ -18,10 +18,11 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/30 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[var(--surface-strong)]/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <a href="#top" className="focusable rounded-md text-lg font-bold tracking-tight">
-          <span className="gradient-text">{profile.name}</span>
+        <a href="#top" className="focusable rounded-md">
+          <span className="block text-lg font-bold tracking-tight gradient-text">{profile.name}</span>
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--text-secondary)]">AI Command Portfolio</span>
         </a>
 
         <nav className="hidden items-center gap-4 lg:flex" aria-label="Primary navigation">
@@ -55,7 +56,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
       </div>
 
       {isOpen ? (
-        <nav className="glass-card border-t border-white/10 px-4 py-3 lg:hidden" aria-label="Mobile navigation">
+        <nav className="glass-card-strong border-t border-white/10 px-4 py-3 lg:hidden" aria-label="Mobile navigation">
           <ul className="flex flex-col gap-1">
             {navItems.map((item) => (
               <li key={item.target}>

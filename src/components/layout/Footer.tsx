@@ -35,7 +35,7 @@ export function Footer({ lastUpdated }: FooterProps) {
   const updatedText = formatLastUpdated(lastUpdated)
 
   return (
-    <footer className="relative mt-20 border-t border-white/10 bg-black/25 py-10">
+    <footer className="relative mt-20 border-t border-white/10 bg-black/20 py-10">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div className="space-y-3">
           <p className="text-base font-semibold text-[var(--text-primary)]">{profile.name} © 2026</p>
@@ -69,6 +69,15 @@ export function Footer({ lastUpdated }: FooterProps) {
               className="focusable cursor-pointer rounded-md px-2 py-1 text-[var(--text-secondary)] transition hover:text-brand-cyan"
             >
               Projects
+            </ScrollLink>
+            <ScrollLink
+              to="architecture"
+              smooth
+              duration={500}
+              offset={-78}
+              className="focusable cursor-pointer rounded-md px-2 py-1 text-[var(--text-secondary)] transition hover:text-brand-cyan"
+            >
+              Architecture
             </ScrollLink>
             <ScrollLink
               to="contact"
@@ -123,3 +132,4 @@ export function Footer({ lastUpdated }: FooterProps) {
     </footer>
   )
 }
+
