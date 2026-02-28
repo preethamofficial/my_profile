@@ -22,6 +22,53 @@ const moduleIconMap: Record<string, typeof Code2> = {
   'Databases & Tools': Database,
 }
 
+function buildSignalRows<T>(items: T[]): T[][] {
+  const rows: T[][] = []
+  const rowPattern = [4, 5, 5]
+  let itemIndex = 0
+  let patternIndex = 0
+
+  while (itemIndex < items.length) {
+    const rowSize = rowPattern[patternIndex % rowPattern.length]
+    rows.push(items.slice(itemIndex, itemIndex + rowSize))
+    itemIndex += rowSize
+    patternIndex += 1
+  }
+
+  return rows
+}
+
+interface HexSignalCellProps {
+  badge: (typeof techBadges)[number]
+  index: number
+}
+
+function HexSignalCell({ badge, index }: HexSignalCellProps) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.09, y: -5, rotateZ: index % 2 === 0 ? 2.5 : -2.5 }}
+      transition={{ duration: 0.24 }}
+      className="group hex-tech-cell relative"
+      aria-label={`${badge.name} technology badge`}
+    >
+      <motion.img
+        src={`https://cdn.simpleicons.org/${badge.icon}/${badge.color}`}
+        alt={`${badge.name} logo`}
+        loading="lazy"
+        className="h-8 w-8"
+        animate={{ rotate: [0, index % 2 === 0 ? 4 : -4, 0] }}
+        transition={{ duration: 4 + index * 0.1, repeat: Infinity, ease: 'easeInOut' }}
+        onError={(event) => {
+          event.currentTarget.style.display = 'none'
+        }}
+      />
+      <span className="hex-tech-label">
+        {badge.name}
+      </span>
+    </motion.div>
+  )
+}
+
 export function SkillsSection() {
   const [expandedModule, setExpandedModule] = useState(skillCategories[0]?.category ?? '')
 
@@ -33,6 +80,7 @@ export function SkillsSection() {
         .slice(0, 4),
     [],
   )
+  const signalRows = useMemo(() => buildSignalRows(techBadges), [])
 
   return (
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -145,34 +193,37 @@ export function SkillsSection() {
             View Resume
           </RippleButton>
         </div>
-        <div className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-7">
-          {techBadges.map((badge, index) => (
-            <motion.div
-              key={`hex-${badge.name}`}
-              whileHover={{ scale: 1.06, y: -3 }}
-              transition={{ duration: 0.2 }}
-              className="group hex-cell ai-border-card glass-card relative flex aspect-square items-center justify-center p-3"
-              aria-label={`${badge.name} technology badge`}
-            >
-              <motion.img
-                src={`https://cdn.simpleicons.org/${badge.icon}/${badge.color}`}
-                alt={`${badge.name} logo`}
-                loading="lazy"
-                className="h-8 w-8"
-                animate={{ rotate: [0, index % 2 === 0 ? 4 : -4, 0] }}
-                transition={{ duration: 4 + index * 0.1, repeat: Infinity, ease: 'easeInOut' }}
-                onError={(event) => {
-                  event.currentTarget.style.display = 'none'
-                }}
-              />
-              <span className="absolute bottom-2 translate-y-2 text-[10px] font-semibold uppercase tracking-[0.06em] text-[var(--text-primary)] opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
-                {badge.name}
-              </span>
-            </motion.div>
-          ))}
+        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-white/5 p-4 sm:p-6">
+          <div className="pointer-events-none absolute -left-10 top-2 h-28 w-28 rounded-full bg-brand-cyan/20 blur-3xl" aria-hidden />
+          <div className="pointer-events-none absolute -right-8 bottom-2 h-24 w-24 rounded-full bg-brand-purple/20 blur-3xl" aria-hidden />
+          <div className="sm:hidden grid grid-cols-3 gap-3">
+            {techBadges.map((badge, index) => (
+              <HexSignalCell key={`mobile-hex-${badge.name}`} badge={badge} index={index} />
+            ))}
+          </div>
+
+          <div className="hex-signal-grid relative z-10 hidden sm:flex">
+            {signalRows.map((row, rowIndex) => (
+              <div
+                key={`row-${rowIndex}`}
+                className={`hex-signal-row ${rowIndex % 2 === 1 ? 'hex-signal-row-offset' : ''}`}
+              >
+                {row.map((badge, badgeIndex) => (
+                  <HexSignalCell
+                    key={`hex-${badge.name}`}
+                    badge={badge}
+                    index={rowIndex * 10 + badgeIndex}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-4 text-center text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
+            Neural capability mesh with clustered technology nodes
+          </p>
         </div>
       </Reveal>
     </section>
   )
 }
-
