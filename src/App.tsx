@@ -38,7 +38,7 @@ export default function App() {
           <CapsuleIntro
             key="capsule-intro"
             brandName={profile.name}
-            tagline="Gen AI & AI Engineer"
+            tagline="Gen AI, AI Engineering"
             destinationLabel="Tap to Enter"
             accentHex="#3b82f6"
             onEnter={() => {

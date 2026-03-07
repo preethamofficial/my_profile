@@ -173,17 +173,22 @@ export function CapsuleIntro({
                     <span className="capsule-dot" />
                     <span className="capsule-dot" />
                   </span>
+
+                  <span className="capsule-core-meta" aria-hidden>
+                    <span className="capsule-core-name">{brandName}</span>
+                    {tagline ? <span className="capsule-core-tagline">{tagline}</span> : null}
+                  </span>
                 </span>
               </span>
             </span>
           </motion.span>
         </span>
 
-        <span className="capsule-meta">
-          <span className="capsule-name">{brandName}</span>
-          {tagline ? <span className="capsule-tagline">{tagline}</span> : null}
-          {destinationLabel ? <span className="capsule-instruction">{destinationLabel}</span> : null}
-        </span>
+        {destinationLabel ? (
+          <span className="capsule-meta">
+            <span className="capsule-instruction">{destinationLabel}</span>
+          </span>
+        ) : null}
       </motion.button>
 
       <AnimatePresence>

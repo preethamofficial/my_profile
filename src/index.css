@@ -388,7 +388,8 @@ body.intro-active {
   inset: 0;
   transform-style: preserve-3d;
   overflow: visible;
-  animation: capsuleTurnToFront 3.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: capsuleTurnToFront 3.4s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    capsuleSlowRotation 16s ease-in-out 3.4s infinite;
   filter: drop-shadow(0 22px 40px rgba(15, 23, 42, 0.18));
 }
 
@@ -481,6 +482,39 @@ body.intro-active {
   gap: 10px;
   opacity: 0;
   animation: capsuleLoadingReveal 3.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.capsule-core-meta {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  width: 78%;
+  transform: translate3d(-50%, 0, 66px);
+  display: grid;
+  justify-items: center;
+  gap: 0.2rem;
+  text-align: center;
+  pointer-events: none;
+}
+
+.capsule-core-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(0.9rem, 1.18vw, 1.18rem);
+  font-weight: 760;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+  color: rgba(15, 23, 42, 0.86);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55), 0 16px 26px rgba(15, 23, 42, 0.12);
+}
+
+.capsule-core-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(0.62rem, 0.86vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  color: rgba(51, 65, 85, 0.66);
 }
 
 .capsule-dot {
@@ -600,6 +634,22 @@ body.intro-active {
   }
   100% {
     transform: rotateX(8deg) rotateY(0deg) rotateZ(0deg);
+  }
+}
+
+@keyframes capsuleSlowRotation {
+  0%,
+  100% {
+    transform: rotateX(8deg) rotateY(0deg) rotateZ(0deg);
+  }
+  25% {
+    transform: rotateX(8deg) rotateY(18deg) rotateZ(0deg);
+  }
+  50% {
+    transform: rotateX(8deg) rotateY(0deg) rotateZ(0deg);
+  }
+  75% {
+    transform: rotateX(8deg) rotateY(-18deg) rotateZ(0deg);
   }
 }
 
@@ -1043,6 +1093,11 @@ body.intro-active {
 
   .capsule-instruction {
     letter-spacing: 0.16em;
+  }
+
+  .capsule-core-meta {
+    bottom: 12%;
+    width: 86%;
   }
 
   body {
