@@ -68,8 +68,8 @@ export function SkillsSection() {
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
         eyebrow="Skills"
-        title="Interactive AI Modules"
-        description="Technical capabilities structured as expandable modules, similar to production AI system components."
+        title="Skills"
+        description="Capabilities structured as expandable modules, similar to production AI system components."
       />
 
       <Reveal className="mt-6 rounded-2xl border border-white/15 bg-white/5 p-4">
