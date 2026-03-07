@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion, useScroll, useSpring } from 'framer-motion'
-import { Element } from 'react-scroll'
+import { Element, scroller } from 'react-scroll'
 
 import { NeuralBackground } from '@/components/common/NeuralBackground'
 import { Toast } from '@/components/common/Toast'
@@ -37,6 +37,45 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     document.title = `${profile.name} | Portfolio`
+  }, [])
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (!params.has('tour')) {
+      return
+    }
+
+    const timeouts: number[] = []
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+
+    const queueScroll = (target: string, delayMs: number) => {
+      timeouts.push(
+        window.setTimeout(() => {
+          scroller.scrollTo(target, {
+            duration: 950,
+            smooth: true,
+            offset: -78,
+          })
+        }, delayMs),
+      )
+    }
+
+    queueScroll('about', 1400)
+    queueScroll('skills', 5200)
+    queueScroll('projects', 9600)
+    queueScroll('contact', 14600)
+    timeouts.push(
+      window.setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+      }, 18600),
+    )
+
+    return () => {
+      timeouts.forEach((timeout) => {
+        window.clearTimeout(timeout)
+      })
+    }
   }, [])
 
   const pushToast = (message: string, type: ToastType) => {
