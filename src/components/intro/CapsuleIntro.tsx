@@ -195,7 +195,7 @@ export function CapsuleIntro({
             exit={{ opacity: 0, y: 6 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
           >
-            Entering experience...
+            Entering {brandName}...
           </motion.p>
         ) : null}
       </AnimatePresence>
