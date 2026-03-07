@@ -389,7 +389,7 @@ body.intro-active {
   transform-style: preserve-3d;
   overflow: visible;
   animation: capsuleTurnToFront 3.4s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    capsuleSlowRotation 24s ease-in-out 3.4s infinite;
+    capsuleSlowRotation 60s linear 3.4s infinite;
   filter: drop-shadow(0 22px 40px rgba(15, 23, 42, 0.18));
 }
 
@@ -638,18 +638,11 @@ body.intro-active {
 }
 
 @keyframes capsuleSlowRotation {
-  0%,
-  100% {
+  from {
     transform: rotateX(8deg) rotateY(0deg) rotateZ(0deg);
   }
-  25% {
-    transform: rotateX(8deg) rotateY(18deg) rotateZ(0deg);
-  }
-  50% {
-    transform: rotateX(8deg) rotateY(0deg) rotateZ(0deg);
-  }
-  75% {
-    transform: rotateX(8deg) rotateY(-18deg) rotateZ(0deg);
+  to {
+    transform: rotateX(8deg) rotateY(360deg) rotateZ(0deg);
   }
 }
 
