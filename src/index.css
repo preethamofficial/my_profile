@@ -389,7 +389,7 @@ body.intro-active {
   transform-style: preserve-3d;
   overflow: visible;
   animation: capsuleTurnToFront 3.4s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-    capsuleSlowRotation 60s linear 3.4s infinite;
+    capsuleSlowRotation 30s linear 3.4s infinite;
   filter: drop-shadow(0 22px 40px rgba(15, 23, 42, 0.18));
 }
 
