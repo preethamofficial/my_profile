@@ -2,7 +2,7 @@ import type { ExperienceItem, NavItem, RoadmapPhase, SkillCategory } from '@/typ
 
 export const profile = {
   name: 'A Preetham Reddy',
-  title: 'AI Engineer in Training | Learning Generative AI',
+  title: 'AI Engineer in Training | Generative AI Developer',
   role: 'Generative AI Engineer at BEPEC Solutions',
   location: 'Bengaluru, Karnataka, India',
   email: 'preethamofficial336@gmail.com',
@@ -13,18 +13,16 @@ export const profile = {
   githubUsername: 'preethamofficial',
   education: 'Brindavan College of Engineering (BCE), Bangalore (Graduating 2026)',
   summary:
-    'AI Engineer in Training specializing in Generative AI, LLM Applications & Prompt Engineering. Building practical AI & Automation Solutions at BEPEC Solutions. Focused on production-grade LLM systems, RAG implementation, and prompt optimization.',
+    'AI Engineer in Training specializing in Generative AI, LLM applications, RAG pipelines, and prompt engineering. Building practical AI and automation solutions with a focus on production-grade systems.',
 }
 
-export const typingRoles = ['Generative AI Engineer', 'LLM Specialist', 'Prompt Engineer']
+export const typingRoles = ['Generative AI Developer', 'LLM Application Builder', 'Prompt Systems Designer']
 
 export const navItems: NavItem[] = [
-  { label: 'About', target: 'about' },
-  { label: 'Skills', target: 'skills' },
+  { label: 'Home', target: 'home' },
   { label: 'Projects', target: 'projects' },
-  { label: 'Architecture', target: 'architecture' },
+  { label: 'Skills', target: 'skills' },
   { label: 'Experience', target: 'experience' },
-  { label: 'Roadmap', target: 'roadmap' },
   { label: 'Contact', target: 'contact' },
 ]
 
@@ -40,6 +38,34 @@ export const aboutStats = [
   { label: 'Technologies Mastered', value: 15, suffix: '+' },
   { label: 'GitHub Contributions', value: 50, suffix: '+' },
 ]
+
+export const heroHighlights = [
+  { label: 'Current Focus', value: 'LLM apps, RAG, and prompt orchestration' },
+  { label: 'Based In', value: 'Bengaluru, India' },
+  { label: 'Open To', value: 'Gen AI and AI engineering collaborations' },
+]
+
+export const cinematicStats = [
+  { value: '02+', label: 'Years in AI' },
+  { value: '10+', label: 'Projects shipped' },
+  { value: '15+', label: 'Tools in stack' },
+]
+
+export const cinematicSkills = [
+  { name: 'Python', value: 95, detail: 'Automation, APIs, data tooling' },
+  { name: 'AI', value: 92, detail: 'LLM workflows and agent systems' },
+  { name: 'Machine Learning', value: 88, detail: 'Model evaluation and deployment' },
+  { name: 'Cybersecurity', value: 72, detail: 'Secure design and risk awareness' },
+  { name: 'Web Development', value: 84, detail: 'Responsive apps and APIs' },
+  { name: 'Django', value: 78, detail: 'Backend architecture and admin flows' },
+  { name: 'JavaScript', value: 82, detail: 'Interactive UI and product logic' },
+] as const
+
+export const skillRings = [
+  { label: 'LLM Systems', value: 90, caption: 'Prompt design, RAG, orchestration' },
+  { label: 'Prompt Engineering', value: 84, caption: 'Prompt design, evaluation, and optimization' },
+  { label: 'AI Deployment', value: 76, caption: 'APIs, guardrails, and production reliability' },
+] as const
 
 export const skillCategories: SkillCategory[] = [
   {
@@ -112,6 +138,49 @@ export const techBadges = [
   { name: 'Git', icon: 'git', color: 'F05032' },
   { name: 'VS Code', icon: 'visualstudiocode', color: '007ACC' },
 ]
+
+export const projectShowcase = {
+  'skin-disease-detection-build-by-using-ml': {
+    title: 'Skin Disease Detection',
+    eyebrow: 'AI / Computer Vision',
+    synopsis: 'A machine learning workflow for identifying skin conditions through image-based classification and practical model evaluation.',
+    accent: 'from-[#491111] via-[#241313] to-[#0f0f0f]',
+    preview: 'Diagnostic Vision',
+    liveUrl: null,
+  },
+  'inventory-managment': {
+    title: 'Inventory Management System',
+    eyebrow: 'Python / Operations',
+    synopsis: 'A utility-first system built during internship work to automate stock handling and operational tracking with Python.',
+    accent: 'from-[#381312] via-[#1a1413] to-[#0f0f0f]',
+    preview: 'Ops Control',
+    liveUrl: null,
+  },
+  'python-game': {
+    title: 'Python Game Lab',
+    eyebrow: 'Interactive Build',
+    synopsis: 'A gameplay prototype exploring Python fundamentals, logic design, and interactive state management through a playable mini project.',
+    accent: 'from-[#2c0f1f] via-[#181115] to-[#0f0f0f]',
+    preview: 'Play Engine',
+    liveUrl: null,
+  },
+  'vaultofcode-python-internship-': {
+    title: 'VaultOfCode Internship',
+    eyebrow: 'Learning Archive',
+    synopsis: 'A collection of internship deliverables, automation scripts, and product experiments documenting steady growth in applied development.',
+    accent: 'from-[#35100f] via-[#191212] to-[#0f0f0f]',
+    preview: 'Build Journal',
+    liveUrl: null,
+  },
+  preethamofficial: {
+    title: 'Developer Presence',
+    eyebrow: 'Portfolio / Brand',
+    synopsis: 'A personal portfolio that brings together AI engineering identity, selected projects, and a strong Generative AI narrative.',
+    accent: 'from-[#511717] via-[#1c1116] to-[#0f0f0f]',
+    preview: 'Digital Identity',
+    liveUrl: profile.website,
+  },
+} as const
 
 export const experience: ExperienceItem[] = [
   {

@@ -1,0 +1,118 @@
+<svg width="900" height="1100" viewBox="0 0 900 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="1100" rx="48" fill="#0F0F10"/>
+  <rect width="900" height="1100" rx="48" fill="url(#bgGlow)"/>
+  <g opacity="0.55">
+    <circle cx="450" cy="390" r="250" fill="url(#coreGlow)"/>
+    <circle cx="450" cy="390" r="190" stroke="url(#ringStroke)" stroke-width="2"/>
+    <circle cx="450" cy="390" r="132" stroke="url(#ringStrokeSoft)" stroke-width="2"/>
+  </g>
+  <g opacity="0.28">
+    <path d="M168 190H732" stroke="url(#lineFade)" stroke-width="2"/>
+    <path d="M112 268H788" stroke="url(#lineFade)" stroke-width="2"/>
+    <path d="M138 792H762" stroke="url(#lineFade)" stroke-width="2"/>
+    <path d="M180 872H720" stroke="url(#lineFade)" stroke-width="2"/>
+  </g>
+  <g opacity="0.85">
+    <path d="M450 186L527 244L515 337L450 386L385 337L373 244L450 186Z" fill="url(#hexFill)" stroke="url(#hexStroke)" stroke-width="2"/>
+    <path d="M450 250L490 280L484 330L450 352L416 330L410 280L450 250Z" fill="#0F1114" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+    <circle cx="450" cy="300" r="18" fill="url(#nodeGlow)"/>
+    <circle cx="450" cy="300" r="7" fill="white"/>
+  </g>
+  <g stroke-linecap="round">
+    <path d="M450 387V486" stroke="url(#signalStroke)" stroke-width="3"/>
+    <path d="M384 338L312 412" stroke="url(#signalStroke)" stroke-width="3"/>
+    <path d="M516 338L590 412" stroke="url(#signalStroke)" stroke-width="3"/>
+    <path d="M373 245L285 204" stroke="url(#signalStroke)" stroke-width="3"/>
+    <path d="M527 245L615 204" stroke="url(#signalStroke)" stroke-width="3"/>
+    <path d="M450 186V108" stroke="url(#signalStroke)" stroke-width="3"/>
+  </g>
+  <g>
+    <circle cx="450" cy="514" r="26" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="450" cy="514" r="9" fill="#FF2A2A"/>
+    <circle cx="291" cy="434" r="24" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="291" cy="434" r="8" fill="#FF6A6A"/>
+    <circle cx="609" cy="434" r="24" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="609" cy="434" r="8" fill="#FF6A6A"/>
+    <circle cx="273" cy="198" r="22" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="273" cy="198" r="7" fill="white"/>
+    <circle cx="627" cy="198" r="22" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="627" cy="198" r="7" fill="white"/>
+    <circle cx="450" cy="88" r="22" fill="#0D0D0F" stroke="url(#nodeStroke)" stroke-width="2"/>
+    <circle cx="450" cy="88" r="7" fill="white"/>
+  </g>
+  <g opacity="0.8">
+    <rect x="186" y="618" width="528" height="238" rx="28" fill="url(#panelFill)" stroke="url(#panelStroke)"/>
+    <rect x="220" y="654" width="146" height="34" rx="17" fill="#151518" stroke="rgba(255,255,255,0.14)"/>
+    <text x="293" y="676" fill="white" font-size="16" font-family="Inter, Arial, sans-serif" text-anchor="middle" letter-spacing="3">GEN AI CORE</text>
+    <text x="220" y="736" fill="white" font-size="54" font-family="Space Grotesk, Arial, sans-serif" font-weight="700">LLM + RAG</text>
+    <text x="220" y="780" fill="rgba(255,255,255,0.74)" font-size="24" font-family="Inter, Arial, sans-serif">Prompt Engineering • Agents • APIs</text>
+    <rect x="220" y="812" width="124" height="8" rx="4" fill="rgba(255,255,255,0.12)"/>
+    <rect x="220" y="812" width="92" height="8" rx="4" fill="#FF2A2A"/>
+    <rect x="220" y="836" width="188" height="8" rx="4" fill="rgba(255,255,255,0.12)"/>
+    <rect x="220" y="836" width="154" height="8" rx="4" fill="white"/>
+    <circle cx="616" cy="724" r="56" fill="url(#miniGlow)"/>
+    <circle cx="616" cy="724" r="30" fill="#101113" stroke="rgba(255,255,255,0.16)"/>
+    <circle cx="616" cy="724" r="10" fill="#FF2A2A"/>
+  </g>
+  <g opacity="0.34">
+    <path d="M252 940C332 892 405 868 470 868C566 868 648 900 722 972" stroke="url(#lineFade)" stroke-width="2"/>
+    <path d="M196 980C316 922 404 900 488 900C600 900 692 940 778 1020" stroke="url(#lineFade)" stroke-width="2"/>
+  </g>
+  <defs>
+    <radialGradient id="bgGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 180) rotate(90) scale(600 520)">
+      <stop stop-color="#2E1010"/>
+      <stop offset="0.55" stop-color="#121214"/>
+      <stop offset="1" stop-color="#0B0B0D"/>
+    </radialGradient>
+    <radialGradient id="coreGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 390) rotate(90) scale(250)">
+      <stop stop-color="#FF2A2A" stop-opacity="0.42"/>
+      <stop offset="0.58" stop-color="#FF2A2A" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="ringStroke" x1="260" y1="200" x2="640" y2="580" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2A2A"/>
+      <stop offset="1" stop-color="white"/>
+    </linearGradient>
+    <linearGradient id="ringStrokeSoft" x1="318" y1="250" x2="582" y2="516" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0.55"/>
+    </linearGradient>
+    <linearGradient id="hexFill" x1="373" y1="186" x2="527" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#241011"/>
+      <stop offset="1" stop-color="#121214"/>
+    </linearGradient>
+    <linearGradient id="hexStroke" x1="373" y1="186" x2="527" y2="386" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF2A2A"/>
+      <stop offset="1" stop-color="white"/>
+    </linearGradient>
+    <radialGradient id="nodeGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 300) rotate(90) scale(18)">
+      <stop stop-color="#FF2A2A"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="signalStroke" x1="285" y1="108" x2="615" y2="514" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white"/>
+      <stop offset="1" stop-color="#FF2A2A"/>
+    </linearGradient>
+    <linearGradient id="nodeStroke" x1="250" y1="150" x2="630" y2="530" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0.68"/>
+    </linearGradient>
+    <linearGradient id="panelFill" x1="186" y1="618" x2="714" y2="856" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.1"/>
+      <stop offset="1" stop-color="white" stop-opacity="0.03"/>
+    </linearGradient>
+    <linearGradient id="panelStroke" x1="186" y1="618" x2="714" y2="856" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0.42"/>
+    </linearGradient>
+    <radialGradient id="miniGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(616 724) rotate(90) scale(56)">
+      <stop stop-color="#FF2A2A" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lineFade" x1="112" y1="140" x2="788" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="white"/>
+      <stop offset="1" stop-color="#FF2A2A" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
