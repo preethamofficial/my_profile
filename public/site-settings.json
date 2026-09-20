@@ -1,0 +1,4 @@
+{
+  "_comment": "Live site settings published from the in-browser editor. updatedAt 0 = never published yet; the first PUSH from the editor writes real values here and every device picks them up within ~1 minute.",
+  "updatedAt": 0
+}

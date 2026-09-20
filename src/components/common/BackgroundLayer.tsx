@@ -22,10 +22,16 @@ export function BackgroundLayer() {
     const onStorage = () => void merge()
     window.addEventListener('bg-settings-changed', onStorage)
     window.addEventListener('site-settings-published', onStorage)
+    // Fired by siteSettings after a cloud pull brings newer settings to this device.
+    window.addEventListener('site-settings-pulled', onStorage)
+    // `storage` keeps tabs of this same browser in step with each other.
+    window.addEventListener('storage', onStorage)
     return () => {
       cancelled = true
       window.removeEventListener('bg-settings-changed', onStorage)
       window.removeEventListener('site-settings-published', onStorage)
+      window.removeEventListener('site-settings-pulled', onStorage)
+      window.removeEventListener('storage', onStorage)
     }
   }, [])
 

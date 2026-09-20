@@ -20,6 +20,7 @@ export interface SiteContent {
 }
 
 const STORAGE_KEY = 'portfolio-site-content'
+const UPDATED_KEY = 'portfolio-site-content-updated-at'
 
 export const EMPTY_SITE_CONTENT: SiteContent = {
   heroName: '',
@@ -60,6 +61,20 @@ export function clearSiteContent() {
   }
 }
 
+/** Timestamp of the last local content edit (0 = never edited on this device). */
+export function getContentUpdatedAt(): number {
+  const raw = localStorage.getItem(UPDATED_KEY)
+  return raw ? Number(raw) || 0 : 0
+}
+
+export function setContentUpdatedAt(timestamp: number) {
+  try {
+    localStorage.setItem(UPDATED_KEY, String(timestamp))
+  } catch {
+    // ignore
+  }
+}
+
 export function useSiteContent(): SiteContent {
   const [content, setContent] = useState<SiteContent>({ ...EMPTY_SITE_CONTENT })
 
@@ -79,10 +94,12 @@ export function useSiteContent(): SiteContent {
     const onChange = () => void merge()
     window.addEventListener('site-content-changed', onChange)
     window.addEventListener('site-settings-published', onChange)
+    window.addEventListener('site-settings-pulled', onChange)
     return () => {
       cancelled = true
       window.removeEventListener('site-content-changed', onChange)
       window.removeEventListener('site-settings-published', onChange)
+      window.removeEventListener('site-settings-pulled', onChange)
     }
   }, [])
 

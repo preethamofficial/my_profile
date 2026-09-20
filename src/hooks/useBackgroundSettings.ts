@@ -8,6 +8,7 @@ export interface BackgroundSettings {
 }
 
 const STORAGE_KEY = 'portfolio-bg-settings'
+const UPDATED_KEY = 'portfolio-bg-updated-at'
 
 export const DEFAULT_BACKGROUND_SETTINGS: BackgroundSettings = {
   image: null,
@@ -33,5 +34,19 @@ export function saveBackgroundSettings(settings: BackgroundSettings) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
   } catch {
     // storage full (large image) — ignore
+  }
+}
+
+/** Timestamp of the last local background edit (0 = never edited on this device). */
+export function getBackgroundUpdatedAt(): number {
+  const raw = localStorage.getItem(UPDATED_KEY)
+  return raw ? Number(raw) || 0 : 0
+}
+
+export function setBackgroundUpdatedAt(timestamp: number) {
+  try {
+    localStorage.setItem(UPDATED_KEY, String(timestamp))
+  } catch {
+    // ignore
   }
 }

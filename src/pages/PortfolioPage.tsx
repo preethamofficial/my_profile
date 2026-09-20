@@ -50,6 +50,7 @@ import { AIArchitectureSection } from '@/components/sections/AIArchitectureSecti
 import { BackgroundLayer } from '@/components/common/BackgroundLayer'
 import { BackgroundEditor } from '@/components/common/BackgroundEditor'
 import { useSiteContent } from '@/hooks/useSiteContent'
+import { startSettingsSync } from '@/services/siteSettings'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -260,6 +261,8 @@ export default function PortfolioPage() {
 
   useEffect(() => {
     document.title = 'A Preetham Reddy | AI Engineer: Generative AI, RAG, LangChain'
+    // Keep this tab in sync with edits published from any other device.
+    startSettingsSync()
   }, [])
 
   useEffect(() => {

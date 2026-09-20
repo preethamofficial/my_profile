@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ImagePlus, Lock, LogOut, RefreshCw, Settings2, Sparkles, X } from 'lucide-react'
+import { CloudDownload, CloudUpload, ImagePlus, Lock, LogOut, RefreshCw, Settings2, Sparkles, X } from 'lucide-react'
 
 import { ContentPanel } from '@/components/common/ContentPanel'
 import { ExperiencePanel } from '@/components/common/ExperiencePanel'
 
-import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
-import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, type SiteContent } from '@/hooks/useSiteContent'
-import { getSyncToken, publishSiteSettings, setSyncToken } from '@/services/siteSettings'
+import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, setBackgroundUpdatedAt, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
+import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, setContentUpdatedAt, type SiteContent } from '@/hooks/useSiteContent'
+import { applyPublishedSettings, fetchPublishedSettings, getSyncToken, publishSiteSettings, setSyncToken } from '@/services/siteSettings'
+import { optimizeImageFile } from '@/utils/image'
 
 const ADMIN_USER = 'Preetham'
 const ADMIN_PASS = 'Punny@1331'
@@ -20,6 +21,8 @@ const WALLPAPERS: Array<{ id: BackgroundSettings['wallpaper']; label: string }> 
 
 function commit(settings: BackgroundSettings) {
   saveBackgroundSettings(settings)
+  // Mark this device as the newest editor so the cloud copy cannot overwrite it.
+  setBackgroundUpdatedAt(Date.now())
   window.dispatchEvent(new Event('bg-settings-changed'))
 }
 
@@ -35,8 +38,11 @@ export function BackgroundEditor() {
   const [savedFlash, setSavedFlash] = useState(0)
   const [token, setToken] = useState(() => getSyncToken())
   const [publishing, setPublishing] = useState(false)
+  const [pulling, setPulling] = useState(false)
+  const [cloudInfo, setCloudInfo] = useState('checking cloud…')
+  const [cloudFlash, setCloudFlash] = useState(0)
   const [publishStatus, setPublishStatus] = useState<{ ok: boolean; message: string } | null>(null)
-  const [autoPublish, setAutoPublish] = useState(() => localStorage.getItem('bg-editor-autopublish') === '1')
+  const [autoPublish, setAutoPublish] = useState(() => localStorage.getItem('bg-editor-autopublish') !== '0')
   const publishTimer = useRef<number | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const heroFileRef = useRef<HTMLInputElement>(null)
@@ -47,6 +53,41 @@ export function BackgroundEditor() {
       setContentState(loadSiteContent())
     }
   }, [open])
+
+  useEffect(() => {
+    let cancelled = false
+
+    const load = async () => {
+      const published = await fetchPublishedSettings(true)
+      if (cancelled) return
+      setCloudInfo(
+        published.updatedAt
+          ? `cloud copy: ${new Date(published.updatedAt).toLocaleString()}`
+          : 'nothing published yet — push once to start syncing',
+      )
+    }
+
+    if (open) void load()
+
+    const onPulled = () => {
+      setCloudFlash((n) => n + 1)
+      setSettings(loadBackgroundSettings())
+      setContentState(loadSiteContent())
+      void load()
+    }
+
+    window.addEventListener('site-settings-pulled', onPulled)
+    return () => {
+      cancelled = true
+      window.removeEventListener('site-settings-pulled', onPulled)
+    }
+  }, [open])
+
+  useEffect(() => {
+    if (!cloudFlash) return
+    const id = window.setTimeout(() => setCloudFlash(0), 2600)
+    return () => window.clearTimeout(id)
+  }, [cloudFlash])
 
   useEffect(() => {
     if (settings.title) document.title = settings.title
@@ -63,6 +104,7 @@ export function BackgroundEditor() {
   const persistContent = (next: SiteContent) => {
     setContentState(next)
     saveSiteContent(next)
+    setContentUpdatedAt(Date.now())
     setSavedFlash((n) => n + 1)
     scheduleAutoPublish()
   }
@@ -78,17 +120,19 @@ export function BackgroundEditor() {
     }
   }
 
-  const handleImage = (file: File) => {
-    if (file.size > 4 * 1024 * 1024) {
-      setError('Image too large (max 4MB)')
+  const handleImage = async (file: File) => {
+    if (file.size > 8 * 1024 * 1024) {
+      setError('Image too large (max 8MB)')
       return
     }
-    const reader = new FileReader()
-    reader.onload = () => {
-      update({ image: String(reader.result), wallpaper: 'none' })
+    try {
+      // Downscale before storing so cross-device sync stays fast.
+      const optimized = await optimizeImageFile(file)
+      update({ image: optimized, wallpaper: 'none' })
       setError(null)
+    } catch {
+      setError('Could not read that image file.')
     }
-    reader.readAsDataURL(file)
   }
 
   const logout = () => {
@@ -105,16 +149,35 @@ export function BackgroundEditor() {
     setPublishing(false)
     if (result.ok) {
       setSavedFlash((n) => n + 1)
+      setCloudInfo(`cloud copy: ${new Date().toLocaleString()}`)
       window.dispatchEvent(new Event('site-settings-published'))
+    }
+  }
+
+  const handlePull = async () => {
+    setPulling(true)
+    const applied = await applyPublishedSettings(true)
+    setPulling(false)
+    setPublishStatus(
+      applied
+        ? { ok: true, message: 'Cloud settings applied to this device.' }
+        : { ok: false, message: 'Nothing published yet — hit PUSH first.' },
+    )
+    if (applied) {
+      setSettings(loadBackgroundSettings())
+      setContentState(loadSiteContent())
+      setCloudFlash((n) => n + 1)
     }
   }
 
   const scheduleAutoPublish = () => {
     if (!autoPublish) return
+    // Without a token there is nowhere to publish to; don't nag on every keystroke.
+    if (!(token.trim() || getSyncToken())) return
     if (publishTimer.current) window.clearTimeout(publishTimer.current)
     publishTimer.current = window.setTimeout(() => {
       void handlePublish()
-    }, 3000)
+    }, 8000)
   }
 
   useEffect(() => {
@@ -267,20 +330,21 @@ export function BackgroundEditor() {
                   error={error}
                   onChange={(patch) => persistContent({ ...content, ...patch })}
                   onHeroImage={(file) => {
-                    if (file.size > 4 * 1024 * 1024) {
-                      setError('Image too large (max 4MB)')
+                    if (file.size > 8 * 1024 * 1024) {
+                      setError('Image too large (max 8MB)')
                       return
                     }
-                    const reader = new FileReader()
-                    reader.onload = () => {
-                      persistContent({ ...content, heroImage: String(reader.result) })
-                      setError(null)
-                    }
-                    reader.readAsDataURL(file)
+                    void optimizeImageFile(file)
+                      .then((optimized) => {
+                        persistContent({ ...content, heroImage: optimized })
+                        setError(null)
+                      })
+                      .catch(() => setError('Could not read that image file.'))
                   }}
                   onReset={() => {
                     setContentState(EMPTY_SITE_CONTENT)
                     clearSiteContent()
+                    setContentUpdatedAt(Date.now())
                     setError(null)
                     setSavedFlash((n) => n + 1)
                   }}
@@ -295,9 +359,16 @@ export function BackgroundEditor() {
                 ) : null}
 
                 <div className="rounded border border-brand-cyan/30 bg-brand-cyan/[0.05] p-3">
-                  <p className="hud-label mb-2">SYNC TO ALL DEVICES</p>
-                  <label htmlFor="sync-token" className="block text-xs text-white/60">
-                    GitHub token (fine-grained, Contents: read+write on my_profile) — stored on this device only
+                  <div className="mb-2 flex items-center justify-between gap-2">
+                    <p className="hud-label">CLOUD SYNC // ALL DEVICES</p>
+                    <span className={`font-mono text-[10px] ${token ? 'text-emerald-300' : 'text-amber-300'}`}>
+                      {token ? 'TOKEN SET' : 'TOKEN MISSING'}
+                    </span>
+                  </div>
+                  <p className="font-mono text-[10px] text-white/45">{cloudInfo}</p>
+
+                  <label htmlFor="sync-token" className="mt-2 block text-xs text-white/60">
+                    GitHub token so edits can be saved to your repo and reach every device
                   </label>
                   <input
                     id="sync-token"
@@ -308,23 +379,44 @@ export function BackgroundEditor() {
                     placeholder="github_pat_..."
                     className="mt-1 w-full rounded border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-brand-cyan"
                   />
+                  <a
+                    href="https://github.com/settings/personal-access-tokens/new"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="focusable mt-1 inline-block text-[11px] text-brand-cyan underline"
+                  >
+                    Create a fine-grained token (Contents: read + write on my_profile) →
+                  </a>
+
                   <div className="mt-2 flex items-center gap-2">
                     <button type="button" onClick={() => void handlePublish()} disabled={publishing} className="button-primary flex-1 justify-center disabled:opacity-50">
-                      {publishing ? 'PUBLISHING…' : 'PUBLISH TO LIVE'}
+                      <CloudUpload className="h-4 w-4" />
+                      {publishing ? 'PUSHING…' : 'PUSH TO LIVE'}
                     </button>
-                    <label className="focusable flex cursor-pointer items-center gap-2 text-xs text-white/70">
-                      <input
-                        type="checkbox"
-                        checked={autoPublish}
-                        onChange={(e) => {
-                          setAutoPublish(e.target.checked)
-                          localStorage.setItem('bg-editor-autopublish', e.target.checked ? '1' : '0')
-                        }}
-                        className="accent-cyan-400"
-                      />
-                      AUTO
-                    </label>
+                    <button type="button" onClick={() => void handlePull()} disabled={pulling} className="button-secondary flex-1 justify-center disabled:opacity-50">
+                      <CloudDownload className="h-4 w-4" />
+                      {pulling ? 'PULLING…' : 'PULL'}
+                    </button>
                   </div>
+
+                  <label className="focusable mt-2 flex cursor-pointer items-center gap-2 text-xs text-white/70">
+                    <input
+                      type="checkbox"
+                      checked={autoPublish}
+                      onChange={(e) => {
+                        setAutoPublish(e.target.checked)
+                        localStorage.setItem('bg-editor-autopublish', e.target.checked ? '1' : '0')
+                        setPublishStatus(
+                          e.target.checked
+                            ? { ok: true, message: 'AUTO on — every edit publishes ~8s after you stop.' }
+                            : { ok: true, message: 'AUTO off — use PUSH TO LIVE when ready.' },
+                        )
+                      }}
+                      className="accent-cyan-400"
+                    />
+                    AUTO — publish every edit automatically
+                  </label>
+
                   {publishStatus ? <p className={`mt-2 text-xs font-semibold ${publishStatus.ok ? 'text-emerald-300' : 'text-[#ff2a2a]'}`}>{publishStatus.message}</p> : null}
                 </div>
               </div>
@@ -345,6 +437,22 @@ export function BackgroundEditor() {
             role="status"
           >
             ✓ SAVED
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {cloudFlash ? (
+          <motion.div
+            key={`cloud-${cloudFlash}`}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-32 left-1/2 z-[96] -translate-x-1/2 rounded border border-brand-cyan/50 bg-brand-cyan/15 px-4 py-2 font-mono text-xs font-bold tracking-[0.2em] text-brand-cyan backdrop-blur"
+            role="status"
+          >
+            ⇣ UPDATED FROM CLOUD
           </motion.div>
         ) : null}
       </AnimatePresence>
