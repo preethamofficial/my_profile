@@ -335,13 +335,13 @@ export default function PortfolioPage() {
                 variants={fadeUp}
                 className="glass-chip inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] text-white/70"
               >
-                Generative AI Developer Portfolio
+                AI / ML Engineer Portfolio
               </motion.span>
 
               <motion.div variants={fadeUp} className="mt-8 max-w-2xl">
-                <p className="text-sm uppercase tracking-[0.42em] text-white/42">Generative AI Developer</p>
+                <p className="text-sm uppercase tracking-[0.42em] text-white/42">AI / ML Engineer</p>
                 <h1 className="mt-4 font-heading text-4xl font-bold leading-[0.92] tracking-[-0.06em] text-white sm:text-5xl lg:text-[5.5rem]">
-                  Building Generative AI systems with LLM workflows, RAG pipelines, and prompt engineering.
+                  Building intelligent AI systems — from deep learning and computer vision to LLM workflows, RAG pipelines, and prompt engineering.
                 </h1>
               </motion.div>
 
