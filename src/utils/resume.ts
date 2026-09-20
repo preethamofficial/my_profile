@@ -1,5 +1,5 @@
 const RESUME_FILE_NAME = 'A-Preetham-Reddy-Resume.pdf'
-const RESUME_VERSION = '20260228'
+const RESUME_VERSION = '20260919'
 
 function buildPrimaryResumeUrl(): string {
   return `${import.meta.env.BASE_URL}resume.pdf?v=${RESUME_VERSION}`
