@@ -194,8 +194,14 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.55, delay: 0.28 }}
-            className="ai-border-card rounded-3xl"
+            className="ai-border-card relative rounded-3xl"
           >
+            <img
+              src={`${import.meta.env.BASE_URL}kunai.svg`}
+              alt=""
+              aria-hidden
+              className="kunai-float pointer-events-none absolute -right-5 -top-12 z-10 w-20 drop-shadow-[0_0_18px_rgba(34,211,238,0.45)] sm:-right-8 sm:w-28"
+            />
             <motion.div
               className="glass-card-strong group relative overflow-hidden rounded-3xl p-5 sm:p-6"
               style={{ transformPerspective: 900, transformStyle: 'preserve-3d' }}

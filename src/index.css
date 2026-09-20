@@ -273,6 +273,27 @@ select {
   animation: emberBreathe 7s ease-in-out infinite;
 }
 
+.kunai-float {
+  animation: kunaiFloat 6s ease-in-out infinite;
+}
+
+@keyframes kunaiFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(38deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(44deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kunai-float {
+    animation: none;
+    transform: rotate(38deg);
+  }
+}
+
 .shadow-veil {
   position: relative;
   isolation: isolate;
