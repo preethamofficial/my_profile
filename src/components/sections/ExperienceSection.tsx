@@ -8,7 +8,7 @@ export function ExperienceSection() {
   return (
     <section id="experience" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="Experience"
+        eyebrow="04 // JOURNEY"
         title="Professional Timeline"
         description="Hands-on work across production LLM systems, automation, and full-stack AI applications."
       />

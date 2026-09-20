@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { useState } from 'react'
 import { BrainCircuit, Database, Sparkles, UserRound, Wrench } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -8,131 +8,150 @@ import { SectionHeading } from '@/components/common/SectionHeading'
 const architectureFlow = [
   {
     label: 'User Input',
+    hud: 'QUERY',
     detail: 'Intent + context capture',
     icon: UserRound,
     accent: 'text-brand-cyan',
+    explanation: 'The user question arrives with conversation context. The system normalizes it before any AI processing begins.',
   },
   {
-    label: 'LLM Reasoning',
+    label: 'Prompt Engine',
+    hud: 'PROMPT_ENGINE',
     detail: 'Prompt orchestration',
     icon: BrainCircuit,
     accent: 'text-brand-purple',
+    explanation: 'System instructions, few-shot examples, and output contracts are assembled into a structured prompt.',
   },
   {
     label: 'Vector DB',
+    hud: 'RAG_ENGINE',
     detail: 'RAG retrieval layer',
     icon: Database,
     accent: 'text-brand-blue',
+    explanation: 'Embedding → Similarity Search → Context Retrieval. Relevant documents are fetched from the vector store.',
   },
   {
-    label: 'Tool Execution',
-    detail: 'Function/tool calling',
-    icon: Wrench,
-    accent: 'text-emerald-300',
-  },
-  {
-    label: 'Output',
-    detail: 'Validated response',
+    label: 'LLM',
+    hud: 'AI_CORE',
+    detail: 'Reasoning + generation',
     icon: Sparkles,
     accent: 'text-cyan-200',
+    explanation: 'Prompt + retrieved context → generated response, grounded in the retrieved knowledge.',
+  },
+  {
+    label: 'Structured Output',
+    hud: 'OUTPUT',
+    detail: 'Validated response',
+    icon: Wrench,
+    accent: 'text-emerald-300',
+    explanation: 'The response is validated against the output schema before being returned to the user.',
   },
 ]
 
+const terminalLines = [
+  '> Initializing prompt pipeline...',
+  '> Context retrieved',
+  '> Model processing',
+  '> Response generated',
+]
+
 export function AIArchitectureSection() {
+  const [selected, setSelected] = useState(2)
+  const active = architectureFlow[selected]
+
   return (
     <section id="architecture" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="AI Architecture"
-        title="Production LLM Flow Design"
-        description="A command-center representation of how requests move through retrieval, reasoning, tool execution, and final response delivery."
+        eyebrow="05 // AI LAB"
+        title="Interactive AI Pipeline"
+        description="Click any component to see how it works — the same architecture used to build production RAG and agent systems."
       />
 
       <Reveal className="ai-border-card mt-10 rounded-3xl">
         <div className="glass-card-strong rounded-3xl p-5 sm:p-7">
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="command-pill rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em]">
-              System Flow
+              AI_CORE: ACTIVE
             </span>
-            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-              Agentic Pipeline
-            </span>
-            <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
-              Low-Latency Retrieval
-            </span>
+            <span className="hud-label rounded border border-white/15 px-2 py-1">MODE: GENERATIVE</span>
+            <span className="hud-label rounded border border-white/15 px-2 py-1">RAG_ENGINE: READY</span>
+            <span className="hud-label rounded border border-white/15 px-2 py-1">人工知能 // AI SYSTEM</span>
           </div>
 
-          <div className="hidden items-center gap-3 lg:flex">
+          <p className="hud-label mb-3">SELECT A COMPONENT ▾</p>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             {architectureFlow.map((node, index) => {
               const Icon = node.icon
+              const isActive = index === selected
               return (
-                <Fragment key={node.label}>
-                  <motion.article
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.45, delay: index * 0.08 }}
-                    className="neural-shell ai-border-card flex-1 rounded-2xl p-4"
-                  >
-                    <span className={`inline-flex rounded-xl border border-white/15 bg-white/10 p-2 ${node.accent}`}>
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <h3 className="mt-3 text-sm font-semibold text-[var(--text-primary)]">{node.label}</h3>
-                    <p className="mt-1 text-xs text-[var(--text-secondary)]">{node.detail}</p>
-                  </motion.article>
-
-                  {index < architectureFlow.length - 1 ? (
-                    <div className="relative h-[2px] w-14 flex-none overflow-hidden rounded-full bg-white/20">
-                      <motion.span
-                        className="absolute left-0 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-brand-cyan shadow-[0_0_16px_1px_rgba(6,182,212,0.8)]"
-                        animate={{ x: ['0%', '100%'] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: 'linear', delay: index * 0.2 }}
-                      />
-                    </div>
-                  ) : null}
-                </Fragment>
+                <button
+                  key={node.label}
+                  type="button"
+                  onClick={() => setSelected(index)}
+                  aria-pressed={isActive}
+                  className={`focusable rounded-2xl border p-4 text-left transition ${
+                    isActive
+                      ? 'border-brand-cyan/70 bg-brand-cyan/10 shadow-[0_0_28px_-6px_rgba(34,211,238,0.5)]'
+                      : 'border-white/10 bg-white/[0.03] hover:border-brand-cyan/40'
+                  }`}
+                >
+                  <span className={`inline-flex rounded-xl border border-white/15 bg-white/10 p-2 ${node.accent}`}>
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <p className="hud-label mt-3">{node.hud}</p>
+                  <h3 className="mt-1 text-sm font-semibold text-[var(--text-primary)]">{node.label}</h3>
+                  <p className="mt-1 text-xs text-[var(--text-secondary)]">{node.detail}</p>
+                </button>
               )
             })}
           </div>
 
-          <div className="space-y-3 lg:hidden">
-            {architectureFlow.map((node, index) => {
-              const Icon = node.icon
-              const isLast = index === architectureFlow.length - 1
-              return (
-                <div key={`mobile-${node.label}`} className="relative">
-                  <article className="neural-shell ai-border-card rounded-2xl p-4">
-                    <div className="flex items-start gap-3">
-                      <span className={`inline-flex rounded-xl border border-white/15 bg-white/10 p-2 ${node.accent}`}>
-                        <Icon className="h-5 w-5" />
-                      </span>
-                      <div>
-                        <h3 className="text-sm font-semibold text-[var(--text-primary)]">{node.label}</h3>
-                        <p className="mt-1 text-xs text-[var(--text-secondary)]">{node.detail}</p>
-                      </div>
-                    </div>
-                  </article>
-                  {!isLast ? (
-                    <div className="ml-5 mt-1 h-5 w-[2px] overflow-hidden rounded-full bg-white/20">
-                      <motion.span
-                        className="block h-2 w-2 rounded-full bg-brand-cyan"
-                        animate={{ y: ['0%', '130%'] }}
-                        transition={{ duration: 1.3, repeat: Infinity, ease: 'linear' }}
-                      />
-                    </div>
-                  ) : null}
-                </div>
-              )
-            })}
-          </div>
+          <motion.div
+            key={selected}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-5 rounded-2xl border border-brand-cyan/25 bg-brand-cyan/[0.06] p-4 sm:p-5"
+          >
+            <p className="hud-label">{active.hud} // PROTOCOL</p>
+            <p className="mt-2 text-sm leading-6 text-[var(--text-primary)]">{active.explanation}</p>
+          </motion.div>
 
-          <div className="mt-6 grid gap-3 text-xs text-[var(--text-secondary)] sm:grid-cols-3">
-            <p className="rounded-xl border border-white/15 bg-white/5 px-3 py-2">Prompt templates tuned for controllable output style.</p>
-            <p className="rounded-xl border border-white/15 bg-white/5 px-3 py-2">Retrieval scoring and filtering to reduce hallucinations.</p>
-            <p className="rounded-xl border border-white/15 bg-white/5 px-3 py-2">Tool-call validation before response finalization.</p>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/45" role="img" aria-label="Illustrative terminal showing a prompt pipeline run">
+            <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+              <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+              <span className="hud-label ml-2">PROMPT_ENGINE // ONLINE</span>
+            </div>
+            <div className="space-y-1.5 p-4 font-mono text-xs sm:text-sm">
+              {terminalLines.map((line, index) => (
+                <motion.p
+                  key={line}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ delay: 0.3 + index * 0.45, duration: 0.3 }}
+                  className="text-brand-cyan"
+                >
+                  {line}
+                </motion.p>
+              ))}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ delay: 2.2, duration: 0.3 }}
+                className="text-emerald-300"
+              >
+                ✓ Structured output delivered <span className="text-white/40">// illustrative demo — no live API call</span>
+              </motion.p>
+            </div>
           </div>
         </div>
       </Reveal>
     </section>
   )
 }
+
 

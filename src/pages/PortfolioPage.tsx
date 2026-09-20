@@ -177,7 +177,7 @@ function ProjectCard({ repo, index }: { repo: GitHubRepo; index: number }) {
           {meta.eyebrow}
         </div>
         <div className="relative flex h-full flex-col justify-end">
-          <p className="text-xs uppercase tracking-[0.35em] text-white/42">Preview</p>
+          <p className="hud-label">MISSION_{String(index + 1).padStart(2, '0')}</p>
           <div className="mt-3 flex items-end justify-between gap-4">
             <div>
               <h3 className="font-heading text-3xl font-bold tracking-[-0.05em] text-white sm:text-4xl">{meta.preview}</h3>

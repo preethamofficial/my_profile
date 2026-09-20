@@ -67,7 +67,7 @@ export function SkillsSection() {
   return (
     <section id="skills" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="Skills"
+        eyebrow="02 // ABILITIES"
         title="Skills"
         description="Capabilities structured as expandable modules, similar to production AI system components."
       />

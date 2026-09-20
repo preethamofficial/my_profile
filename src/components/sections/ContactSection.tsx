@@ -239,9 +239,9 @@ export function ContactSection({ onToast }: ContactSectionProps) {
   return (
     <section id="contact" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="Contact"
-        title="Let&apos;s Build Something Useful"
-        description="Reach out for project collaboration, internships, or AI engineering opportunities."
+        eyebrow="06 // TRANSMISSION"
+        title="Ready for the Next Mission?"
+        description="Let's build something intelligent. Reach out for AI engineering roles, project collaboration, or internships."
       />
 
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.2fr_1fr]">

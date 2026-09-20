@@ -214,7 +214,7 @@ export function ProjectsSection({ repos, isLoading, error }: ProjectsSectionProp
   return (
     <section id="projects" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="Projects"
+        eyebrow="03 // MISSIONS"
         title="Live Engineering Repository Feed"
         description="Production-oriented repositories with adaptive UI cards, interaction depth, and direct code access."
       />

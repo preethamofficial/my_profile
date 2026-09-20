@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowUp, Heart } from 'lucide-react'
+import { ArrowUp } from 'lucide-react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
 import { MdEmail } from 'react-icons/md'
 import { Link as ScrollLink, animateScroll } from 'react-scroll'
@@ -38,13 +38,9 @@ export function Footer({ lastUpdated }: FooterProps) {
     <footer className="relative mt-20 border-t border-white/10 bg-black/20 py-10">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <div className="space-y-3">
-          <p className="text-base font-semibold text-[var(--text-primary)]">{profile.name} © 2026</p>
-          <p className="text-sm text-[var(--text-secondary)]">Built with React + TypeScript</p>
-          <p className="inline-flex items-center gap-1 text-sm text-[var(--text-secondary)]">
-            Made with
-            <Heart className="h-4 w-4 text-rose-400" fill="currentColor" aria-hidden />
-            in Bangalore, India
-          </p>
+          <p className="font-mono text-base font-bold gradient-text">PREETHAM // AI ENGINEER</p>
+          <p className="hud-label">人工知能 // BUILDING INTELLIGENT SYSTEMS</p>
+          <p className="text-sm text-[var(--text-secondary)]">© 2026 A Preetham Reddy · Built with React + TypeScript</p>
           <p className="text-xs uppercase tracking-[0.14em] text-[var(--text-secondary)]">
             Last updated: {updatedText}
           </p>

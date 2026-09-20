@@ -49,7 +49,7 @@ export function AboutSection() {
   return (
     <section id="about" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
-        eyebrow="About Me"
+        eyebrow="01 // CHARACTER PROFILE"
         title="Building Applied AI Systems, Not Just Demos"
         description="Practical Generative AI engineering with a clear focus on reliability, impact, and production outcomes."
       />

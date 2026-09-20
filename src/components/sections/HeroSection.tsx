@@ -93,7 +93,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
               transition={{ duration: 0.5 }}
               className="command-pill inline-flex rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em]"
             >
-              AI Command Center
+              AI_COMMAND // SYSTEM ONLINE // AI ENGINEER
             </motion.p>
 
             <motion.h1

@@ -20,9 +20,11 @@ export const typingRoles = ['Generative AI Engineer', 'RAG Pipeline Builder', 'L
 
 export const navItems: NavItem[] = [
   { label: 'Home', target: 'home' },
-  { label: 'Projects', target: 'projects' },
+  { label: 'About', target: 'about' },
   { label: 'Skills', target: 'skills' },
+  { label: 'Projects', target: 'projects' },
   { label: 'Experience', target: 'experience' },
+  { label: 'AI Lab', target: 'architecture' },
   { label: 'Contact', target: 'contact' },
 ]
 

@@ -16,6 +16,7 @@ export function SectionHeading({ eyebrow, title, description, centered = false }
       <h2 className="text-3xl font-bold tracking-tight text-[var(--text-primary)] sm:text-4xl">
         <span className="gradient-text">{title}</span>
       </h2>
+      <div className="katana-divider mt-4 w-40" aria-hidden />
       {description ? <p className="mt-4 text-base text-[var(--text-secondary)] sm:text-lg">{description}</p> : null}
     </div>
   )
