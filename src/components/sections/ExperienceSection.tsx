@@ -3,8 +3,12 @@ import { Building2, GraduationCap } from 'lucide-react'
 import { Reveal } from '@/components/common/Reveal'
 import { SectionHeading } from '@/components/common/SectionHeading'
 import { experience, profile } from '@/data/portfolio'
+import { useSiteContent } from '@/hooks/useSiteContent'
 
 export function ExperienceSection() {
+  const content = useSiteContent()
+  const items = content.experience.length ? content.experience : experience
+
   return (
     <section id="experience" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
@@ -17,7 +21,7 @@ export function ExperienceSection() {
         <span className="timeline-line absolute bottom-0 left-2 top-0 w-1 rounded-full sm:left-4" aria-hidden />
 
         <div className="space-y-8">
-          {experience.map((item, index) => (
+          {items.map((item, index) => (
             <Reveal key={`${item.company}-${item.title}`} delay={index * 0.1} className="relative">
               <span
                 className={`absolute -left-[1.66rem] top-7 inline-flex h-5 w-5 items-center justify-center rounded-full border ${

@@ -7,6 +7,14 @@ export interface SiteContent {
   heroImage: string | null
   aboutParagraphs: string[]
   stats: Array<{ value: number; suffix: string; label: string }>
+  experience: Array<{
+    title: string
+    company: string
+    duration: string
+    current: boolean
+    highlights: string[]
+    tech: string[]
+  }>
 }
 
 const STORAGE_KEY = 'portfolio-site-content'
@@ -18,6 +26,7 @@ export const EMPTY_SITE_CONTENT: SiteContent = {
   heroImage: null,
   aboutParagraphs: [],
   stats: [],
+  experience: [],
 }
 
 export function loadSiteContent(): SiteContent {

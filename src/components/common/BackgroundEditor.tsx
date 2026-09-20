@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ImagePlus, Lock, LogOut, RefreshCw, Settings2, Sparkles, X } from 'lucide-react'
 
 import { ContentPanel } from '@/components/common/ContentPanel'
+import { ExperiencePanel } from '@/components/common/ExperiencePanel'
 
 import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
 import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, type SiteContent } from '@/hooks/useSiteContent'
@@ -28,7 +30,8 @@ export function BackgroundEditor() {
   const [error, setError] = useState<string | null>(null)
   const [settings, setSettings] = useState<BackgroundSettings>(DEFAULT_BACKGROUND_SETTINGS)
   const [content, setContentState] = useState<SiteContent>(EMPTY_SITE_CONTENT)
-  const [tab, setTab] = useState<'background' | 'content'>('background')
+  const [tab, setTab] = useState<'background' | 'content' | 'experience'>('background')
+  const [savedFlash, setSavedFlash] = useState(0)
   const fileRef = useRef<HTMLInputElement>(null)
   const heroFileRef = useRef<HTMLInputElement>(null)
 
@@ -47,6 +50,13 @@ export function BackgroundEditor() {
     const next = { ...settings, ...patch }
     setSettings(next)
     commit(next)
+    setSavedFlash((n) => n + 1)
+  }
+
+  const persistContent = (next: SiteContent) => {
+    setContentState(next)
+    saveSiteContent(next)
+    setSavedFlash((n) => n + 1)
   }
 
   const handleLogin = () => {
@@ -79,6 +89,12 @@ export function BackgroundEditor() {
     setOpen(false)
   }
 
+  useEffect(() => {
+    if (!savedFlash) return
+    const id = window.setTimeout(() => setSavedFlash(0), 1600)
+    return () => window.clearTimeout(id)
+  }, [savedFlash])
+
   return (
     <>
       <button
@@ -103,7 +119,7 @@ export function BackgroundEditor() {
 
             {authed ? (
               <div className="flex items-center gap-2 border-b border-white/10 px-5 pb-3">
-                {(['background', 'content'] as const).map((t) => (
+                {(['background', 'content', 'experience'] as const).map((t) => (
                   <button
                     key={t}
                     type="button"
@@ -112,7 +128,7 @@ export function BackgroundEditor() {
                       tab === t ? 'bg-brand-cyan/15 text-brand-cyan' : 'text-white/50 hover:text-white'
                     }`}
                   >
-                    {t === 'background' ? 'Background' : 'Content'}
+                    {t === 'background' ? 'Background' : t === 'content' ? 'Content' : 'Experience'}
                   </button>
                 ))}
                 <button
@@ -221,11 +237,7 @@ export function BackgroundEditor() {
                   content={content}
                   heroFileRef={heroFileRef}
                   error={error}
-                  onChange={(patch) => {
-                    const next = { ...content, ...patch }
-                    setContentState(next)
-                    saveSiteContent(next)
-                  }}
+                  onChange={(patch) => persistContent({ ...content, ...patch })}
                   onHeroImage={(file) => {
                     if (file.size > 4 * 1024 * 1024) {
                       setError('Image too large (max 4MB)')
@@ -233,9 +245,7 @@ export function BackgroundEditor() {
                     }
                     const reader = new FileReader()
                     reader.onload = () => {
-                      const next = { ...content, heroImage: String(reader.result) }
-                      setContentState(next)
-                      saveSiteContent(next)
+                      persistContent({ ...content, heroImage: String(reader.result) })
                       setError(null)
                     }
                     reader.readAsDataURL(file)
@@ -244,14 +254,38 @@ export function BackgroundEditor() {
                     setContentState(EMPTY_SITE_CONTENT)
                     clearSiteContent()
                     setError(null)
+                    setSavedFlash((n) => n + 1)
                   }}
                 />
                 )}
+                {tab === 'experience' ? (
+                <ExperiencePanel
+                  items={content.experience}
+                  error={error}
+                  onChange={(items) => persistContent({ ...content, experience: items })}
+                />
+                ) : null}
               </div>
             )}
           </div>
         </div>
       ) : null}
+
+      <AnimatePresence>
+        {savedFlash ? (
+          <motion.div
+            key={savedFlash}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.25 }}
+            className="fixed bottom-20 left-1/2 z-[96] -translate-x-1/2 rounded border border-emerald-400/40 bg-emerald-500/15 px-4 py-2 font-mono text-xs font-bold tracking-[0.2em] text-emerald-300 backdrop-blur"
+            role="status"
+          >
+            ✓ SAVED
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </>
   )
 }
