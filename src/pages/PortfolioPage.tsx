@@ -44,6 +44,7 @@ import { useGithubData } from '@/hooks/useGithubData'
 import { categorizeProject, getLanguageColor } from '@/services/github'
 import type { GitHubRepo } from '@/types/github'
 import { downloadResumePdf } from '@/utils/resume'
+import { LightningOverlay } from '@/components/common/LightningOverlay'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -297,6 +298,7 @@ export default function PortfolioPage() {
   return (
     <div className="relative min-h-screen overflow-x-clip bg-[#0b0b0b] text-white">
       <AmbientBackground />
+      <LightningOverlay enabled={!shouldReduceMotion} />
       <div className="bg-kunai-layer" aria-hidden>
         <img src={`${import.meta.env.BASE_URL}kunai.svg`} alt="" className="bg-kunai bg-kunai--primary" loading="lazy" />
         <img src={`${import.meta.env.BASE_URL}kunai.svg`} alt="" className="bg-kunai bg-kunai--secondary" loading="lazy" />

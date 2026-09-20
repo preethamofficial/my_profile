@@ -1,88 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Cyber ninja kunai with glowing cyan and violet energy edges">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Realistic cyber ninja kunai with glowing energy edges">
   <defs>
-    <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1b2735"/>
-      <stop offset="0.45" stop-color="#0d1117"/>
-      <stop offset="1" stop-color="#050608"/>
+    <linearGradient id="bladeBody" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0" stop-color="#3a4656"/>
+      <stop offset="0.18" stop-color="#161c26"/>
+      <stop offset="0.42" stop-color="#050608"/>
+      <stop offset="0.6" stop-color="#10151d"/>
+      <stop offset="0.8" stop-color="#04050a"/>
+      <stop offset="1" stop-color="#1c2530"/>
     </linearGradient>
-    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#22d3ee"/>
-      <stop offset="0.55" stop-color="#818cf8"/>
-      <stop offset="1" stop-color="#a855f7"/>
+    <linearGradient id="bladeFaceR" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000000"/>
+      <stop offset="0.7" stop-color="#0a0e14"/>
+      <stop offset="1" stop-color="#131a24"/>
     </linearGradient>
-    <linearGradient id="hilt" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#243244"/>
-      <stop offset="0.5" stop-color="#10161f"/>
-      <stop offset="1" stop-color="#243244"/>
+    <linearGradient id="energy" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="0.5" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#818cf8"/>
     </linearGradient>
+    <linearGradient id="energyV" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a855f7"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="metalHilt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#05070b"/>
+      <stop offset="0.3" stop-color="#222c3a"/>
+      <stop offset="0.5" stop-color="#39485c"/>
+      <stop offset="0.7" stop-color="#1a2330"/>
+      <stop offset="1" stop-color="#05070b"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="0.5" cy="0.45" r="0.6">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.16"/>
+      <stop offset="0.6" stop-color="#6366f1" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
     <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="6" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="glowStrong" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur stdDeviation="10" result="b"/>
-      <feMerge>
-        <feMergeNode in="b"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
+    <filter id="glowSoft" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="12"/>
     </filter>
   </defs>
 
-  <!-- energy aura -->
-  <ellipse cx="200" cy="200" rx="150" ry="185" fill="url(#edge)" opacity="0.08" filter="url(#glowStrong)"/>
+  <ellipse cx="200" cy="200" rx="165" ry="195" fill="url(#aura)"/>
 
   <g transform="rotate(38 200 200)">
-    <!-- blade: sharp obsidian kunai point -->
-    <path d="M200 18 L232 180 L200 250 L168 180 Z" fill="url(#blade)" stroke="url(#edge)" stroke-width="3" filter="url(#glow)"/>
-    <!-- center ridge line -->
-    <path d="M200 26 L200 244" stroke="url(#edge)" stroke-width="1.5" opacity="0.85" filter="url(#glow)"/>
-    <!-- inner edge highlight (cel-shade) -->
-    <path d="M200 18 L232 180 L200 250" fill="none" stroke="#22d3ee" stroke-width="1.2" opacity="0.9"/>
-    <path d="M200 18 L168 180 L200 250" fill="none" stroke="#a855f7" stroke-width="1.2" opacity="0.9"/>
+    <path d="M200 14 L236 182 L200 254 L164 182 Z" fill="none" stroke="url(#energy)" stroke-width="6" opacity="0.35" filter="url(#glowSoft)"/>
+    <path d="M200 14 L236 182 L200 254 Z" fill="url(#bladeFaceR)"/>
+    <path d="M200 14 L164 182 L200 254 Z" fill="url(#bladeBody)"/>
+    <path d="M200 14 L200 254" stroke="#4b5c72" stroke-width="1.4" opacity="0.9"/>
+    <path d="M200 14 L200 120" stroke="#9fb4cc" stroke-width="0.8" opacity="0.85"/>
+    <path d="M200 14 L236 182 L200 254" fill="none" stroke="url(#energy)" stroke-width="2.4" filter="url(#glow)"/>
+    <path d="M200 14 L164 182 L200 254" fill="none" stroke="url(#energyV)" stroke-width="2.4" filter="url(#glow)"/>
+    <path d="M197 30 L197 240" stroke="url(#energy)" stroke-width="1.2" opacity="0.75" filter="url(#glow)"/>
+    <path d="M206 60 L216 150 L212 152 L203 62 Z" fill="#c7d8ee" opacity="0.55"/>
+    <path d="M204 96 L209 140" stroke="#e6f2ff" stroke-width="1.4" opacity="0.8"/>
+    <path d="M191 110 L188 170" stroke="#818cf8" stroke-width="1" opacity="0.6" filter="url(#glow)"/>
+    <path d="M172 232 L228 232 L226 248 L174 248 Z" fill="#000000" opacity="0.55"/>
 
-    <!-- guard / sci-fi hilt collar -->
-    <path d="M170 250 L230 250 L238 268 L162 268 Z" fill="url(#hilt)" stroke="url(#edge)" stroke-width="2.5" filter="url(#glow)"/>
-    <circle cx="200" cy="259" r="5" fill="#22d3ee" filter="url(#glow)"/>
-
-    <!-- grip -->
-    <rect x="186" y="268" width="28" height="86" rx="8" fill="url(#hilt)" stroke="rgba(129,140,248,0.75)" stroke-width="2" filter="url(#glow)"/>
-    <!-- grip wrap lines -->
-    <g stroke="#22d3ee" stroke-width="1.6" opacity="0.7">
-      <path d="M186 284 L214 292"/>
-      <path d="M186 304 L214 312"/>
-      <path d="M186 324 L214 332"/>
+    <path d="M166 252 L234 252 L242 272 L158 272 Z" fill="url(#metalHilt)" stroke="url(#energy)" stroke-width="1.8" filter="url(#glow)"/>
+    <path d="M166 252 L242 272" stroke="#6d7f96" stroke-width="0.8" opacity="0.7"/>
+    <g fill="#0a0e14" stroke="#22d3ee" stroke-width="0.7" opacity="0.9">
+      <circle cx="176" cy="262" r="2.4"/>
+      <circle cx="200" cy="262" r="2.8" fill="#22d3ee" filter="url(#glow)"/>
+      <circle cx="224" cy="262" r="2.4"/>
     </g>
 
-    <!-- pommel ring (ninja ring) -->
-    <circle cx="200" cy="372" r="16" fill="none" stroke="url(#edge)" stroke-width="4" filter="url(#glow)"/>
-    <circle cx="200" cy="372" r="7" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity="0.8"/>
+    <rect x="185" y="272" width="30" height="88" rx="6" fill="url(#metalHilt)" stroke="rgba(99,102,241,0.7)" stroke-width="1.6"/>
+    <g stroke="#05070b" stroke-width="2" opacity="0.9">
+      <path d="M185 288 L215 288"/>
+      <path d="M185 306 L215 306"/>
+      <path d="M185 324 L215 324"/>
+      <path d="M185 342 L215 342"/>
+    </g>
+    <path d="M185 276 L185 356" stroke="#22d3ee" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
+    <path d="M215 276 L215 356" stroke="#a855f7" stroke-width="1" opacity="0.5" filter="url(#glow)"/>
+
+    <circle cx="200" cy="376" r="17" fill="none" stroke="url(#metalHilt)" stroke-width="7"/>
+    <circle cx="200" cy="376" r="17" fill="none" stroke="url(#energy)" stroke-width="1.8" filter="url(#glow)"/>
+    <circle cx="200" cy="376" r="8.5" fill="none" stroke="#0a0e14" stroke-width="2"/>
+    <path d="M188 366 A17 17 0 0 1 212 366" stroke="#9fb4cc" stroke-width="1" opacity="0.6" fill="none"/>
   </g>
 
-  <!-- energy sparks -->
-  <g stroke="#22d3ee" stroke-linecap="round" filter="url(#glow)">
-    <path d="M92 96 l16 6" stroke-width="2.5" opacity="0.9"/>
-    <path d="M296 300 l16 -8" stroke-width="2.5" opacity="0.85"/>
-    <path d="M110 292 l12 -10" stroke-width="2" opacity="0.7"/>
-    <path d="M300 88 l-14 10" stroke-width="2" opacity="0.75"/>
+  <g stroke="#67e8f9" stroke-linecap="round" filter="url(#glow)">
+    <path d="M84 88 l22 4 -10 8 20 6" fill="none" stroke-width="2" opacity="0.85"/>
+    <path d="M312 296 l-20 -2 12 -8 -18 -8" fill="none" stroke-width="2" opacity="0.8"/>
   </g>
   <g stroke="#a855f7" stroke-linecap="round" filter="url(#glow)">
-    <path d="M318 190 l14 -4" stroke-width="2.5" opacity="0.8"/>
-    <path d="M74 190 l-14 6" stroke-width="2" opacity="0.8"/>
+    <path d="M330 176 l16 -6 -12 12" fill="none" stroke-width="2" opacity="0.8"/>
+    <path d="M62 214 l-14 8 14 4" fill="none" stroke-width="2" opacity="0.75"/>
   </g>
 
-  <!-- digital particles -->
-  <g fill="#22d3ee">
-    <circle cx="140" cy="70" r="2.5" opacity="0.9"/>
-    <circle cx="268" cy="120" r="2" opacity="0.7"/>
-    <circle cx="120" cy="330" r="2" opacity="0.7"/>
-    <circle cx="286" cy="350" r="2.5" opacity="0.9"/>
-    <circle cx="330" cy="140" r="1.8" opacity="0.6"/>
-  </g>
-  <g fill="#a855f7">
-    <circle cx="86" cy="240" r="2" opacity="0.8"/>
-    <circle cx="322" cy="250" r="2.2" opacity="0.8"/>
+  <g>
+    <circle cx="136" cy="64" r="2" fill="#67e8f9" opacity="0.9"/>
+    <circle cx="272" cy="112" r="1.6" fill="#818cf8" opacity="0.8"/>
+    <circle cx="118" cy="336" r="1.6" fill="#22d3ee" opacity="0.7"/>
+    <circle cx="290" cy="356" r="2" fill="#67e8f9" opacity="0.8"/>
+    <circle cx="334" cy="136" r="1.4" fill="#a855f7" opacity="0.7"/>
+    <circle cx="80" cy="248" r="1.6" fill="#818cf8" opacity="0.7"/>
   </g>
 </svg>

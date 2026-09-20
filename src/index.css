@@ -289,7 +289,19 @@ select {
   position: absolute;
   opacity: 0.07;
   filter: saturate(1.2) drop-shadow(0 0 40px rgba(34, 211, 238, 0.25));
-  animation: kunaiDrift 60s ease-in-out infinite alternate;
+  animation:
+    kunaiDrift 60s ease-in-out infinite alternate,
+    kunaiPulse 9s ease-in-out infinite;
+}
+
+@keyframes kunaiPulse {
+  0%,
+  100% {
+    filter: saturate(1.2) drop-shadow(0 0 40px rgba(34, 211, 238, 0.25));
+  }
+  50% {
+    filter: saturate(1.5) drop-shadow(0 0 60px rgba(129, 140, 248, 0.4));
+  }
 }
 
 .bg-kunai--primary {
