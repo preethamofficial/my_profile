@@ -287,7 +287,7 @@ export default function PortfolioPage() {
       .filter((repo) => order.has(repo.name))
       .sort((repoA, repoB) => (order.get(repoA.name) ?? Number.MAX_SAFE_INTEGER) - (order.get(repoB.name) ?? Number.MAX_SAFE_INTEGER))
 
-    return (prioritized.length > 0 ? prioritized : repos).slice(0, 5)
+    return (prioritized.length > 0 ? prioritized : repos).slice(0, 9)
   }, [repos])
 
   const projectCount = overview?.user?.public_repos ?? featuredProjects.length

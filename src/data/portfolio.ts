@@ -191,6 +191,38 @@ export const projectShowcase = {
     preview: 'Data Cleaning AI',
     liveUrl: null,
   },
+  'text_to_sql-agent': {
+    title: 'Text-to-SQL Agent',
+    eyebrow: 'LangGraph / Data Analytics',
+    synopsis: 'An AI-powered Streamlit application that turns plain-English questions into SQL — a LangGraph workflow with schema retrieval, SQL generation, validation, and execution against MySQL, with safety checks that block destructive operations and CSV export in the dashboard.',
+    accent: 'from-[#0f2440] via-[#121822] to-[#0f0f0f]',
+    preview: 'SQL Copilot',
+    liveUrl: null,
+  },
+  'Gen-AI-bharath-unnathi-': {
+    title: 'GenAI Portfolio Suite',
+    eyebrow: '10 AI Builds / Multi-Agent',
+    synopsis: 'A collection of 10 AI-focused projects including a three-agent ReasoningAgent pipeline (solver, verifier, judge), a Prompt Engineering SDK with FastAPI /optimize and /evaluate endpoints, a StudyGuideEcosystem, and analytics dashboards.',
+    accent: 'from-[#3a2a0f] via-[#1a1712] to-[#0f0f0f]',
+    preview: 'Agent Suite',
+    liveUrl: null,
+  },
+  'Compressive-Strength-Predictor': {
+    title: 'Compressive Strength Predictor',
+    eyebrow: 'ML Regression / Django',
+    synopsis: 'A machine learning model that predicts concrete compressive strength from material composition using regression algorithms, deployed with a Django web interface.',
+    accent: 'from-[#123a2b] via-[#12201a] to-[#0f0f0f]',
+    preview: 'Strength ML',
+    liveUrl: null,
+  },
+  'teju-Navin': {
+    title: 'Wedding Photo Sync Platform',
+    eyebrow: 'Client Project / Full-Stack Web',
+    synopsis: 'A full-stack web platform for cross-device wedding photo collection — Firebase Storage uploads with auto-forwarding to Google Photos and Google Drive via a secure webhook backend (Google Apps Script deployment).',
+    accent: 'from-[#3a0f2a] via-[#1a1218] to-[#0f0f0f]',
+    preview: 'Photo Sync',
+    liveUrl: null,
+  },
   preethamofficial: {
     title: 'Developer Presence',
     eyebrow: 'Portfolio / Brand',
@@ -267,8 +299,12 @@ export const contactSubjects = ['Project Inquiry', 'Job Opportunity', 'Collabora
 export const featuredProjectNames = [
   'ai-doubt-resolution-agent',
   'Ai-Meeting-Assistant',
+  'text_to_sql-agent',
   'skin-disease-detection-build-by-using-ml',
   'DataWise AI',
+  'Gen-AI-bharath-unnathi-',
+  'Compressive-Strength-Predictor',
+  'teju-Navin',
   'inventory-managment',
 ]
 
