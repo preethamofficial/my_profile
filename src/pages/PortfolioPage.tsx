@@ -45,6 +45,10 @@ import { categorizeProject, getLanguageColor } from '@/services/github'
 import type { GitHubRepo } from '@/types/github'
 import { downloadResumePdf } from '@/utils/resume'
 import { LightningOverlay } from '@/components/common/LightningOverlay'
+import { AboutSection } from '@/components/sections/AboutSection'
+import { AIArchitectureSection } from '@/components/sections/AIArchitectureSection'
+import { BackgroundLayer } from '@/components/common/BackgroundLayer'
+import { BackgroundEditor } from '@/components/common/BackgroundEditor'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -305,6 +309,8 @@ export default function PortfolioPage() {
         className="fixed inset-x-0 top-0 z-[80] h-[3px] origin-left bg-gradient-to-r from-[#ff2a2a] via-white to-[#ff2a2a]"
       />
       <FloatingNav activeSection={activeSection} onNavigate={scrollToSection} />
+      <BackgroundLayer />
+      <BackgroundEditor />
 
       <main className="relative z-10 pb-20">
         <section id="home" className="relative flex min-h-screen items-center pt-28 sm:pt-32">
@@ -493,6 +499,9 @@ export default function PortfolioPage() {
             </div>
           </div>
         </section>
+
+        <AboutSection />
+        <AIArchitectureSection />
 
         <section id="projects" className="section-shell pt-28">
           <SectionHeader
