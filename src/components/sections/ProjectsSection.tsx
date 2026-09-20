@@ -62,7 +62,7 @@ function ProjectCard({ repo, index }: ProjectCardProps) {
         onMouseMove={handlePointerMove}
         onMouseLeave={handlePointerLeave}
         style={{ rotateX, rotateY, scale, transformStyle: 'preserve-3d' }}
-        className={`ai-border-card glass-card-strong group relative h-full overflow-hidden rounded-2xl p-5 ${
+        className={`ai-border-card glass-card-strong shadow-veil group relative h-full overflow-hidden rounded-2xl p-5 transition-shadow duration-300 hover:shadow-ember ${
           isFeatured ? 'ring-1 ring-brand-cyan/45' : ''
         }`}
       >

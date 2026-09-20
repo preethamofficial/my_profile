@@ -137,7 +137,7 @@ function SkillRing({ ring, index }: { ring: (typeof skillRings)[number]; index: 
       whileInView="visible"
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.45, delay: index * 0.08 }}
-      className="glass-panel flex items-center gap-5 rounded-[28px] p-5"
+      className="glass-panel ember-glow flex items-center gap-5 rounded-[28px] p-5"
     >
       <div
         className="grid h-24 w-24 shrink-0 place-items-center rounded-full p-[1px]"
@@ -168,7 +168,7 @@ function ProjectCard({ repo, index }: { repo: GitHubRepo; index: number }) {
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       whileHover={{ y: -10 }}
-      className="group overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.03] shadow-[0_28px_70px_-40px_rgba(0,0,0,0.9)]"
+      className="shadow-veil group overflow-hidden rounded-[30px] border border-white/10 bg-white/[0.03] shadow-[0_28px_70px_-40px_rgba(0,0,0,0.9)] transition-shadow duration-300 hover:shadow-ember-lg"
     >
       <div className={`relative h-64 overflow-hidden bg-gradient-to-br ${meta.accent} p-6`}>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_38%),radial-gradient(circle_at_bottom_left,rgba(255,42,42,0.18),transparent_35%)] opacity-80 transition duration-500 group-hover:scale-105" />
