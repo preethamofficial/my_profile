@@ -12,8 +12,8 @@ const BOLTS = [
   { d: 'M12 0 L4 34 L10 34 L2 62 L18 26 L11 26 L20 0 Z', x: '8%', y: '70%', w: 30 },
 ]
 
-const FLASH_KEYFRAMES = [0, 0.12, 0.2, 0.35, 1] as const
-const FLASH_OPACITY = [0, 0.9, 0.15, 0.7, 0]
+const FLASH_KEYFRAMES: number[] = [0, 0.12, 0.2, 0.35, 1]
+const FLASH_OPACITY: number[] = [0, 0.9, 0.15, 0.7, 0]
 
 /**
  * Ambient lightning system: rare, random electric flashes at fixed sky positions.
