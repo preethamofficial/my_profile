@@ -7,6 +7,7 @@ import Typed from 'typed.js'
 import { scroller } from 'react-scroll'
 
 import { profile, typingRoles } from '@/data/portfolio'
+import { useSiteContent } from '@/hooks/useSiteContent'
 import { RippleButton } from '@/components/common/RippleButton'
 import { downloadResumePdf } from '@/utils/resume'
 
@@ -22,6 +23,7 @@ const bootSequenceSteps = [
 ]
 
 export function HeroSection({ avatarUrl }: HeroSectionProps) {
+  const content = useSiteContent()
   const typedElementRef = useRef<HTMLSpanElement | null>(null)
   const [bootStep, setBootStep] = useState(0)
   const { scrollY } = useScroll()
@@ -102,8 +104,8 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mt-5 text-5xl font-extrabold leading-[0.95] text-[var(--text-primary)] sm:text-6xl lg:text-7xl"
             >
-              <span className="glitch-text gradient-text inline-block" data-text="A Preetham Reddy">
-                A Preetham Reddy
+              <span className="glitch-text gradient-text inline-block" data-text={content.heroName || 'A Preetham Reddy'}>
+                {content.heroName || 'A Preetham Reddy'}
               </span>
             </motion.h1>
 
@@ -113,7 +115,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
               transition={{ duration: 0.52, delay: 0.18 }}
               className="mt-3 text-sm font-semibold uppercase tracking-[0.28em] text-[var(--text-secondary)]"
             >
-              {profile.title}
+              {content.heroTitle || profile.title}
             </motion.p>
 
             <motion.p
@@ -132,7 +134,7 @@ export function HeroSection({ avatarUrl }: HeroSectionProps) {
               transition={{ duration: 0.52, delay: 0.34 }}
               className="mt-5 max-w-2xl text-sm text-[var(--text-secondary)] sm:text-base"
             >
-              {profile.summary}
+              {content.heroSummary || profile.summary}
             </motion.p>
 
             <motion.div

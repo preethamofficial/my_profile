@@ -49,6 +49,7 @@ import { AboutSection } from '@/components/sections/AboutSection'
 import { AIArchitectureSection } from '@/components/sections/AIArchitectureSection'
 import { BackgroundLayer } from '@/components/common/BackgroundLayer'
 import { BackgroundEditor } from '@/components/common/BackgroundEditor'
+import { useSiteContent } from '@/hooks/useSiteContent'
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
@@ -242,6 +243,7 @@ function ProjectCard({ repo, index }: { repo: GitHubRepo; index: number }) {
 
 export default function PortfolioPage() {
   const { overview, repos } = useGithubData(profile.githubUsername)
+  const content = useSiteContent()
   const { scrollY, scrollYProgress } = useScroll()
   const shouldReduceMotion = useReducedMotion()
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 28, restDelta: 0.001 })
@@ -396,7 +398,7 @@ export default function PortfolioPage() {
               </motion.div>
 
               <motion.div variants={fadeUp} className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
-                {cinematicStats.map((stat) => (
+                {(content.stats.length ? content.stats.map((s) => ({ value: s.value, label: s.label })) : cinematicStats).map((stat) => (
                   <div key={stat.label} className="metric-card rounded-[24px] p-4">
                     <p className="font-heading text-3xl font-bold tracking-[-0.05em] text-white">{stat.value}</p>
                     <p className="mt-2 text-xs uppercase tracking-[0.28em] text-white/42">{stat.label}</p>
@@ -425,8 +427,8 @@ export default function PortfolioPage() {
                     Generative AI Visual
                   </div>
                   <img
-                    src={`${import.meta.env.BASE_URL}gen-ai-hero.svg`}
-                    alt="Generative AI neural systems illustration"
+                    src={content.heroImage || `${import.meta.env.BASE_URL}gen-ai-hero.svg`}
+                    alt="AI engineering visual"
                     className="h-[30rem] w-full object-cover object-center sm:h-[36rem]"
                   />
                   <div className="absolute inset-x-4 bottom-4 rounded-[24px] border border-white/10 bg-black/35 p-4 backdrop-blur-xl">

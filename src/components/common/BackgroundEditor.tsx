@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { ImagePlus, Lock, LogOut, RefreshCw, Settings2, Sparkles, X } from 'lucide-react'
 
-import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
+import { ContentPanel } from '@/components/common/ContentPanel'
 
-const ADMIN_USER = 'preetham'
-const ADMIN_PASS = 'Punnu@1331'
+import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
+import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, type SiteContent } from '@/hooks/useSiteContent'
+
+const ADMIN_USER = 'Preetham'
+const ADMIN_PASS = 'Punny@1331'
 const WALLPAPERS: Array<{ id: BackgroundSettings['wallpaper']; label: string }> = [
   { id: 'none', label: 'Default' },
   { id: 'aurora', label: 'Aurora Live' },
@@ -24,10 +27,16 @@ export function BackgroundEditor() {
   const [pass, setPass] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [settings, setSettings] = useState<BackgroundSettings>(DEFAULT_BACKGROUND_SETTINGS)
+  const [content, setContentState] = useState<SiteContent>(EMPTY_SITE_CONTENT)
+  const [tab, setTab] = useState<'background' | 'content'>('background')
   const fileRef = useRef<HTMLInputElement>(null)
+  const heroFileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    if (open) setSettings(loadBackgroundSettings())
+    if (open) {
+      setSettings(loadBackgroundSettings())
+      setContentState(loadSiteContent())
+    }
   }, [open])
 
   useEffect(() => {
@@ -76,10 +85,10 @@ export function BackgroundEditor() {
         type="button"
         onClick={() => setOpen(true)}
         className="focusable fixed bottom-4 right-4 z-[90] inline-flex items-center gap-2 rounded border border-white/15 bg-black/55 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60 backdrop-blur transition hover:border-brand-cyan/60 hover:text-brand-cyan"
-        aria-label="Edit background (admin only)"
+        aria-label="Edit site (admin only)"
       >
         <Settings2 className="h-3.5 w-3.5" />
-        Edit Background
+        Edit Site
       </button>
 
       {open ? (
@@ -91,6 +100,31 @@ export function BackgroundEditor() {
                 <X className="h-4 w-4" />
               </button>
             </div>
+
+            {authed ? (
+              <div className="flex items-center gap-2 border-b border-white/10 px-5 pb-3">
+                {(['background', 'content'] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTab(t)}
+                    className={`focusable rounded px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] transition ${
+                      tab === t ? 'bg-brand-cyan/15 text-brand-cyan' : 'text-white/50 hover:text-white'
+                    }`}
+                  >
+                    {t === 'background' ? 'Background' : 'Content'}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="focusable ml-auto rounded p-1.5 text-white/50 transition hover:text-[#ff2a2a]"
+                  aria-label="Logout"
+                >
+                  <LogOut className="h-4 w-4" />
+                </button>
+              </div>
+            ) : null}
 
             {!authed ? (
               <div className="space-y-4 p-5">
@@ -109,6 +143,8 @@ export function BackgroundEditor() {
               </div>
             ) : (
               <div className="max-h-[70vh] space-y-5 overflow-y-auto p-5">
+                {tab === 'background' ? (
+                <>
                 <div>
                   <p className="hud-label mb-2">LIVE WALLPAPER</p>
                   <div className="grid grid-cols-2 gap-2">
@@ -179,6 +215,38 @@ export function BackgroundEditor() {
                     <LogOut className="h-4 w-4" /> Logout
                   </button>
                 </div>
+                </>
+                ) : (
+                <ContentPanel
+                  content={content}
+                  heroFileRef={heroFileRef}
+                  error={error}
+                  onChange={(patch) => {
+                    const next = { ...content, ...patch }
+                    setContentState(next)
+                    saveSiteContent(next)
+                  }}
+                  onHeroImage={(file) => {
+                    if (file.size > 4 * 1024 * 1024) {
+                      setError('Image too large (max 4MB)')
+                      return
+                    }
+                    const reader = new FileReader()
+                    reader.onload = () => {
+                      const next = { ...content, heroImage: String(reader.result) }
+                      setContentState(next)
+                      saveSiteContent(next)
+                      setError(null)
+                    }
+                    reader.readAsDataURL(file)
+                  }}
+                  onReset={() => {
+                    setContentState(EMPTY_SITE_CONTENT)
+                    clearSiteContent()
+                    setError(null)
+                  }}
+                />
+                )}
               </div>
             )}
           </div>

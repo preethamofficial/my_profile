@@ -6,6 +6,7 @@ import { SectionHeading } from '@/components/common/SectionHeading'
 import { TechLogo } from '@/components/common/TechLogo'
 import { Reveal } from '@/components/common/Reveal'
 import { aboutParagraphs, aboutStats, techBadges } from '@/data/portfolio'
+import { useSiteContent } from '@/hooks/useSiteContent'
 
 interface CounterProps {
   value: number
@@ -46,6 +47,10 @@ function Counter({ value, suffix = '' }: CounterProps) {
 }
 
 export function AboutSection() {
+  const content = useSiteContent()
+  const paragraphs = content.aboutParagraphs.length ? content.aboutParagraphs : aboutParagraphs
+  const stats = content.stats.length ? content.stats : aboutStats
+
   return (
     <section id="about" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
       <SectionHeading
@@ -57,7 +62,7 @@ export function AboutSection() {
       <div className="mt-10 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
         <Reveal className="glass-card rounded-3xl p-6 sm:p-8">
           <div className="space-y-5 text-[var(--text-secondary)]">
-            {aboutParagraphs.map((paragraph) => (
+            {paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
             <p className="inline-flex items-center gap-2 rounded-full border border-brand-cyan/40 bg-brand-cyan/10 px-4 py-2 text-sm font-semibold text-brand-cyan animate-pulse-glow">
@@ -82,7 +87,7 @@ export function AboutSection() {
       </div>
 
       <div className="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-        {aboutStats.map((stat) => (
+        {stats.map((stat) => (
           <Reveal key={stat.label} className="glass-card rounded-2xl p-5 text-center">
             <Counter value={stat.value} suffix={stat.suffix} />
             <p className="mt-2 text-xs font-medium uppercase tracking-[0.12em] text-[var(--text-secondary)]">{stat.label}</p>
