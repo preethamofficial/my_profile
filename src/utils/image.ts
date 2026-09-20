@@ -3,7 +3,8 @@
  * Keeps the published settings file small: the GitHub Contents API rejects
  * payloads much above 1 MB, and localStorage is capped at a few MB.
  */
-const MAX_DATA_URL_LENGTH = 700_000
+export const MAX_IMAGE_BYTES = 50 * 1024 * 1024 // 50 MB — lets you pick a high-clarity local image
+const MAX_DATA_URL_LENGTH = 900_000
 
 function readAsDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -23,7 +24,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   })
 }
 
-export async function optimizeImageFile(file: File, maxWidth = 1920, quality = 0.82): Promise<string> {
+export async function optimizeImageFile(file: File, maxWidth = 2800, quality = 0.82): Promise<string> {
   const original = await readAsDataUrl(file)
   try {
     const image = await loadImage(original)
@@ -40,7 +41,7 @@ export async function optimizeImageFile(file: File, maxWidth = 1920, quality = 0
 
     // Step quality down until the result is small enough to publish comfortably.
     let best = canvas.toDataURL('image/webp', quality)
-    for (const step of [0.7, 0.6, 0.5, 0.4]) {
+    for (const step of [0.75, 0.65, 0.55, 0.5]) {
       if (best.length <= MAX_DATA_URL_LENGTH) break
       best = canvas.toDataURL('image/webp', step)
     }
@@ -52,7 +53,7 @@ export async function optimizeImageFile(file: File, maxWidth = 1920, quality = 0
       canvas.width = width
       canvas.height = Math.max(1, Math.round((image.height / image.width) * width))
       context.drawImage(image, 0, 0, canvas.width, canvas.height)
-      best = canvas.toDataURL('image/webp', 0.6)
+      best = canvas.toDataURL('image/webp', 0.55)
     }
 
     if (best.startsWith('data:image/webp')) return best

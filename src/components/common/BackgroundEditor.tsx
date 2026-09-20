@@ -8,7 +8,7 @@ import { ExperiencePanel } from '@/components/common/ExperiencePanel'
 import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, setBackgroundUpdatedAt, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
 import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, setContentUpdatedAt, type SiteContent } from '@/hooks/useSiteContent'
 import { applyPublishedSettings, fetchPublishedSettings, getSyncToken, publishSiteSettings, setSyncToken } from '@/services/siteSettings'
-import { optimizeImageFile } from '@/utils/image'
+import { MAX_IMAGE_BYTES, optimizeImageFile } from '@/utils/image'
 
 const ADMIN_USER = 'Preetham'
 const ADMIN_PASS = 'Punny@1331'
@@ -121,8 +121,8 @@ export function BackgroundEditor() {
   }
 
   const handleImage = async (file: File) => {
-    if (file.size > 8 * 1024 * 1024) {
-      setError('Image too large (max 8MB)')
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError(`Image too large (max 50MB)`)
       return
     }
     try {
@@ -330,8 +330,8 @@ export function BackgroundEditor() {
                   error={error}
                   onChange={(patch) => persistContent({ ...content, ...patch })}
                   onHeroImage={(file) => {
-                    if (file.size > 8 * 1024 * 1024) {
-                      setError('Image too large (max 8MB)')
+                    if (file.size > MAX_IMAGE_BYTES) {
+                      setError(`Image too large (max 50MB)`)
                       return
                     }
                     void optimizeImageFile(file)

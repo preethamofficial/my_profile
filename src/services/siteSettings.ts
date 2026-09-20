@@ -139,8 +139,8 @@ export async function publishSiteSettings(): Promise<{ ok: boolean; message: str
     content: loadSiteContent(),
   }
   const body = `${JSON.stringify(payload, null, 2)}\n`
-  if (body.length > 900_000) {
-    return { ok: false, message: 'Payload too large (GitHub caps this at ~1 MB). Replace the custom image with a smaller one.' }
+  if (body.length > 980_000) {
+    return { ok: false, message: 'Image is clear but too large to publish — GitHub limits this file to ~1 MB. Use a slightly smaller source, or keep AUTO on so it publishes the best clarity that fits.' }
   }
   const encoded = encodeBase64(body)
 

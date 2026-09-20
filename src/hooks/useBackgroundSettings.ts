@@ -12,7 +12,7 @@ const UPDATED_KEY = 'portfolio-bg-updated-at'
 
 export const DEFAULT_BACKGROUND_SETTINGS: BackgroundSettings = {
   image: null,
-  brightness: 1,
+  brightness: 1.05, // +5% brighter than the old 1.0 baseline
   blur: 0,
   overlay: 0.45,
   wallpaper: 'none',
