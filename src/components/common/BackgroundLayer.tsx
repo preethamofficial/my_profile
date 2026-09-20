@@ -1,15 +1,32 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
+import { fetchPublishedSettings } from '@/services/siteSettings'
 
 export function BackgroundLayer() {
   const [settings, setSettings] = useState<BackgroundSettings>(DEFAULT_BACKGROUND_SETTINGS)
 
   useEffect(() => {
-    setSettings(loadBackgroundSettings())
-    const onStorage = () => setSettings(loadBackgroundSettings())
+    let cancelled = false
+
+    const merge = async () => {
+      const local = loadBackgroundSettings()
+      const localChanged = JSON.stringify(local) !== JSON.stringify(DEFAULT_BACKGROUND_SETTINGS)
+      const published = await fetchPublishedSettings()
+      const merged: BackgroundSettings = { ...DEFAULT_BACKGROUND_SETTINGS, ...(published.background ?? {}), ...(localChanged ? local : {}) }
+      if (!cancelled) setSettings(merged)
+    }
+
+    void merge()
+
+    const onStorage = () => void merge()
     window.addEventListener('bg-settings-changed', onStorage)
-    return () => window.removeEventListener('bg-settings-changed', onStorage)
+    window.addEventListener('site-settings-published', onStorage)
+    return () => {
+      cancelled = true
+      window.removeEventListener('bg-settings-changed', onStorage)
+      window.removeEventListener('site-settings-published', onStorage)
+    }
   }, [])
 
   const hasCustom = Boolean(settings.image) || settings.wallpaper !== 'none'

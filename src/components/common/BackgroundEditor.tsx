@@ -7,6 +7,7 @@ import { ExperiencePanel } from '@/components/common/ExperiencePanel'
 
 import { DEFAULT_BACKGROUND_SETTINGS, loadBackgroundSettings, saveBackgroundSettings, type BackgroundSettings } from '@/hooks/useBackgroundSettings'
 import { clearSiteContent, EMPTY_SITE_CONTENT, loadSiteContent, saveSiteContent, type SiteContent } from '@/hooks/useSiteContent'
+import { getSyncToken, publishSiteSettings, setSyncToken } from '@/services/siteSettings'
 
 const ADMIN_USER = 'Preetham'
 const ADMIN_PASS = 'Punny@1331'
@@ -32,6 +33,11 @@ export function BackgroundEditor() {
   const [content, setContentState] = useState<SiteContent>(EMPTY_SITE_CONTENT)
   const [tab, setTab] = useState<'background' | 'content' | 'experience'>('background')
   const [savedFlash, setSavedFlash] = useState(0)
+  const [token, setToken] = useState(() => getSyncToken())
+  const [publishing, setPublishing] = useState(false)
+  const [publishStatus, setPublishStatus] = useState<{ ok: boolean; message: string } | null>(null)
+  const [autoPublish, setAutoPublish] = useState(() => localStorage.getItem('bg-editor-autopublish') === '1')
+  const publishTimer = useRef<number | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
   const heroFileRef = useRef<HTMLInputElement>(null)
 
@@ -51,12 +57,14 @@ export function BackgroundEditor() {
     setSettings(next)
     commit(next)
     setSavedFlash((n) => n + 1)
+    scheduleAutoPublish()
   }
 
   const persistContent = (next: SiteContent) => {
     setContentState(next)
     saveSiteContent(next)
     setSavedFlash((n) => n + 1)
+    scheduleAutoPublish()
   }
 
   const handleLogin = () => {
@@ -87,6 +95,26 @@ export function BackgroundEditor() {
     sessionStorage.removeItem('bg-editor-auth')
     setAuthed(false)
     setOpen(false)
+  }
+
+  const handlePublish = async () => {
+    setSyncToken(token.trim())
+    setPublishing(true)
+    const result = await publishSiteSettings()
+    setPublishStatus(result)
+    setPublishing(false)
+    if (result.ok) {
+      setSavedFlash((n) => n + 1)
+      window.dispatchEvent(new Event('site-settings-published'))
+    }
+  }
+
+  const scheduleAutoPublish = () => {
+    if (!autoPublish) return
+    if (publishTimer.current) window.clearTimeout(publishTimer.current)
+    publishTimer.current = window.setTimeout(() => {
+      void handlePublish()
+    }, 3000)
   }
 
   useEffect(() => {
@@ -265,6 +293,40 @@ export function BackgroundEditor() {
                   onChange={(items) => persistContent({ ...content, experience: items })}
                 />
                 ) : null}
+
+                <div className="rounded border border-brand-cyan/30 bg-brand-cyan/[0.05] p-3">
+                  <p className="hud-label mb-2">SYNC TO ALL DEVICES</p>
+                  <label htmlFor="sync-token" className="block text-xs text-white/60">
+                    GitHub token (fine-grained, Contents: read+write on my_profile) — stored on this device only
+                  </label>
+                  <input
+                    id="sync-token"
+                    type="password"
+                    value={token}
+                    onChange={(e) => setToken(e.target.value)}
+                    onBlur={() => setSyncToken(token.trim())}
+                    placeholder="github_pat_..."
+                    className="mt-1 w-full rounded border border-white/15 bg-black/40 px-3 py-2 text-sm text-white outline-none focus:border-brand-cyan"
+                  />
+                  <div className="mt-2 flex items-center gap-2">
+                    <button type="button" onClick={() => void handlePublish()} disabled={publishing} className="button-primary flex-1 justify-center disabled:opacity-50">
+                      {publishing ? 'PUBLISHING…' : 'PUBLISH TO LIVE'}
+                    </button>
+                    <label className="focusable flex cursor-pointer items-center gap-2 text-xs text-white/70">
+                      <input
+                        type="checkbox"
+                        checked={autoPublish}
+                        onChange={(e) => {
+                          setAutoPublish(e.target.checked)
+                          localStorage.setItem('bg-editor-autopublish', e.target.checked ? '1' : '0')
+                        }}
+                        className="accent-cyan-400"
+                      />
+                      AUTO
+                    </label>
+                  </div>
+                  {publishStatus ? <p className={`mt-2 text-xs font-semibold ${publishStatus.ok ? 'text-emerald-300' : 'text-[#ff2a2a]'}`}>{publishStatus.message}</p> : null}
+                </div>
               </div>
             )}
           </div>

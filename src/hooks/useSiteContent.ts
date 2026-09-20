@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { fetchPublishedSettings } from '@/services/siteSettings'
+
 export interface SiteContent {
   heroName: string
   heroTitle: string
@@ -59,12 +61,29 @@ export function clearSiteContent() {
 }
 
 export function useSiteContent(): SiteContent {
-  const [content, setContent] = useState(loadSiteContent)
+  const [content, setContent] = useState<SiteContent>({ ...EMPTY_SITE_CONTENT })
 
   useEffect(() => {
-    const onChange = () => setContent(loadSiteContent())
+    let cancelled = false
+
+    const merge = async () => {
+      const local = loadSiteContent()
+      const localChanged = JSON.stringify(local) !== JSON.stringify(EMPTY_SITE_CONTENT)
+      const published = await fetchPublishedSettings()
+      const merged: SiteContent = { ...EMPTY_SITE_CONTENT, ...(published.content ?? {}), ...(localChanged ? local : {}) }
+      if (!cancelled) setContent(merged)
+    }
+
+    void merge()
+
+    const onChange = () => void merge()
     window.addEventListener('site-content-changed', onChange)
-    return () => window.removeEventListener('site-content-changed', onChange)
+    window.addEventListener('site-settings-published', onChange)
+    return () => {
+      cancelled = true
+      window.removeEventListener('site-content-changed', onChange)
+      window.removeEventListener('site-settings-published', onChange)
+    }
   }, [])
 
   return content
