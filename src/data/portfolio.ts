@@ -2,8 +2,8 @@ import type { ExperienceItem, NavItem, RoadmapPhase, SkillCategory } from '@/typ
 
 export const profile = {
   name: 'A Preetham Reddy',
-  title: 'AI Engineer in Training | Generative AI Developer',
-  role: 'Generative AI Engineer at BEPEC Solutions',
+  title: 'AI / ML Engineer | Generative AI & RAG Developer',
+  role: 'Software Trainee – AI at KenAI Technologies',
   location: 'Bengaluru, Karnataka, India',
   email: 'preethamofficial336@gmail.com',
   whatsapp: '+916361484070',
@@ -11,12 +11,12 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/a-preetham-reddy-739b28317/',
   github: 'https://github.com/preethamofficial',
   githubUsername: 'preethamofficial',
-  education: 'Brindavan College of Engineering (BCE), Bangalore (Graduating 2026)',
+  education: 'Brindavan College of Engineering, Bengaluru — B.E. Information Science and Engineering (2022–2026)',
   summary:
-    'AI Engineer in Training specializing in Generative AI, LLM applications, RAG pipelines, and prompt engineering. Building practical AI and automation solutions with a focus on production-grade systems.',
+    'AI Engineer specializing in Generative AI and RAG, building production RAG pipelines at KenAI Technologies while directing AI coding agents to architect full-stack applications end-to-end. Hands-on across the LLM ecosystem — LangChain, LangGraph, Hugging Face, Gemini, Groq, Cohere, and local models via Ollama — with 1+ year of freelance GenAI delivery and multiple deployed AI projects.',
 }
 
-export const typingRoles = ['Generative AI Developer', 'LLM Application Builder', 'Prompt Systems Designer']
+export const typingRoles = ['Generative AI Engineer', 'RAG Pipeline Builder', 'LangChain & LangGraph Developer']
 
 export const navItems: NavItem[] = [
   { label: 'Home', target: 'home' },
@@ -27,13 +27,14 @@ export const navItems: NavItem[] = [
 ]
 
 export const aboutParagraphs = [
-  'My AI journey started with Python automation and hands-on mini projects, then evolved into designing intelligent systems that solve real operational problems.',
-  'At BEPEC Solutions, I build enterprise-ready LLM applications with practical retrieval pipelines, robust prompt orchestration, and measurable response quality improvements.',
-  'My focus is to ship reliable Generative AI products end-to-end, from experimentation to deployment, with strong guardrails, observability, and performance tuning.',
+  'My AI journey started with Python automation and hands-on mini projects, then evolved into architecting full-stack AI applications — with AI coding agents (Copilot, Cline, Codex) directed end-to-end.',
+  'At KenAI Technologies, I am building an AI Meeting Assistant — a RAG-based meeting-automation platform — and the backend for Moritz, a multi-role elder-care companion app, migrating Node.js/Express to Python/FastAPI.',
+  'Previously at BEPEC Solutions, I delivered GenAI solutions for 3+ client-facing websites spanning document analysis, data extraction, summarization, classification, and multimodal AI — engineering 50-60 production prompts with RAG evaluation to improve retrieval accuracy.',
+  'I own the full stack: data pipelines, backend logic, prompt engineering, RAG evaluation, and Docker/Railway deployment.',
 ]
 
 export const aboutStats = [
-  { label: 'Years Learning AI', value: 2, suffix: '+' },
+  { label: 'Years in AI', value: 3, suffix: '+' },
   { label: 'Projects Completed', value: 10, suffix: '+' },
   { label: 'Technologies Mastered', value: 15, suffix: '+' },
   { label: 'GitHub Contributions', value: 50, suffix: '+' },
@@ -80,44 +81,44 @@ export const skillCategories: SkillCategory[] = [
   {
     category: 'AI / ML',
     items: [
-      { name: 'LangChain', level: 'Advanced', percentage: 84 },
-      { name: 'LlamaIndex', level: 'Advanced', percentage: 78 },
-      { name: 'Transformers', level: 'Advanced', percentage: 80 },
-      { name: 'PyTorch', level: 'Intermediate', percentage: 70 },
-      { name: 'Scikit-learn', level: 'Advanced', percentage: 79 },
-      { name: 'Hugging Face', level: 'Advanced', percentage: 83 },
+      { name: 'LangChain', level: 'Advanced', percentage: 88 },
+      { name: 'LangGraph', level: 'Advanced', percentage: 82 },
+      { name: 'RAG & Evaluation', level: 'Advanced', percentage: 90 },
+      { name: 'Sentence Transformers', level: 'Advanced', percentage: 80 },
+      { name: 'EfficientNet (CNN)', level: 'Advanced', percentage: 78 },
+      { name: 'Hugging Face', level: 'Advanced', percentage: 85 },
     ],
   },
   {
     category: 'Generative AI',
     items: [
-      { name: 'LLM Applications', level: 'Advanced', percentage: 88 },
-      { name: 'Prompt Engineering', level: 'Advanced', percentage: 92 },
-      { name: 'RAG Systems', level: 'Advanced', percentage: 86 },
-      { name: 'Fine-tuning', level: 'Intermediate', percentage: 68 },
-      { name: 'LoRA', level: 'Intermediate', percentage: 64 },
+      { name: 'LLM Applications', level: 'Advanced', percentage: 90 },
+      { name: 'Prompt Engineering', level: 'Expert', percentage: 94 },
+      { name: 'RAG Systems', level: 'Expert', percentage: 92 },
+      { name: 'RAG Evaluation', level: 'Advanced', percentage: 80 },
+      { name: 'Fine-tuning', level: 'Intermediate', percentage: 72 },
     ],
   },
   {
     category: 'Backend & Cloud',
     items: [
-      { name: 'FastAPI', level: 'Advanced', percentage: 84 },
-      { name: 'Flask', level: 'Advanced', percentage: 82 },
+      { name: 'FastAPI', level: 'Advanced', percentage: 86 },
       { name: 'REST APIs', level: 'Advanced', percentage: 88 },
-      { name: 'AWS', level: 'Intermediate', percentage: 67 },
-      { name: 'Google Cloud', level: 'Intermediate', percentage: 63 },
-      { name: 'Docker', level: 'Intermediate', percentage: 69 },
+      { name: 'Docker', level: 'Intermediate', percentage: 75 },
+      { name: 'Railway', level: 'Advanced', percentage: 78 },
+      { name: 'MySQL', level: 'Advanced', percentage: 82 },
+      { name: 'PostgreSQL', level: 'Advanced', percentage: 80 },
     ],
   },
   {
     category: 'Databases & Tools',
     items: [
-      { name: 'Pinecone', level: 'Advanced', percentage: 77 },
-      { name: 'Weaviate', level: 'Intermediate', percentage: 66 },
-      { name: 'PostgreSQL', level: 'Advanced', percentage: 76 },
-      { name: 'Vector DBs', level: 'Advanced', percentage: 80 },
-      { name: 'Git', level: 'Advanced', percentage: 85 },
-      { name: 'n8n', level: 'Intermediate', percentage: 61 },
+      { name: 'ChromaDB', level: 'Advanced', percentage: 80 },
+      { name: 'Vector Databases', level: 'Advanced', percentage: 84 },
+      { name: 'Supabase (pgvector)', level: 'Advanced', percentage: 76 },
+      { name: 'Gemini / Groq / Ollama', level: 'Advanced', percentage: 85 },
+      { name: 'Git & GitHub', level: 'Advanced', percentage: 88 },
+      { name: 'n8n / CrewAI', level: 'Intermediate', percentage: 68 },
     ],
   },
 ]
@@ -126,24 +127,35 @@ export const techBadges = [
   { name: 'Python', icon: 'python', color: '3776AB' },
   { name: 'FastAPI', icon: 'fastapi', color: '009688' },
   { name: 'LangChain', icon: 'langchain', color: '1C3C3C' },
-  { name: 'LlamaIndex', icon: 'llamaindex', color: '7C3AED' },
-  { name: 'PyTorch', icon: 'pytorch', color: 'EE4C2C' },
   { name: 'Hugging Face', icon: 'huggingface', color: 'FFD21E' },
   { name: 'Docker', icon: 'docker', color: '2496ED' },
-  { name: 'AWS', icon: 'amazonwebservices', color: 'FF9900' },
-  { name: 'Google Cloud', icon: 'googlecloud', color: '4285F4' },
+  { name: 'MySQL', icon: 'mysql', color: '4479A1' },
   { name: 'PostgreSQL', icon: 'postgresql', color: '4169E1' },
-  { name: 'Pinecone', icon: 'pinecone', color: '14B8A6' },
-  { name: 'Weaviate', icon: 'weaviate', color: '0EA5E9' },
   { name: 'Git', icon: 'git', color: 'F05032' },
   { name: 'VS Code', icon: 'visualstudiocode', color: '007ACC' },
 ]
 
 export const projectShowcase = {
+  'ai-doubt-resolution-agent': {
+    title: 'AI Doubt Resolution Agent',
+    eyebrow: 'RAG Q&A Platform',
+    synopsis: 'An AI-powered doubt-resolution system built with LangChain/LangGraph and a custom multi-step RAG pipeline — with a normalized MySQL schema, ChromaDB, and Supabase (pgvector) for semantic search. Live as a Telegram bot: @AI_Doubt_Solver336_bot.',
+    accent: 'from-[#4a1111] via-[#1d1213] to-[#0f0f0f]',
+    preview: 'Doubt Solver',
+    liveUrl: 'https://t.me/AI_Doubt_Solver336_bot',
+  },
+  'Ai-Meeting-Assistant': {
+    title: 'AI Meeting Assistant',
+    eyebrow: 'Python / RAG Automation',
+    synopsis: 'An internal meeting-automation platform with RAG-based summarization and retrieval using Python — currently in production build at KenAI Technologies.',
+    accent: 'from-[#3d1418] via-[#1a1214] to-[#0f0f0f]',
+    preview: 'Meeting AI',
+    liveUrl: null,
+  },
   'skin-disease-detection-build-by-using-ml': {
     title: 'Skin Disease Detection',
-    eyebrow: 'AI / Computer Vision',
-    synopsis: 'A machine learning workflow for identifying skin conditions through image-based classification and practical model evaluation.',
+    eyebrow: 'Deep Learning / Computer Vision',
+    synopsis: 'A fine-tuned CNN (EfficientNetB1) classifying skin lesions across 7 categories on the 10,015-image HAM10000 dataset — improving validation accuracy from a low-80s baseline to 87%.',
     accent: 'from-[#491111] via-[#241313] to-[#0f0f0f]',
     preview: 'Diagnostic Vision',
     liveUrl: null,
@@ -184,28 +196,39 @@ export const projectShowcase = {
 
 export const experience: ExperienceItem[] = [
   {
-    title: 'Generative AI Engineer',
-    company: 'BEPEC Solutions',
-    duration: 'Current',
+    title: 'Software Trainee – AI',
+    company: 'KenAI Technologies Private Ltd.',
+    duration: 'July 2026 – Present',
     current: true,
     highlights: [
-      'Building production-grade LLM applications for business workflows.',
-      'Implementing RAG systems for enterprise clients with vector databases.',
-      'Optimizing prompt engineering strategies to improve response quality and consistency.',
+      'Building the AI Meeting Assistant, an internal meeting-automation platform with RAG-based summarization and retrieval using Python.',
+      'Developing the backend for Moritz, a multi-role elder-care companion app — migrating Node.js/Express to Python/FastAPI with asyncpg, auth, and role-based endpoints for Admin, Caretaker, Individual, and Family.',
     ],
-    tech: ['LangChain', 'RAG', 'FastAPI', 'Pinecone', 'Prompt Engineering'],
+    tech: ['Python', 'FastAPI', 'RAG', 'asyncpg', 'Node.js/Express Migration'],
   },
   {
-    title: 'Python Intern',
-    company: 'VaultOfCode',
-    duration: 'Past Internship',
+    title: 'Generative AI Freelancer',
+    company: 'BEPEC Solutions',
+    duration: 'June 2025 – June 2026 · Remote',
     current: false,
     highlights: [
-      'Developed Python automation scripts for repetitive operations.',
-      'Built inventory management systems with practical data workflows.',
-      'Created mini-games and technical projects to strengthen development fundamentals.',
+      'Delivered GenAI solutions for 3+ client-facing websites spanning document analysis, data extraction, summarization, classification, customer support, information retrieval, code/content generation, and multimodal AI.',
+      'Engineered 50-60 production prompts across these use cases; worked with vector databases and RAG pipelines, including RAG evaluation and fine-tuning, to improve retrieval accuracy.',
+      'Contributed to UI design for client-facing AI applications.',
     ],
-    tech: ['Python', 'Flask', 'SQL', 'Automation'],
+    tech: ['LangChain', 'RAG', 'Prompt Engineering', 'Vector Databases', 'n8n'],
+  },
+  {
+    title: 'Generative AI Intern',
+    company: 'VTU | Learners Byte ExpertPedia.ai',
+    duration: 'Jan 2026 – May 2026',
+    current: false,
+    highlights: [
+      'Built a RAG-based semantic search module using Sentence Transformers and vector embeddings for document Q&A, applying prompt engineering and NLP techniques.',
+      'Wrote pytest unit tests for functional correctness.',
+      'Worked in an Agile team (stand-ups, sprint retrospectives) on Linux (Ubuntu), using Git/GitHub with feature branching and peer code review.',
+    ],
+    tech: ['Sentence Transformers', 'RAG', 'pytest', 'Git/GitHub', 'Linux'],
   },
 ]
 
@@ -235,10 +258,10 @@ export const learningResources = ['LangChain Documentation', 'Hugging Face Docs'
 export const contactSubjects = ['Project Inquiry', 'Job Opportunity', 'Collaboration', 'Other']
 
 export const featuredProjectNames = [
+  'ai-doubt-resolution-agent',
+  'Ai-Meeting-Assistant',
   'skin-disease-detection-build-by-using-ml',
   'inventory-managment',
-  'python-game',
-  'vaultofcode-python-internship-',
   'preethamofficial',
 ]
 

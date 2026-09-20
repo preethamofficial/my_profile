@@ -25,6 +25,31 @@ export function useGithubData(username: string) {
     void refresh()
   }, [refresh])
 
+  // Auto-sync: re-fetch GitHub data periodically and whenever the tab becomes visible again,
+  // so newly created/updated repositories show up without a page rebuild.
+  useEffect(() => {
+    const REFRESH_INTERVAL_MS = 5 * 60 * 1000
+
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        void refresh()
+      }
+    }, REFRESH_INTERVAL_MS)
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void refresh()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+
+    return () => {
+      window.clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [refresh])
+
   return {
     overview,
     repos: overview?.repos ?? [],
