@@ -152,15 +152,17 @@ function ProjectCard({ repo, index }: ProjectCardProps) {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-2">
-            <a
-              href={repo.html_url}
-              target="_blank"
-              rel="noreferrer"
-              className="focusable inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-[var(--text-primary)] transition hover:-translate-y-0.5 hover:border-brand-cyan hover:text-brand-cyan"
-            >
-              <Code2 className="h-4 w-4" />
-              View Code
-            </a>
+            {repo.html_url ? (
+              <a
+                href={repo.html_url}
+                target="_blank"
+                rel="noreferrer"
+                className="focusable inline-flex min-h-[44px] items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold text-[var(--text-primary)] transition hover:-translate-y-0.5 hover:border-brand-cyan hover:text-brand-cyan"
+              >
+                <Code2 className="h-4 w-4" />
+                View Code
+              </a>
+            ) : null}
             {demoUrl ? (
               <a
                 href={demoUrl}

@@ -13,7 +13,7 @@ export const profile = {
   githubUsername: 'preethamofficial',
   education: 'Brindavan College of Engineering, Bengaluru — B.E. Information Science and Engineering (2022–2026)',
   summary:
-    'AI Engineer specializing in Generative AI and RAG, building production RAG pipelines at KenAI Technologies while directing AI coding agents to architect full-stack applications end-to-end. Hands-on across the LLM ecosystem — LangChain, LangGraph, Hugging Face, Gemini, Groq, Cohere, and local models via Ollama — with 1+ year of freelance GenAI delivery and multiple deployed AI projects.',
+    "I'm an AI Engineer focused on Generative AI and RAG. I build production RAG pipelines at KenAI Technologies and direct AI coding agents to architect full-stack applications end to end — from data pipelines, backend logic, and prompt engineering to RAG evaluation and Docker/Railway deployment.",
 }
 
 export const typingRoles = ['Generative AI Engineer', 'RAG Pipeline Builder', 'LangChain & LangGraph Developer']
@@ -27,29 +27,28 @@ export const navItems: NavItem[] = [
 ]
 
 export const aboutParagraphs = [
-  'My AI journey started with Python automation and hands-on mini projects, then evolved into architecting full-stack AI applications — with AI coding agents (Copilot, Cline, Codex) directed end-to-end.',
-  'At KenAI Technologies, I am building an AI Meeting Assistant — a RAG-based meeting-automation platform — and the backend for Moritz, a multi-role elder-care companion app, migrating Node.js/Express to Python/FastAPI.',
-  'Previously at BEPEC Solutions, I delivered GenAI solutions for 3+ client-facing websites spanning document analysis, data extraction, summarization, classification, and multimodal AI — engineering 50-60 production prompts with RAG evaluation to improve retrieval accuracy.',
-  'I own the full stack: data pipelines, backend logic, prompt engineering, RAG evaluation, and Docker/Railway deployment.',
+  "I'm an AI Engineer focused on Generative AI and RAG. I currently build production RAG pipelines at KenAI Technologies, and I direct AI coding agents to architect full-stack applications end to end.",
+  'I work across LangChain, LangGraph, Hugging Face, Gemini, Groq, Cohere, and local models via Ollama — and I own the full stack: data pipelines, backend logic, prompt engineering, RAG evaluation, and Docker/Railway deployment.',
 ]
 
 export const aboutStats = [
-  { label: 'Years in AI', value: 3, suffix: '+' },
-  { label: 'Projects Completed', value: 10, suffix: '+' },
-  { label: 'Technologies Mastered', value: 15, suffix: '+' },
-  { label: 'GitHub Contributions', value: 50, suffix: '+' },
+  { label: 'Client GenAI Products', value: 3, suffix: '+' },
+  { label: 'Production Prompts', value: 50, suffix: '+' },
+  { label: 'Skin-Lesion Validation Accuracy', value: 87, suffix: '%' },
+  { label: 'Deployed AI Projects', value: 3, suffix: '' },
 ]
 
 export const heroHighlights = [
-  { label: 'Current Focus', value: 'LLM apps, RAG, and prompt orchestration' },
+  { label: 'Current Focus', value: 'Production RAG pipelines and GenAI applications' },
   { label: 'Based In', value: 'Bengaluru, India' },
-  { label: 'Open To', value: 'Gen AI and AI engineering collaborations' },
+  { label: 'Open To', value: 'AI engineering roles and GenAI collaborations' },
 ]
 
 export const cinematicStats = [
-  { value: '02+', label: 'Years in AI' },
-  { value: '10+', label: 'Projects shipped' },
-  { value: '15+', label: 'Tools in stack' },
+  { value: '3+', label: 'Client GenAI products' },
+  { value: '50-60', label: 'Production prompts engineered' },
+  { value: '87%', label: 'Model validation accuracy' },
+  { value: '3', label: 'Deployed AI projects' },
 ]
 
 export const cinematicSkills = [
@@ -184,6 +183,14 @@ export const projectShowcase = {
     preview: 'Build Journal',
     liveUrl: null,
   },
+  'DataWise AI': {
+    title: 'DataWise AI',
+    eyebrow: 'Client Project · Code Not Public',
+    synopsis: 'An AI-powered data cleaning and analysis platform that automates cleaning, validation, and exploratory analysis on user-uploaded datasets — cutting manual preprocessing for nulls, type mismatches, and outliers. Client project; the codebase is not publicly shared.',
+    accent: 'from-[#40152a] via-[#1a1216] to-[#0f0f0f]',
+    preview: 'Data Cleaning AI',
+    liveUrl: null,
+  },
   preethamofficial: {
     title: 'Developer Presence',
     eyebrow: 'Portfolio / Brand',
@@ -261,8 +268,8 @@ export const featuredProjectNames = [
   'ai-doubt-resolution-agent',
   'Ai-Meeting-Assistant',
   'skin-disease-detection-build-by-using-ml',
+  'DataWise AI',
   'inventory-managment',
-  'preethamofficial',
 ]
 
 export const projectFilters = ['All', 'AI/ML', 'Python', 'Web', 'Tools']

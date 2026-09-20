@@ -213,10 +213,12 @@ function ProjectCard({ repo, index }: { repo: GitHubRepo; index: number }) {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          <a href={repo.html_url} target="_blank" rel="noreferrer" className="button-secondary" data-cursor="interactive">
-            GitHub
-            <Github className="h-4 w-4" />
-          </a>
+          {repo.html_url ? (
+            <a href={repo.html_url} target="_blank" rel="noreferrer" className="button-secondary" data-cursor="interactive">
+              GitHub
+              <Github className="h-4 w-4" />
+            </a>
+          ) : null}
           {meta.liveUrl ? (
             <a href={meta.liveUrl} target="_blank" rel="noreferrer" className="button-primary" data-cursor="interactive">
               Live Demo
@@ -250,7 +252,7 @@ export default function PortfolioPage() {
   const [activeSection, setActiveSection] = useState('home')
 
   useEffect(() => {
-    document.title = 'Preetham | Cinematic AI Portfolio'
+    document.title = 'A Preetham Reddy | AI Engineer: Generative AI, RAG, LangChain'
   }, [])
 
   useEffect(() => {
